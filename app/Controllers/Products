@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Controllers;
+
+use CodeIgniter\RESTful\ResourceController;
+
+class Products extends ResourceController
+{
+    protected $modelName = 'App\Models\ProductModel';
+    protected $format    = 'json';
+
+    public function index()
+    {
+        $model = new ProductModel();
+        $data = $model->findAll();
+        return $this->respond($data);
+    }
+
+    public function show($id = null)
+    {
+        $model = new ProductModel();
+        $data = $model->find($id);
+        if (!$data) {
+            return $this->failNotFound('Product not found');
+        }
+        return $this->respond($data);
+    }
+
+    // Metode
+}
