@@ -272,19 +272,19 @@
               <div class="tab-pane fade" id="monitoring" role="tabpanel" aria-labelledby="monitoring-tab">
 
                 <div class="row">
-                  <div class="col-md-0  form-group">
+                  <div class="col-md-4  form-group">
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                      <!-- <input type="radio" class="btn-check small" name="btnradio" id="monkunjungan" autocomplete="off" checked>
-                      <label class="btn btn-outline-primary btn-sm" for="monkunjungan">Kunjungan</label> -->
+                      <input type="radio" class="btn-check small" name="btnradio" id="monkunjungan" autocomplete="off" checked>
+                      <label class="btn btn-outline-primary btn-sm" for="monkunjungan">Kunjungan</label>
 
-                      <!-- <input type="radio" class="btn-check small" name="btnradio" id="monklaim" autocomplete="off">
-                      <label class="btn btn-outline-primary btn-sm" for="monklaim">Klaim</label> -->
+                      <input type="radio" class="btn-check small" name="btnradio" id="monklaim" autocomplete="off">
+                      <label class="btn btn-outline-primary btn-sm" for="monklaim">Klaim</label>
 
-                      <!-- <input type="radio" class="btn-check small" name="btnradio" id="monhistory" autocomplete="off">
-                      <label class="btn btn-outline-primary btn-sm" for="monhistory">History</label> -->
+                      <input type="radio" class="btn-check small" name="btnradio" id="monhistory" autocomplete="off">
+                      <label class="btn btn-outline-primary btn-sm" for="monhistory">History</label>
 
-                      <!-- <input type="radio" class="btn-check small" name="btnradio" id="monklaimjr" autocomplete="off">
-                      <label class="btn btn-outline-primary btn-sm" for="monklaimjr">Klaim JR</label> -->
+                      <input type="radio" class="btn-check small" name="btnradio" id="monklaimjr" autocomplete="off">
+                      <label class="btn btn-outline-primary btn-sm" for="monklaimjr">Klaim JR</label>
                     </div>
                   </div>
                   <!-- RIWAYAT SEP -->
@@ -327,13 +327,13 @@
                   </div>
                   <!-- END RIWAYAT SEP -->
                   <!-- HISTRORY KUNJUNGAN  -->
-                  <div class="col-md-3 form-group" id="monnokartu" style="display: show;">
+                  <div class="col-md-3 form-group" id="monnokartu" style="display: none;">
                     <div class="input-group">
                       <button class="btn btn-secondary btn-sm" type="button" id="button-addon1">Nomor Kartu</button>
                       <input type="text" class="form-control" id="nokartu_history" placeholder="Input Nomor Kartu" required>
                     </div>
                   </div>
-                  <div class="col-md-5 form-group" id="montgl1" style="display: show;">
+                  <div class="col-md-5 form-group" id="montgl1" style="display: none;">
                     <div class="input-group">
                       <input type="text" class="form-control" id="montglawal" placeholder="Pilih Tanggal Awal" onfocus="(this.type='date')" onblur="if(!this.value){this.type='text'}">
                       <input type="text" class="form-control" id="montglakhir" placeholder="Pilih Tanggal Akhir" onfocus="(this.type='date')" onblur="if(!this.value){this.type='text'}">
