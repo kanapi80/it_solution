@@ -101,7 +101,7 @@
                 <td>No.Laboratorium</td>
                 <td>: <?php echo $firstRow['KUNJUNGAN']; ?></td>
                 <td>Unit Pengantar</td>
-                <td>: RJ : <?php echo $firstRow['UNITPENGANTAR']; ?></td>
+                <td>: <?php echo $firstRow['UNITPENGANTAR']; ?></td>
             </tr>
             <tr>
                 <td>Diagnosa</td>

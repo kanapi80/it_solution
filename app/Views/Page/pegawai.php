@@ -32,6 +32,7 @@
                       <th class="bg-success text-white text-center">UMUR</th>
                       <th class="bg-success text-white text-start">ALAMAT</th>
                       <th class="bg-success text-white text-start">PROFESI</th>
+                      <th class="bg-success text-white text-start">HP</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -101,6 +102,10 @@
         },
         {
           "data": "DESKRIPSI",
+          "searchable": false
+        },
+        {
+          "data": "HP",
           "searchable": false
         },
 

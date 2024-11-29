@@ -38,9 +38,10 @@ class Pegawai extends Controller
             $builder = $this->pegawaimodel
                 ->select('pegawai.ID,
                 CONCAT(pegawai.GELAR_DEPAN, " ", pegawai.NAMA, ", ", pegawai.GELAR_BELAKANG) AS NAMALENGKAP,
-                pegawai.NIP,CONCAT(pegawai.TEMPAT_LAHIR, ",  ", DATE_FORMAT(pegawai.TANGGAL_LAHIR, "%d-%m-%Y")) AS TTL,FLOOR(DATEDIFF(CURDATE(), TANGGAL_LAHIR) / 365.25) AS UMUR,
+                pegawai.NIP,CONCAT(pegawai.TEMPAT_LAHIR, ",  ", DATE_FORMAT(pegawai.TANGGAL_LAHIR, "%d-%m-%Y")) AS TTL,FLOOR(DATEDIFF(CURDATE(), TANGGAL_LAHIR) / 365.25) AS UMUR,pegawai.kontak_pegawai.NOMOR AS HP,
                 pegawai.TEMPAT_LAHIR,pegawai.TANGGAL_LAHIR,pegawai.JENIS_KELAMIN,pegawai.ALAMAT,pegawai.STATUS,pegawai.PROFESI,referensi.DESKRIPSI')
                 ->join('referensi', 'pegawai.PROFESI = referensi.ID AND referensi.JENIS = 36', 'left')
+                ->join('pegawai.kontak_pegawai', 'pegawai.NIP = pegawai.kontak_pegawai.NIP AND pegawai.kontak_pegawai.JENIS = 3', 'left')
                 ->orderBy('pegawai.NAMA', 'Asc');
 
             return DataTable::of($builder)->addNumbering()->toJson(true);

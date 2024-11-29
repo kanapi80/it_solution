@@ -1,16 +1,15 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h6 class="fw-bold">DATA PENGGUNA</h6>
+    <h6 class="fw-bold">DATA TINDAKAN</h6>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.html">SIMRS V2</a></li>
         <li class="breadcrumb-item">Master</li>
-        <li class="breadcrumb-item active">Pengguna</li>
+        <li class="breadcrumb-item active">Tindakan</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -22,18 +21,16 @@
           <div class="card-body mt-4">
             <div class="col-lg-12">
               <div>
-                <table class="table table-striped w-100 table-sm table-borderless" id="getpegawai" style="font-size: 10px;">
+                <table class="table table-striped w-100 table-sm table-borderless" id="gettindakan" style="font-size: 10px;">
                   <thead>
                     <tr>
                       <th class="bg-success text-white text-center" width="1%">NO</th>
                       <th class="bg-success text-white text-center">ID</th>
-                      <th class="bg-success text-white text-start">NAMA</th>
-                      <th class="bg-success text-white text-start">USERNAME</th>
-                      <!-- <th class="bg-success text-white text-start">PASSWORD</th> -->
-                      <th class="bg-success text-white text-start">NIP</th>
-                      <th class="bg-success text-white text-center">NIK</th>
-                      <th class="bg-success text-white text-start">RUANGAN</th>
-                      <th class="bg-success text-white text-start">STATUS</th>
+                      <th class="bg-success text-white text-start">KELOMPOK TINDAKAN</th>
+                      <th class="bg-success text-white text-start">NAMA TINDAKAN</th>
+                      <th class="bg-success text-white text-start">NOMOR / TANGGAL SK</th>
+                      <th class="bg-success text-white text-start">TARIF</th>
+                      <th class="bg-success text-white text-start" width="8%">STATUS</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -50,15 +47,16 @@
 </main><!-- End #main -->
 <script>
   $(document).ready(function() {
-    $('#getpegawai').DataTable({
+    $('#gettindakan').DataTable({
       "processing": true,
       "serverSide": true,
       "ajax": {
-        "url": "<?= base_url('page/getpengguna') ?>",
+        "url": "<?= base_url('page/gettindakan') ?>",
         "type": "POST",
+
         "dataSrc": function(json) {
-          console.log("Server Response:", json);
-          return json.data || []; // Handle empty or missing data
+          console.log(json);
+          return json.data;
         },
         "error": function(xhr, error, thrown) {
           console.error('Error:', error, thrown);
@@ -72,49 +70,48 @@
             return meta.row + meta.settings._iDisplayStart + 1;
           }
         },
+
         {
-          "data": "IDX",
+          "data": "ID",
           "className": "text-center",
-          render: function(data, type, row) {
-            return data ? `<span class="badge bg-primary">${data}</span>` : '<span class="text-muted">No Data</span>';
-          },
           "searchable": true
         },
         {
-          "data": "NAMA",
+          "data": "KELOMPOK_TINDAKAN",
           "className": "text-start"
         },
         {
-          "data": "LOGIN",
+          "data": "NAMA_TINDAKAN",
           "searchable": true
         },
-        // {
-        //   "data": "PASSWORD",
-        //   "searchable": false
-        // },
         {
-          "data": "NIP",
-          "searchable": false
+          data: 'TANGGAL_SK',
+          render: function(data, type, row) {
+            if (data) {
+              // Format tanggal menjadi hanya "YYYY-MM-DD"
+              const date = new Date(data);
+              return row.NOMOR_SK + ' / ' + date.toISOString().split('T')[0]; // Hanya ambil bagian tanggal
+            }
+            return ''; // Jika data kosong, tampilkan string kosong
+          },
+          searchable: false
         },
         {
-          "data": "NIK",
-          "searchable": false,
-          "className": "text-center"
+          "data": "TARIF",
+          "searchable": true,
+          "className": "text-end"
         },
-        {
-          "data": "DESKRIPSI",
-          "searchable": false
-        },
+
         {
           "data": "STATUS",
           "className": "text-center",
           render: function(data, type, row) {
-            return data === '1' ?
-              '<span class="badge bg-primary">Aktif</span>' :
-              '<span class="badge bg-danger">Tidak Aktif</span>';
+            return data === '1' ? ' <span class="badge bg-primary"> Aktif' : ' <span class="badge bg-danger"> Tidak Aktif';
           },
           "searchable": false
-        }
+        },
+
+
       ],
 
       language: {
@@ -153,6 +150,7 @@
         $('.dt-paging-button.current').css('font-size', '12px');
       }
     });
+
   });
 </script>
 

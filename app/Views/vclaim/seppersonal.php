@@ -110,7 +110,7 @@
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="nama" class="form-label">Nama</label>
-                        <input type="text" id="nama" class="form-control form-control-sm" readonly>
+                        <input type="text" id="nama" class="form-control form-control-sm fw-bold" readonly>
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="sex" class="form-label">Jenis Kelamin</label>
@@ -140,7 +140,7 @@
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="statusPeserta" class="form-label">Status Peserta</label>
-                        <input type="text" id="statusPeserta" class="form-control form-control-sm" readonly>
+                        <input type="text" id="statusPeserta" class="form-control form-control-sm fw-bold" readonly>
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="provider" class="form-label">Provider</label>
@@ -150,6 +150,7 @@
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="jenisPeserta" class="form-label">Jenis Peserta</label>
+                        </span>
                         <input type="text" id="jenisPeserta" class="form-control form-control-sm" readonly>
                       </div>
                       <div class="col-md-6 mb-3">
@@ -221,7 +222,7 @@
                       </div>
                       <div class="col-md-6 mb-3 form-group">
                         <label for="namaPeserta" class="form-label">Nama Peserta</label>
-                        <input type="text" id="namaPeserta" class="form-control form-control-sm" readonly>
+                        <input type="text" id="namaPeserta" class="form-control form-control-sm fw-bold" readonly>
                       </div>
                     </div>
                     <div class="row">

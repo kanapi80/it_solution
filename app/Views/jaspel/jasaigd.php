@@ -32,6 +32,7 @@
             <div class="col-lg-12">
               <div class="row">
                 <!-- <div class="col-md-2"> -->
+
                 <input type="text" name="ruangan" class="form-control form-control-sm" id="ruangan" value="<?php echo (session('Ses_UserName')); ?>" hidden>
                 <!-- </div> -->
                 <div class="col-md-2">
@@ -108,29 +109,6 @@
 
 </main><!-- End #main -->
 <script>
-  // $(document).ready(function() {
-  //   $("#asuransi").change(function() {
-  //     var asuransi = $(this).val();
-  //     if (asuransi != '') {
-  //       $.ajax({
-  //         url: '<?= site_url('jaspel/getPeriodByAsuransi'); ?>/' + asuransi,
-  //         method: 'GET',
-  //         dataType: 'json',
-  //         success: function(response) {
-  //           var periodeSelect = $('#periode');
-  //           periodeSelect.empty();
-  //           periodeSelect.append('<option value="">-</option>');
-
-  //           $.each(response, function(index, data) {
-  //             periodeSelect.append('<option value="' + data.periode + '">' + data.periode + '</option>');
-  //           });
-  //         }
-  //       });
-  //     } else {
-  //       $('#periode').empty();
-  //       $('#periode').append('<option value="">-</option>');
-  //     }
-  //   });
   $(document).ready(function() {
     $("#asuransi").change(function() {
       var asuransi = $(this).val();
@@ -172,7 +150,6 @@
         $('#tahu').empty().append('<option value="">- Pilih Tahun -</option>');
       }
     });
-
 
     function copyTableToClipboard() {
       // Mendapatkan tabel

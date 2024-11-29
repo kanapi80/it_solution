@@ -1,16 +1,15 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h6 class="fw-bold">DATA PENGGUNA</h6>
+    <h6 class="fw-bold">DATA PASIEN</h6>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.html">SIMRS V2</a></li>
         <li class="breadcrumb-item">Master</li>
-        <li class="breadcrumb-item active">Pengguna</li>
+        <li class="breadcrumb-item active">Pasien</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -25,15 +24,15 @@
                 <table class="table table-striped w-100 table-sm table-borderless" id="getpegawai" style="font-size: 10px;">
                   <thead>
                     <tr>
-                      <th class="bg-success text-white text-center" width="1%">NO</th>
-                      <th class="bg-success text-white text-center">ID</th>
+                      <th class="bg-success text-white text-center">NO</th>
+                      <th class="bg-success text-white text-center">NORM</th>
                       <th class="bg-success text-white text-start">NAMA</th>
-                      <th class="bg-success text-white text-start">USERNAME</th>
-                      <!-- <th class="bg-success text-white text-start">PASSWORD</th> -->
-                      <th class="bg-success text-white text-start">NIP</th>
-                      <th class="bg-success text-white text-center">NIK</th>
-                      <th class="bg-success text-white text-start">RUANGAN</th>
-                      <th class="bg-success text-white text-start">STATUS</th>
+                      <th class="bg-success text-white text-start">ALAMAT</th>
+                      <th class="bg-success text-white text-start">TTL</th>
+                      <th class="bg-success text-white text-center">UMUR</th>
+                      <th class="bg-success text-white text-start">KTP</th>
+                      <th class="bg-success text-white text-start">NOKARTU</th>
+                      <th class="bg-success text-white text-start">TELPON</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -54,11 +53,12 @@
       "processing": true,
       "serverSide": true,
       "ajax": {
-        "url": "<?= base_url('page/getpengguna') ?>",
+        "url": "<?= base_url('page/getpasien') ?>",
         "type": "POST",
+
         "dataSrc": function(json) {
-          console.log("Server Response:", json);
-          return json.data || []; // Handle empty or missing data
+          console.log(json);
+          return json.data;
         },
         "error": function(xhr, error, thrown) {
           console.error('Error:', error, thrown);
@@ -72,51 +72,58 @@
             return meta.row + meta.settings._iDisplayStart + 1;
           }
         },
+
         {
-          "data": "IDX",
+          "data": "NORM",
           "className": "text-center",
           render: function(data, type, row) {
-            return data ? `<span class="badge bg-primary">${data}</span>` : '<span class="text-muted">No Data</span>';
+            return '<span class="badge bg-primary">' + data + '</span>';
           },
           "searchable": true
         },
         {
           "data": "NAMA",
-          "className": "text-start"
-        },
-        {
-          "data": "LOGIN",
+          "className": "text-start",
           "searchable": true
         },
-        // {
-        //   "data": "PASSWORD",
-        //   "searchable": false
-        // },
         {
-          "data": "NIP",
+          "data": "ALAMAT",
+          "searchable": true
+        },
+        {
+          "data": "TTL",
           "searchable": false
         },
         {
-          "data": "NIK",
+          "data": "UMUR",
           "searchable": false,
           "className": "text-center"
         },
         {
-          "data": "DESKRIPSI",
+          "data": "KTP",
           "searchable": false
         },
         {
-          "data": "STATUS",
+          "data": "NOKARTU",
           "className": "text-center",
           render: function(data, type, row) {
-            return data === '1' ?
-              '<span class="badge bg-primary">Aktif</span>' :
-              '<span class="badge bg-danger">Tidak Aktif</span>';
+            if (data === null || data === undefined || data === '') {
+              return ''; // Return an empty string if data is null, undefined, or empty
+            }
+            return '<span class="badge bg-primary">' + data + '</span>';
           },
           "searchable": false
-        }
-      ],
+        },
 
+        {
+          "data": "TELPON",
+          "searchable": false
+        }
+
+
+      ],
+      "pageLength": 10,
+      "lengthMenu": [10, 25, 50, 75, 100],
       language: {
         "lengthMenu": " _MENU_ ",
         "search": "",
@@ -153,6 +160,7 @@
         $('.dt-paging-button.current').css('font-size', '12px');
       }
     });
+
   });
 </script>
 

@@ -27,7 +27,6 @@ class M_Pengguna extends Model
             ->join('master.ruangan', 'master.ruangan.ID = aplikasi.pengguna_akses_ruangan.RUANGAN', 'left')
             ->join('aplikasi.pengguna', 'pengguna.ID = aplikasi.pengguna_akses_ruangan.PENGGUNA', 'left')
             ->where('aplikasi.pengguna_akses_ruangan.STATUS', 1)
-            ->limit(20)
             ->findAll();
     }
 }

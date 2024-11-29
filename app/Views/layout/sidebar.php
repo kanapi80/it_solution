@@ -22,17 +22,17 @@
 						</a>
 					</li>
 					<li>
-						<a href="components-accordion.html">
+						<a href="<?= base_url('page/ruangan'); ?>">
 							<i class="bi bi-circle"></i><span>Ruangan</span>
 						</a>
 					</li>
 					<li>
-						<a href="components-badges.html">
+						<a href="<?= base_url('page/pasien'); ?>">
 							<i class="bi bi-circle"></i><span>Pasien</span>
 						</a>
 					</li>
 					<li>
-						<a href="components-breadcrumbs.html">
+						<a href="<?= base_url('page/alltindakan'); ?>">
 							<i class="bi bi-circle"></i><span>Tindakan</span>
 						</a>
 					</li>
@@ -125,11 +125,11 @@
 							<i class="bi bi-circle"></i><span>Report</span>
 						</a>
 					</li>
-					<li>
+					<!-- <li>
 						<a href="charts-echarts.html">
 							<i class="bi bi-circle"></i><span>LapOperasi</span>
 						</a>
-					</li>
+					</li> -->
 				</ul>
 			</li><!-- End Charts Nav -->
 
@@ -144,7 +144,7 @@
 				<ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
 						<a href="<?= base_url('users/users'); ?>">
-							<i class="bi bi-circle"></i><span>CRUD User</span>
+							<i class="bi bi-circle"></i><span>CRUD</span>
 						</a>
 					</li>
 					<li>
@@ -158,11 +158,11 @@
 							<span>Merger File</span>
 						</a>
 					</li>
-					<li>
+					<!-- <li>
 						<a href="icons-boxicons.html">
 							<i class="bi bi-circle"></i><span>Boxicons</span>
 						</a>
-					</li>
+					</li> -->
 				</ul>
 			</li>
 

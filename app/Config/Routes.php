@@ -23,10 +23,20 @@ $routes->get('admin/widget', 'Admin::widget');
 $routes->get('/admin/logout-admin', 'Admin::logout');
 // $routes->get('page/pengguna', 'Pengguna::pengguna');
 $routes->get('page/pengguna', 'Pengguna::penggunaruangan');
+$routes->post('page/getpengguna', 'Pengguna::getPengguna');
 $routes->get('page/modul', 'Modul::modul');
 // $routes->get('page/pegawai', 'Pegawai::pegawai');
 $routes->get('page/pegawai', 'Pegawai::index');
 $routes->get('page/getpegawai', 'Pegawai::getPegawai');
+//Ruangan
+$routes->get('page/ruangan', 'RuanganController::index');
+$routes->get('page/getruangan', 'RuanganController::getRuangan');
+//Tindakan
+$routes->get('page/alltindakan', 'TindakanController::index');
+$routes->post('page/gettindakan', 'TindakanController::getTindakan');
+//Tindakan
+$routes->get('page/pasien', 'PasienController::index');
+$routes->post('page/getpasien', 'PasienController::getPasien');
 
 
 $routes->get('sipayu/registerrajal', 'Registerrajal::registerrajal');

@@ -54,21 +54,16 @@ class JaspelController extends BaseController
         $asuransi = $request->getVar('asuransi');
         $tahun = $request->getVar('tahun');
         $nama = $request->getVar('nama');
-
-        // Jika nama asuransi tidak dipilih, kirimkan data kosong
         if (empty($asuransi)) {
             return $this->response->setJSON([
                 'data' => [],
                 'message' => 'Nama Asuransi tidak dipilih. Data tidak ditampilkan.'
             ]);
         }
-
-        // Mulai builder query
         $builder = $this->jaspelranapmodel
             ->select('js_ranap.NomorRekamMedis, SUBSTRING(js_ranap.NamaPasien, 1, 8) AS NamaPasiens, js_ranap.NamaPasien, js_ranap.NamaTindakan, js_ranap.KelompokTindakan, js_ranap.NamaPelaksanaMedis, js_ranap.NamaAsuransi,
                      js_ranap.TotalTarif, js_ranap.JasaMedis, js_ranap.JasaMedisUmum, js_ranap.JasaParamedis, js_ranap.JasaKebersamaan, js_ranap.NamaRuangan, js_ranap.Periode, js_ranap.Tahun')
             ->whereIn('js_ranap.KelompokTindakan', ['Keperawatan', 'Konsultasi', 'Prosedur Non Bedah']);
-
         // Filter berdasarkan ruangan jika ada
         if (!empty($ruangan)) {
             $builder->where('js_ranap.NamaRuangan', $ruangan);
@@ -76,12 +71,10 @@ class JaspelController extends BaseController
         if (!empty($nama)) {
             $builder->like('js_ranap.NamaPasien', $nama);
         }
-
         // Filter berdasarkan periode jika ada
         if (!empty($periode)) {
             $builder->where('js_ranap.Periode', $periode);
         }
-
         // Filter berdasarkan asuransi jika ada
         if (!empty($asuransi)) {
             $builder->where('js_ranap.NamaAsuransi', $asuransi);
