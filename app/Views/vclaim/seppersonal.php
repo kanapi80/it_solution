@@ -47,7 +47,7 @@
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h6 class="fw-bold"> BRIDGING VCLAIM V2 BPJS</h6>
+    <h6 class="fw-bold"> BRIDGING VCLAIM V.2 BPJS</h6>
     </h6>
     <nav>
       <ol class="breadcrumb">
@@ -70,7 +70,7 @@
                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Referensi</button>
               </li> -->
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Peserta</button>
+                <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Peserta</button>
               </li>
               <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">S E P</button>
@@ -87,12 +87,22 @@
 
 
               </div>
-              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-
-                <div class="input-group mb-3 mt-3">
+              <div class="tab-pane active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <!-- Cari Bersasarkan NIK -->
+                <div class="input-group mb-3 mt-3" id="nikForms">
+                  <button class="btn btn-primary btn-sm" type="button" id="button-addon1">Nomor NIK</button>
+                  <button class="btn btn-secondary btn-sm" type="button" id="nomorkartu">Nomor Kartu</button>
                   <input type="text" name="nik" id="nik" class="form-control" placeholder="Masukan NIK" aria-label="Recipient's username" aria-describedby="button-addon2">
                   <button class="btn btn-primary btn-sm" id="peserta"><i class="bi bi-search"></i> Detail</button>
                   <button type="button" class="btn btn-success btn-sm" id="clearForm"><i class="bi bi-arrow-repeat"></i> Reset</button>
+                </div>
+                <!-- Cari Bersasarkan No Kartu -->
+                <div class="input-group mb-3 mt-3" style="display: none;" id="nokartuForms">
+                  <button class="btn btn-secondary btn-sm" type="button" id="nomorniks">Nomor NIK</button>
+                  <button class="btn btn-primary btn-sm" type="button" id="button-addon1">Nomor Kartu</button>
+                  <input type="text" name="nokartu" id="nokartu" class="form-control" placeholder="Masukan No.Kartu" aria-label="Recipient's username" aria-describedby="button-addon2">
+                  <button class="btn btn-primary btn-sm" id="pesertanokartu"><i class="bi bi-search"></i> Detail</button>
+                  <button type="button" class="btn btn-success btn-sm" id="clearFormnokartu"><i class="bi bi-arrow-repeat"></i> Reset</button>
                 </div>
                 <!-- Form  -->
                 <div id="pesertaFormContainer" class="mt-3" style="display: none;">
@@ -327,7 +337,7 @@
                   </div>
                   <!-- END RIWAYAT SEP -->
                   <!-- HISTRORY KUNJUNGAN  -->
-                  <div class="col-md-3 form-group" id="monnokartu" style="display: show;">
+                  <div class="col-md-3 form-group" id="monnokartu">
                     <div class="input-group">
                       <button class="btn btn-secondary btn-sm" type="button" id="button-addon1">Nomor Kartu</button>
                       <input type="text" class="form-control" id="nokartu_history" placeholder="Input Nomor Kartu" required>
@@ -378,6 +388,45 @@
       const niks = $('#niks').val();
       $.ajax({
         url: '<?= site_url('vclaim/peserta/') ?>' + nik,
+        // url: '<?= env('WEBSERVICE_VCLAIM') ?>vclaim/peserta-nik/' + nik,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          if (data.status) {
+            const peserta = data.data.peserta; // Pastikan untuk menyesuaikan dengan struktur data
+            $('#noKartu').val(peserta.noKartu);
+            $('#niks').val(peserta.nik);
+            $('#nama').val(peserta.nama);
+            $('#sex').val(peserta.sex === 'L' ? 'Laki-laki' : 'Perempuan');
+            $('#pisa').val(peserta.pisa);
+            $('#noMR').val(peserta.mr.noMR);
+            $('#noTelepon').val(peserta.mr.noTelepon);
+            $('#tglLahir').val(peserta.tglLahir);
+            $('#umur').val(peserta.umur.umurSekarang);
+            $('#statusPeserta').val(peserta.statusPeserta.keterangan);
+            $('#provider').val(peserta.provUmum.nmProvider);
+            $('#jenisPeserta').val(peserta.jenisPeserta.keterangan);
+            $('#hakKelas').val(peserta.hakKelas.keterangan);
+            $('#pesertaFormContainer').show();
+          } else {
+            alert('Error: ' + data.message);
+            $('#pesertaFormContainer').hide(); // Sembunyikan form jika ada error
+          }
+        },
+        error: function(response) {
+          console.log(response);
+          alert('Gagal memuat data. Silakan coba lagi.');
+
+          $('#pesertaFormContainer').hide(); // Sembunyikan form jika ada error
+        }
+      });
+    });
+    //NOKARTU
+    $('#pesertanokartu').on('click', function() {
+      const nokartu = $('#nokartu').val();
+      const nikss = $('#nikss').val();
+      $.ajax({
+        url: '<?= site_url('vclaim/pesertanokartu/') ?>' + nokartu,
         // url: '<?= env('WEBSERVICE_VCLAIM') ?>vclaim/peserta-nik/' + nik,
         type: 'GET',
         dataType: 'json',
@@ -561,6 +610,17 @@
       $('#pesertaFormContainer').hide(); // Sembunyikan form
       $('#nik').val(''); // Kosongkan input No SEP
     });
+    //Clear Nokartu
+    $('#clearsepForm').on('click', function() {
+      $('#sepForm')[0].reset(); // Reset form inputs
+      $('#sepFormContainer').hide(); // Sembunyikan form
+      $('#nomorsep').val(''); // Kosongkan input No SEP
+    });
+    $('#clearFormnokartu').on('click', function() {
+      $('#pesertaForm')[0].reset(); // Reset form inputs
+      $('#pesertaFormContainer').hide(); // Sembunyikan form
+      $('#nokartu').val(''); // Kosongkan input No SEP
+    });
     $('#clearkunjunganForm').on('click', function() {
       $('#kunjungantableContainer').hide(); // Sembunyikan form
       $('#monjeniskunjungan').val(''); // Kosongkan input No SEP
@@ -584,6 +644,15 @@
       $('#formkunjungantableContainer').hide();
       $('#kunjungantableContainer').hide();
     });
+    $('#nomorkartu').on('click', function() {
+      $('#nokartuForms').show();
+      $('#nikForms').hide();
+    });
+    $('#nomorniks').on('click', function() {
+      $('#nokartuForms').hide();
+      $('#nikForms').show();
+    });
+
 
 
 

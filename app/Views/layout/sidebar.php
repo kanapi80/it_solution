@@ -2,7 +2,7 @@
 <aside id="sidebar" class="sidebar">
 
 	<ul class="sidebar-nav" id="sidebar-nav">
-		<?php if (session()->get('Ses_Level') == '1') : ?>
+		<?php if (session()->get('Ses_Tupoksi') == 'ADMINISTRATOR') : ?>
 
 			<li class="nav-item">
 				<a class="nav-link collapsed" href="<?= base_url('admin/dashboard-admin'); ?>">
@@ -284,6 +284,12 @@
 						</a>
 					</li>
 				</ul>
+			</li>
+			<!-- VCLAIM -->
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="<?= base_url('vclaim/seppersonal'); ?>">
+					<i class="bi bi-slack"></i><span>VCLAIM V2</span>
+				</a>
 			</li><!-- End Tables Nav -->
 		<?php endif; ?>
 		<!-- RAWAT INAP -->
@@ -328,7 +334,15 @@
 						</a>
 					</li>
 				</ul>
-			</li><!-- End Tables Nav -->
+			</li>
+			<!-- VCLAIM -->
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="<?= base_url('vclaim/seppersonal'); ?>">
+					<i class="bi bi-slack"></i><span>VCLAIM V2</span>
+				</a>
+			</li>
+			<!-- End Tables Nav -->
+
 		<?php endif; ?>
 
 		<?php if (session()->get('Ses_Tupoksi') == 'KEUANGAN') : ?>

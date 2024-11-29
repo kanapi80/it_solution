@@ -23,14 +23,11 @@ class SepController extends ResourceController
         $this->requestService = new RequestController();
         $this->icd = new IcdModel();
     }
-
     public function getSepPelayanan($nomorsep)
     {
         $endPoint = $this->baseUrl . '/' . $nomorsep;
         $request = $this->requestService->sendRequest('GET', $endPoint);
         if (isset($this->request)) {
-
-
             if ($request['status']) {
                 //JOIN dg Master
                 $diagnosa = $request['data']->diagnosa ?? null;

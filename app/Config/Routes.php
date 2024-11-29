@@ -132,6 +132,7 @@ $routes->post('jkn/merge-pdf', 'PdfMergerController::merge');
 $routes->get('vclaim/seppersonal', 'GetSep::index');
 $routes->get('vclaim/signature', 'GetSep::Signature');
 $routes->get('vclaim/peserta/(:any)', 'PesertaController::getPesertaByNIK/$1');
+$routes->get('vclaim/pesertanokartu/(:any)', 'PesertaController::getPesertaByNoKartu/$1');
 $routes->get('vclaim/seppelayanan/(:any)', 'SepController::getSepPelayanan/$1');
 $routes->get('vclaim/datakunjungan/(:any)/(:num)', 'MonitoringController::getDataKunjungan/$1/$2');
 $routes->get('vclaim/historykunjungan/(:any)/(:any)/(:any)', 'MonitoringController::getHistoryKunjungan/$1/$2/$3');
