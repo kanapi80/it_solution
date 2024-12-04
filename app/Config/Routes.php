@@ -160,3 +160,5 @@ $routes->get('jaspel/getjasarajal', 'JaspelController::getJasaRajal');
 //JASPEL-IGD
 $routes->get('jaspel/jasaigd', 'JaspelController::getIGD');
 $routes->get('jaspel/getjasaigd', 'JaspelController::getJasaIGD');
+//SEP
+$routes->get('jkn/sep/(:any)', 'SepRanap::tampilkanSep/$1');

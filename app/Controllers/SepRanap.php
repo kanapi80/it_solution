@@ -18,7 +18,7 @@ use CodeIgniter\RESTful\ResourceController;
 use App\Controllers\RequestController;
 use App\Models\IcdModel;
 use Config\Services;
-
+use PHPUnit\Util\Json;
 
 class SepRanap extends BaseController
 {
@@ -36,32 +36,39 @@ class SepRanap extends BaseController
     }
     public function getSepPelayanan($nomorsep)
     {
-        $nomorsep = $this->request->getGet('no_SEP');
+        // Ambil parameter no_SEP jika tersedia
+        $nomorsep = $this->request->getGet('no_SEP') ?? $nomorsep;
+
+        // Endpoint URL
         $endPoint = $this->baseUrl . '/' . $nomorsep;
-        $request = $this->requestService->sendRequest('GET', $endPoint);
-        if (isset($this->request)) {
 
+        // Kirim permintaan GET ke API menggunakan RequestController
+        $response = $this->requestService->sendRequest('GET', $endPoint);
+        return $response;
+        // var_dump($response);
+        // Debugging: Periksa format respons
+        // if (is_string($response)) {
+        //     $response = json_decode($response); // Decode JSON menjadi object
+        // }
 
-            if ($request['status']) {
-                //JOIN dg Master
-                $diagnosa = $request['data']->diagnosa ?? null;
-                $diagnosaresult = $this->icd->getCodeICD($diagnosa); //get icd result
-                if ($diagnosaresult) {
-                    $request['data']->codes = $diagnosaresult['CODE'];
-                }
-                // return $this->respond($request, 200);
-                return [
-                    'status' => 200,
-                    'data' => $request
-                ];
-            }
-            // return $this->respond($request, 404);
-            return $this->response->setJSON($request)->setStatusCode(404);
-        } else {
-            if ($request['status']) return ['result' => $request, 'status' => true];
-            return ['result' => $request, 'status' => false];
-        }
+        // // Debugging: Pastikan respons berbentuk object
+        // if (!is_object($response)) {
+        //     return [
+        //         'status' => false,
+        //         'message' => 'Format respons tidak valid',
+        //         'data' => null
+        //     ];
+        // }
+
+        // // Kembalikan data dalam format object
+        // return [
+        //     'status' => true,
+        //     'message' => 'Data berhasil diterima',
+        //     'data' => $response
+        // ];
     }
+
+
     public function cetakSep($no_SEP = '')
     {
         $model = new M_Sep();
@@ -163,172 +170,182 @@ class SepRanap extends BaseController
         return view('jkn/cetakresume', [
             'results' => $data['results'],
             'id' => $id,
-            'nokun' => $nokun
+            'nokun' => $no_spri
 
         ]);
     }
     public function printPDFRanap($id = '', $notag = '', $st = '', $nokun = '')
     {
 
+
         $nomorsep = $this->request->getGet('no_SEP');
-        $result['sss'] = $this->getSepPelayanan($nomorsep);
+        $issepexist = $this->getSepPelayanan($nomorsep);
 
-        $model = new M_Resume();
-        $sep = new M_Sep();
-        $billing = new M_Tagihan();
-        $lab = new M_Laboratorium();
-        $labs = new M_Laboratorium();
-        $rad = new M_Radiologi();
-        $cppt = new M_Cppt();
-        $cpptm = new M_Cppt();
-        $kunjunganModel = new M_Kunjungan();
-        $penunjangModel = new PenunjangModel();
-        $id = $this->request->getGet('id');
-        $notag = $this->request->getGet('notag');
-        $lab1 = $this->request->getGet('lab1');
-        $lab2 = $this->request->getGet('lab2');
-        $idr = $this->request->getGet('idr');
-        $no_SEP = $this->request->getGet('no_SEP');
-        $no_spri = $this->request->getGet('no_spri');
-        $st = '1';
-        $cppt1 = $this->request->getGet('cppt1');
-        $cppt2 = $this->request->getGet('cppt2');
-        $nokunValue = $this->request->getGet('nokun');
-        $lab3 = $this->request->getGet('lab3');
-        $lab4 = $this->request->getGet('lab4');
-        $data['resume'] = $model->getCetakResume($id);
-        $data['sep'] = $sep->getCetakSEP($no_SEP);
-        $data['billing'] = $billing->getCetakBilling($notag, $st);
-        $data['lab'] = $lab->getCetakLaboratorium($lab1, $lab2);
-        $data['labs'] = $labs->getHasilLaboratorium($nokunValue);
-        $data['rad'] = $rad->getCetakRadiologi($idr);
-        $data['cppt'] = $cppt->getCetakCPPT($cppt1, $cppt2);
-        $data['cpptm'] = $cpptm->getCetakCatatanMedik($cppt1, $cppt2);
-        $data['nokun'] = $kunjunganModel->getCetakResumeAdd($nokunValue);
-        $data['penunjang'] = $penunjangModel->getGambarPenunjang($no_SEP);
-        $data['spri'] = $sep->getCetakSPRI($no_spri);
-        $data['labrirj'] = $lab->getCetakLaboratorium($lab4, $lab3);
-        $data['labrajal'] = $labs->getHasilLaboratoriumRajal($no_spri);
-        $getsep = $result['sss'];
-        // Check if data is available
+        if ($issepexist['status']) {
+            $model = new M_Resume();
+            $sep = new M_Sep();
+            $billing = new M_Tagihan();
+            $lab = new M_Laboratorium();
+            $labs = new M_Laboratorium();
+            $rad = new M_Radiologi();
+            $cppt = new M_Cppt();
+            $cpptm = new M_Cppt();
+            $kunjunganModel = new M_Kunjungan();
+            $penunjangModel = new PenunjangModel();
+            $id = $this->request->getGet('id');
+            $notag = $this->request->getGet('notag');
+            $lab1 = $this->request->getGet('lab1');
+            $lab2 = $this->request->getGet('lab2');
+            $idr = $this->request->getGet('idr');
+            $no_SEP = $this->request->getGet('no_SEP');
+            $no_spri = $this->request->getGet('no_spri');
+            $st = '1';
+            $cppt1 = $this->request->getGet('cppt1');
+            $cppt2 = $this->request->getGet('cppt2');
+            $nokunValue = $this->request->getGet('nokun');
+            $lab3 = $this->request->getGet('lab3');
+            $lab4 = $this->request->getGet('lab4');
+            $data['resume'] = $model->getCetakResume($id);
+            $data['sep'] = $sep->getCetakSEP($no_SEP);
+            $data['billing'] = $billing->getCetakBilling($notag, $st);
+            $data['lab'] = $lab->getCetakLaboratorium($lab1, $lab2);
+            $data['labs'] = $labs->getHasilLaboratorium($nokunValue);
+            $data['rad'] = $rad->getCetakRadiologi($idr);
+            $data['cppt'] = $cppt->getCetakCPPT($cppt1, $cppt2);
+            $data['cpptm'] = $cpptm->getCetakCatatanMedik($cppt1, $cppt2);
+            $data['nokun'] = $kunjunganModel->getCetakResumeAdd($nokunValue);
+            $data['penunjang'] = $penunjangModel->getGambarPenunjang($no_SEP);
+            $data['spri'] = $sep->getCetakSPRI($no_spri);
+            $data['labrirj'] = $lab->getCetakLaboratorium($lab4, $lab3);
+            // $data['labrajal'] = $labs->getHasilLaboratoriumRajal($no_spri);
+            $data['seplive'] = $issepexist['data'];
+            // Check if data is available
 
-        if (empty($data['resume'])) {
-            session()->setFlashdata('error', 'Data Tidak Ada!');
-            return redirect()->back();
-        }
-        // Prepare the HTML content
-        $html = view('jkn/pdfcetakresume', $data);
-        $html2 = view('jkn/pdfcetaksep', $data);
-        // $html2 = view('jkn/pdfcetaksep', $getsep);
-        $html3 = view('jkn/pdfcetakbillingranap', $data);
-        $html4 = view('jkn/pdfcetaklaboratoriumranap', $data);
-        $html5 = view('jkn/pdfcetakradiologi', $data);
-        $html6 = view('jkn/pdfcetakcppt', $data);
-        $html8 = view('jkn/pdfcetakspri', $data);
-        // $html7 = view('jkn/pdfcetakgambar', $data);
-        $html9 = view('jkn/pdfcetaklaboratoriumranaprajal', $data);
-
-        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->setPrintHeader(false);
-        $pdf->setPrintFooter(false);
-        $pdf->SetFont('times', '', 11);
-        // QR Code Style
-        $style = array(
-            'border' => 0,
-            'vpadding' => 'auto',
-            'hpadding' => 'auto',
-            'fgcolor' => array(0, 0, 0),
-            'bgcolor' => false,
-            'module_width' => 1,
-            'module_height' => 1
-        );
-
-        if (count($data['sep']) > 0) {
-            $pdf->SetMargins(5, 5, 5);
-            $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
-            $pdf->AddPage('L', array(105, 250));
-            $sep = $data['sep'][0];
-            $pasien = strtoupper($sep['NAMALENGKAP']);
-            $x = 183;
-            $y = 79;
-            $width = 15;
-            $height = 15;
-            $pdf->write2DBarcode($pasien, 'QRCODE,L', $x, $y, $width, $height, $style);
-            $pdf->writeHTML($html2, true, false, false, false, '');
-            $pdf->SetAutoPageBreak(FALSE, 0);
-        }
-        if (count($data['spri']) > 0) {
-            $pdf->SetMargins(5, 5, 5);
-            $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
-            $pdf->AddPage('L', array(107, 250));
-            $spri = $data['spri'][0];
-            $drsep = strtoupper($spri['DRSEP']);
-            $x = 143;
-            $y = 82;
-            $width = 15;
-            $height = 15;
-            //ATUR BATANG
-            $xx = 153;
-            $yy = 42;
-            $wd = 50;
-            $hg = 5;
-            $pdf->write2DBarcode($drsep, 'QRCODE,L', $x, $y, $width, $height, $style);
-
-            $barcode = $spri['NOSURAT'];
-            $pdf->write1DBarcode($barcode, 'C128', $xx, $yy, $wd, $hg, $style);
-
-            $pdf->writeHTML($html8, true, false, false, false, '');
-            $pdf->SetAutoPageBreak(FALSE, 0);
-        }
-
-        //  // Halaman Kedua (BILLING)
-        $pdf->SetMargins(10, 10, 10);
-        $pdf->SetAutoPageBreak(TRUE, 15);
-        $pdf->AddPage('P', array(210, 297));
-        $pdf->writeHTML($html3, true, false, false, false, '');
-
-        // Halaman Ketiga (LABORATORIUM)
-        if (count($data['lab']) > 0) {
-            $pdf->SetMargins(5, 5, 5);
-            $pdf->AddPage('P');
-            $pdf->writeHTML($html4, true, false, false, false, '');
-        }
-        // Halaman Ketiga (LABORATORIUMRAJALRANAP)
-        if (count($data['labrajal']) > 0) {
-            $pdf->SetMargins(5, 5, 5);
-            $pdf->AddPage('P');
-            $pdf->writeHTML($html9, true, false, false, false, '');
-        }
-        // Halaman Keempat (RADIOLOGI)
-        if (count($data['rad']) > 0) {
-            $pdf->AddPage('P');
-            $pdf->writeHTML($html5, true, false, false, false, '');
-        }
-        if (count($data['penunjang']) > 0) {
-            // Nonaktifkan auto page break
-            $pdf->SetAutoPageBreak(FALSE, 0);
-            foreach ($data['penunjang'] as $row) {
-                // Tambah halaman baru untuk setiap gambar
-                $pdf->AddPage('P', array(210, 297)); // A4 potret
-                // Siapkan path gambar
-                $imagePath = '../public/uploads/' . $row['image'];
-                // Siapkan HTML untuk gambar
-                $html7 = '<div style="text-align: center;">';
-                $html7 .= '<img src="' . $imagePath . '" style="max-width: 850px; height:790px;"/>';
-                $html7 .= '</div>';
-
-                // Tulis HTML ke PDF
-                $pdf->writeHTML($html7, true, false, false, false, '');
+            if (empty($data['resume'])) {
+                session()->setFlashdata('error', 'Data Tidak Ada!');
+                return redirect()->back();
             }
+            // Prepare the HTML content
+            $html = view('jkn/pdfcetakresume', $data);
+            $html2 = view('jkn/pdfcetaksep', $data);
+            // $html2 = view('jkn/pdfcetaksep', $getsep);
+            $html3 = view('jkn/pdfcetakbillingranap', $data);
+            $html4 = view('jkn/pdfcetaklaboratoriumranap', $data);
+            $html5 = view('jkn/pdfcetakradiologi', $data);
+            $html6 = view('jkn/pdfcetakcppt', $data);
+            $html8 = view('jkn/pdfcetakspri', $data);
+            // $html7 = view('jkn/pdfcetakgambar', $data);
+            $html9 = view('jkn/pdfcetaklaboratoriumranaprajal', $data);
+            $seplive = view('jkn/pdfcetakseplive', $data);
+
+            $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+            $pdf->setPrintHeader(false);
+            $pdf->setPrintFooter(false);
+            $pdf->SetFont('times', '', 11);
+            // QR Code Style
+            $style = array(
+                'border' => 0,
+                'vpadding' => 'auto',
+                'hpadding' => 'auto',
+                'fgcolor' => array(0, 0, 0),
+                'bgcolor' => false,
+                'module_width' => 1,
+                'module_height' => 1
+            );
+
+            if (count($data['sep']) > 0) {
+                $pdf->SetMargins(5, 5, 5);
+                $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
+                $pdf->AddPage('L', array(105, 250));
+                $sep = $data['sep'][0];
+                $pasien = strtoupper($sep['NAMALENGKAP']);
+                $x = 183;
+                $y = 79;
+                $width = 15;
+                $height = 15;
+                $pdf->write2DBarcode($pasien, 'QRCODE,L', $x, $y, $width, $height, $style);
+                $pdf->writeHTML($html2, true, false, false, false, '');
+                $pdf->SetAutoPageBreak(FALSE, 0);
+            }
+            if (count($data['spri']) > 0) {
+                $pdf->SetMargins(5, 5, 5);
+                $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
+                $pdf->AddPage('L', array(107, 250));
+                $spri = $data['spri'][0];
+                $drsep = strtoupper($spri['DRSEP']);
+                $x = 143;
+                $y = 82;
+                $width = 15;
+                $height = 15;
+                //ATUR BATANG
+                $xx = 153;
+                $yy = 42;
+                $wd = 50;
+                $hg = 5;
+                $pdf->write2DBarcode($drsep, 'QRCODE,L', $x, $y, $width, $height, $style);
+
+                $barcode = $spri['NOSURAT'];
+                $pdf->write1DBarcode($barcode, 'C128', $xx, $yy, $wd, $hg, $style);
+
+                $pdf->writeHTML($html8, true, false, false, false, '');
+                $pdf->SetAutoPageBreak(FALSE, 0);
+            }
+
+            //  // Halaman Kedua (BILLING)
+            $pdf->SetMargins(10, 10, 10);
+            $pdf->SetAutoPageBreak(TRUE, 15);
+            $pdf->AddPage('P', array(210, 297));
+            $pdf->writeHTML($html3, true, false, false, false, '');
+
+            // Halaman Ketiga (LABORATORIUM)
+            if (count($data['lab']) > 0) {
+                $pdf->SetMargins(5, 5, 5);
+                $pdf->AddPage('P');
+                $pdf->writeHTML($html4, true, false, false, false, '');
+            }
+            // Halaman Ketiga (LABORATORIUMRAJALRANAP)
+            // if (count($data['labrajal']) > 0) {
+            //     $pdf->SetMargins(5, 5, 5);
+            //     $pdf->AddPage('P');
+            //     $pdf->writeHTML($html9, true, false, false, false, '');
+            // }
+            // Halaman Keempat (RADIOLOGI)
+            if (count($data['rad']) > 0) {
+                $pdf->AddPage('P');
+                $pdf->writeHTML($html5, true, false, false, false, '');
+            }
+            if (count($data['penunjang']) > 0) {
+                // Nonaktifkan auto page break
+                $pdf->SetAutoPageBreak(FALSE, 0);
+                foreach ($data['penunjang'] as $row) {
+                    // Tambah halaman baru untuk setiap gambar
+                    $pdf->AddPage('P', array(210, 297)); // A4 potret
+                    // Siapkan path gambar
+                    $imagePath = '../public/uploads/' . $row['image'];
+                    // Siapkan HTML untuk gambar
+                    $html7 = '<div style="text-align: center;">';
+                    $html7 .= '<img src="' . $imagePath . '" style="max-width: 850px; height:790px;"/>';
+                    $html7 .= '</div>';
+
+                    // Tulis HTML ke PDF
+                    $pdf->writeHTML($html7, true, false, false, false, '');
+                }
+            }
+            //  // Halaman SEPLIVE
+            $pdf->SetMargins(5, 5, 5);
+            $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
+            $pdf->AddPage('L', array(105, 250)); // Atur ukuran halaman jika diperlukan
+            $pdf->writeHTML($seplive, true, false, false, false, '');
+
+            // // Halaman Kelima (SEP)
+
+            // // Output PDF
+            $filename = $no_SEP . '.pdf';
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $pdf->Output($filename, 'I');
+        } else {
+            return json_encode('Data Tidak Ada');
         }
-
-
-        // // Halaman Kelima (SEP)
-
-        // // Output PDF
-        $filename = $no_SEP . '.pdf';
-        $this->response->setHeader('Content-Type', 'application/pdf');
-        $pdf->Output($filename, 'I');
     }
     public function listPasienRanap($id = '')
     {
@@ -346,5 +363,18 @@ class SepRanap extends BaseController
             'searchPerformed' => $searchPerformed,
             'penunjang' => $penunjang
         ]);
+    }
+    public function tampilkanSep($nomorsep)
+    {
+        // Panggil metode getSepPelayanan dengan nomor SEP
+        $data = $this->getSepPelayanan($nomorsep);
+
+        // Jika data berhasil didapatkan
+        if (isset($data['status']) && $data['status'] == 200) {
+            return view('jkn/pdfcetakseplive', ['data' => $data['data']]);
+        }
+
+        // Jika data tidak ditemukan atau gagal
+        return view('jkn/pdfcetakseplive', ['error' => 'Data tidak ditemukan atau terjadi kesalahan']);
     }
 }

@@ -348,7 +348,7 @@
                       <input type="text" class="form-control" id="montglawal" placeholder="Pilih Tanggal Awal" onfocus="(this.type='date')" onblur="if(!this.value){this.type='text'}">
                       <input type="text" class="form-control" id="montglakhir" placeholder="Pilih Tanggal Akhir" onfocus="(this.type='date')" onblur="if(!this.value){this.type='text'}">
                       <button class="btn btn-primary btn-sm" id="btnmonhistory"><i class="bi bi-search"></i> Detail</button>
-                      <button type="button" class="btn btn-success btn-sm" id="clearkunjunganForm"><i class="bi bi-arrow-repeat"></i> Reset</button>
+                      <button type="button" class="btn btn-success btn-sm" id="clearkunjunganForms"><i class="bi bi-arrow-repeat"></i> Reset</button>
                     </div>
                   </div>
                   <div id="historykunjungantableContainer" class="mt-3" style="display: none;">
@@ -625,6 +625,12 @@
       $('#kunjungantableContainer').hide(); // Sembunyikan form
       $('#monjeniskunjungan').val(''); // Kosongkan input No SEP
       $('#montglsep').val(''); // Kosongkan input No SEP
+    });
+    $('#clearkunjunganForms').on('click', function() {
+      $('#historykunjungantableContainer').hide(); // Sembunyikan form
+      $('#nokartu_history').val(''); // Kosongkan input No SEP
+      $('#montglawal').val(''); // Kosongkan input No SEP
+      $('#montglakhir').val(''); // Kosongkan input No SEP
     });
     $('#monkunjungan').on('click', function() {
       $('#formkunjungantableContainer').show();
