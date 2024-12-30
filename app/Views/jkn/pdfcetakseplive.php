@@ -31,20 +31,12 @@
 
 <body>
 
-    <h1>Data SEP</h1>
-    <p>Nomor SEP: <?= esc($seplive->noSep ?? 'Tidak tersedia') ?></p>
-    <p>Nomor SEP: <?= esc($data->tglSep ?? 'Tidak tersedia') ?></p>
-    <p>Nomor SEP: <?= esc($data->kontrol->noSurat ?? 'Tidak tersedia') ?></p>
-
-
     <!-- SEP -->
-
-
     <table style="padding: 0; font-size:12px; font-weight: bold;" class="table-no-border">
         <tr>
             <td><img src="/assets/img/sepbpjs.png" width="200px"></td>
             <td>SURAT ELEGIBILITAS PESERTA<BR>RSUD INDRAMAYU</td>
-            <td></td>
+            <td><?= esc($seplive->peserta->jnsPeserta ?? 'Tidak tersedia') ?></td>
         </tr>
     </table>
 
@@ -53,33 +45,34 @@
         <tbody>
             <tr>
                 <td width="15%">No.SEP</td>
-                <td width="38%">: </td>
+                <td width="38%">: <?= esc($seplive->noSep ?? 'Tidak tersedia') ?> </td>
                 <td width="15%">Peserta</td>
-                <td width="32%">: </td>
+                <td width="32%">: <?= esc($seplive->peserta->jnsPeserta ?? 'Tidak tersedia') ?></td>
             </tr>
             <tr>
                 <td>Tgl.SEP</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->tglSep ?? 'Tidak tersedia') ?></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
                 <td>No. Kartu</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->peserta->noKartu ?? 'Tidak tersedia') ?> ( MR : <?= esc(($seplive->peserta->noMr ?? 'Tidak tersedia')) ?> ) </td>
                 <td>Jns Rawat</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->jnsPelayanan ?? 'Tidak tersedia') ?></td>
             </tr>
             <tr>
                 <td>Nama Peserta</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->peserta->nama ?? 'Tidak tersedia') ?></td>
                 <td>Jns Kunjungan</td>
                 <td>: </td>
             </tr>
             <tr>
                 <td>Tgl.Lahir</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->peserta->tglLahir ?? 'Tidak tersedia') ?> Kelamin : <?= esc(($seplive->peserta->kelamin ?? 'Tidak tersedia') === 'P' ? 'Perempuan' : 'Laki-laki') ?>
+                </td>
                 <td>Prosedur</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->flagProcedure->nama ?? 'Tidak tersedia') ?> </td>
             </tr>
             <tr>
                 <td>No.Telepon</td>
@@ -95,25 +88,25 @@
             </tr>
             <tr>
                 <td>Dokter</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->kontrol->nmDokter ?? 'Tidak tersedia') ?></td>
                 <td>Kelas Hak</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->kelasRawat ?? 'Tidak tersedia') ?></td>
             </tr>
             <tr>
                 <td>Faskes Perujuk</td>
                 <td>: </td>
                 <td>Kelas Rawat</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->klsRawat->klsRawatHak ?? 'Tidak tersedia') ?></td>
             </tr>
             <tr>
                 <td>Diagnosa Awal</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->diagnosa ?? 'Tidak tersedia') ?></td>
                 <td>Penjamin</td>
                 <td>: </td>
             </tr>
             <tr>
                 <td>Catatan</td>
-                <td>: </td>
+                <td>: <?= esc($seplive->catatan ?? 'Tidak tersedia') ?></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -125,7 +118,9 @@
                     <br> <br>
                 </td>
                 <td align="center" colspan="2">Pasien/ Keluarga Pasien
-                    <br><br><br><br>_______________
+
+                    <br>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=<?= esc($seplive->peserta->nama ?? 'Tidak tersedia') ?>" alt="QR Code" width="40" height="40">
                 </td>
             </tr>
 

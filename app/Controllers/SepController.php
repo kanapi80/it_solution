@@ -36,6 +36,7 @@ class SepController extends ResourceController
                     $request['data']->codes = $diagnosaresult['CODE'];
                 }
                 return $this->respond($request, 200);
+                // var_dump($request);
             }
             return $this->respond($request, 404);
         } else {

@@ -32,7 +32,7 @@ class Pengguna extends Controller
             ->select('pengguna_akses_ruangan.ID as IDS,pengguna_akses_ruangan.PENGGUNA,pengguna_akses_ruangan.RUANGAN,
             pengguna.PASSWORD,
             pengguna.NAMA,pengguna.LOGIN,pengguna.NIP,pengguna.ID AS IDX,pengguna.NIK,pengguna_akses_ruangan.STATUS, master.ruangan.DESKRIPSI')
-            ->join('master.ruangan', 'master.ruangan.ID = aplikasi.pengguna_akses_ruangan.RUANGAN', 'left')
+            ->join('master.ruangan', 'aplikasi.pengguna_akses_ruangan.RUANGAN=master.ruangan.ID', 'left')
             ->join('aplikasi.pengguna', 'pengguna.ID = aplikasi.pengguna_akses_ruangan.PENGGUNA', 'left');
         // Add search conditions if $search is not empty
         if (!empty($search)) {

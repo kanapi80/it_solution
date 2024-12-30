@@ -36,36 +36,16 @@ class SepRanap extends BaseController
     }
     public function getSepPelayanan($nomorsep)
     {
-        // Ambil parameter no_SEP jika tersedia
         $nomorsep = $this->request->getGet('no_SEP') ?? $nomorsep;
-
-        // Endpoint URL
         $endPoint = $this->baseUrl . '/' . $nomorsep;
-
-        // Kirim permintaan GET ke API menggunakan RequestController
         $response = $this->requestService->sendRequest('GET', $endPoint);
         return $response;
         // var_dump($response);
-        // Debugging: Periksa format respons
-        // if (is_string($response)) {
-        //     $response = json_decode($response); // Decode JSON menjadi object
-        // }
+        // Mengatur header sebagai JSON
+        // header('Content-Type: application/json');
 
-        // // Debugging: Pastikan respons berbentuk object
-        // if (!is_object($response)) {
-        //     return [
-        //         'status' => false,
-        //         'message' => 'Format respons tidak valid',
-        //         'data' => null
-        //     ];
-        // }
-
-        // // Kembalikan data dalam format object
-        // return [
-        //     'status' => true,
-        //     'message' => 'Data berhasil diterima',
-        //     'data' => $response
-        // ];
+        // Menampilkan hasil response dalam format JSON rapi
+        // echo json_encode($response, JSON_PRETTY_PRINT);
     }
 
 
@@ -332,10 +312,10 @@ class SepRanap extends BaseController
                 }
             }
             //  // Halaman SEPLIVE
-            $pdf->SetMargins(5, 5, 5);
-            $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
-            $pdf->AddPage('L', array(105, 250)); // Atur ukuran halaman jika diperlukan
-            $pdf->writeHTML($seplive, true, false, false, false, '');
+            // $pdf->SetMargins(5, 5, 5);
+            // $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
+            // $pdf->AddPage('L', array(105, 250)); // Atur ukuran halaman jika diperlukan
+            // $pdf->writeHTML($seplive, true, false, false, false, '');
 
             // // Halaman Kelima (SEP)
 

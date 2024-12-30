@@ -37,6 +37,13 @@ $routes->post('page/gettindakan', 'TindakanController::getTindakan');
 //Tindakan
 $routes->get('page/pasien', 'PasienController::index');
 $routes->post('page/getpasien', 'PasienController::getPasien');
+//Dokter
+$routes->get('page/dokter', 'DokterController::index');
+$routes->get('page/getdokter', 'DokterController::getDokter');
+//Depo Layanan
+$routes->get('page/depolayanan', 'FarmasiController::index');
+$routes->get('page/getdepolayanan', 'FarmasiController::getDepoLayanan');
+$routes->post('page/updatestatus', 'FarmasiController::updateStatus');
 
 
 $routes->get('sipayu/registerrajal', 'Registerrajal::registerrajal');
@@ -90,9 +97,10 @@ $routes->get('problem/unLunas', 'Aps::unLunas');
 
 //REPORT RADIOLOGI
 $routes->get('problem/getReport', 'Report::getReport');
-// $routes->get('problem/unReport', 'Report::unReport');
 $routes->get('problem/unreport', 'Report::unReport');
-
+//DataIsNull
+$routes->get('problem/getdataisnull', 'Report::getDataNull');
+$routes->get('problem/updatedataisnull', 'Report::updateGrouping');
 
 //JKN 
 $routes->get('jkn/listpasien', 'Sep::listPasien');
@@ -160,5 +168,11 @@ $routes->get('jaspel/getjasarajal', 'JaspelController::getJasaRajal');
 //JASPEL-IGD
 $routes->get('jaspel/jasaigd', 'JaspelController::getIGD');
 $routes->get('jaspel/getjasaigd', 'JaspelController::getJasaIGD');
+//JASPEL OPERASI
+$routes->get('jaspel/jasaoperasi', 'JaspelController::getOperasi');
+$routes->get('jaspel/getjasaoperasi', 'JaspelController::getJasaOperasi');
+
 //SEP
 $routes->get('jkn/sep/(:any)', 'SepRanap::tampilkanSep/$1');
+
+$routes->get('jkn/getsepnew/(:any)', 'SepRanap::getSepPelayanan/$1');

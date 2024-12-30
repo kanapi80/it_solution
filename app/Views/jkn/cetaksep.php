@@ -113,7 +113,7 @@
                           <td>Dokter</td>
                           <td>: <?php echo $row['DOKTER']; ?></td>
                           <td>Kelas Hak</td>
-                          <td>: <?php echo $row['KLSRAWAT']; ?></td>
+                          <td>: <?php echo $row['klsRawat']; ?></td>
                         </tr>
                         <tr>
                           <td>Faskes Perujuk</td>

@@ -1289,12 +1289,12 @@ h6 {
          -o-transform:skew(8deg) rotate(3deg);
             transform:skew(8deg) rotate(3deg);
 }
-.box {
+/* .box {
   width:70%;
   height:200px;
   background:#FFF;
   margin:40px auto;
-}
+} */
 .effect2
 {
   position: relative;
@@ -1457,4 +1457,15 @@ letter-spacing: 2px;
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
+}
+
+.box {
+  height: 20px;
+  width: 20px;
+  
+}
+.box:hover {
+  height: 16px;
+  width: 16px;
+    
 }

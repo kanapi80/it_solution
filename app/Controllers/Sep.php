@@ -200,8 +200,10 @@ class Sep extends BaseController
         $pdf->AddPage('P', array(210, 297));
         $pdf->writeHTML($html6, true, false, false, false, '');
         //  // Halaman Kedua (BILLING)
-        $pdf->AddPage('P');
-        $pdf->writeHTML($html3, true, false, false, false, '');
+        if (count($data['billing']) > 0) {
+            $pdf->AddPage('P');
+            $pdf->writeHTML($html3, true, false, false, false, '');
+        }
         // Halaman Ketiga (LABORATORIUM)
         if (count($data['lab']) > 0) {
             $pdf->AddPage('P');

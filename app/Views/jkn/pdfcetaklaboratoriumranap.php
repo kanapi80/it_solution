@@ -158,7 +158,7 @@
             <tr>
                 <td width="50%"></td>
                 <td width="50%" align="center">
-                    Indramayu, <?php echo htmlspecialchars($firstRow['TGLSKRG2']); ?><br>
+                    Indramayu, <?php echo htmlspecialchars($firstRow['TGLSKRG']); ?><br>
                     Dokter Yang Memeriksa<br>
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($firstRow['DOKTER']); ?>" alt="QR Code" width="50" height="50"><br>
                     <u><?php echo htmlspecialchars($firstRow['DOKTER']); ?></u><br>

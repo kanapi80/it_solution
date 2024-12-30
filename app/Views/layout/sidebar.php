@@ -41,6 +41,16 @@
 							<i class="bi bi-circle"></i><span>Users</span>
 						</a>
 					</li>
+					<li>
+						<a href="<?= base_url('page/dokter'); ?>">
+							<i class="bi bi-circle"></i><span>Dokter</span>
+						</a>
+					</li>
+					<li>
+						<a href="<?= base_url('page/depolayanan'); ?>">
+							<i class="bi bi-circle"></i><span>Depo Layanan</span>
+						</a>
+					</li>
 				</ul>
 			</li><!-- End Components Nav -->
 
@@ -107,6 +117,11 @@
 							<i class="bi bi-circle"></i><span>I G D</span>
 						</a>
 					</li>
+					<li>
+						<a href="<?= base_url('jaspel/jasaoperasi'); ?>">
+							<i class="bi bi-circle"></i><span>Kamar Operasi</span>
+						</a>
+					</li>
 				</ul>
 			</li><!-- End Tables Nav -->
 
@@ -125,11 +140,11 @@
 							<i class="bi bi-circle"></i><span>Report</span>
 						</a>
 					</li>
-					<!-- <li>
-						<a href="charts-echarts.html">
-							<i class="bi bi-circle"></i><span>LapOperasi</span>
+					<li>
+						<a href="<?= base_url('problem/getdataisnull'); ?>">
+							<i class="bi bi-circle"></i><span>DataIsNull</span>
 						</a>
-					</li> -->
+					</li>
 				</ul>
 			</li><!-- End Charts Nav -->
 
@@ -152,8 +167,8 @@
 							<i class="bi bi-circle"></i><span>ServerSide</span>
 						</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link collapsed" href="<?= base_url('jkn/merge-pdf'); ?>">
+					<li>
+						<a href="<?= base_url('jkn/merge-pdf'); ?>">
 							<i class="bi bi-circle"></i>
 							<span>Merger File</span>
 						</a>
@@ -293,7 +308,15 @@
 			</li><!-- End Tables Nav -->
 		<?php endif; ?>
 		<!-- RAWAT INAP -->
-		<?php if (session()->get('Ses_Tupoksi') == 'RAWAT INAP') : ?>
+		<?php /*if (session()->get('Ses_Tupoksi') == 'RAWAT INAP') :*/ ?>
+		<?php
+		if (
+			session()->get('Ses_Tupoksi') == 'RAWAT INAP' ||
+			session()->get('Ses_Tupoksi') == 'LABORATORIUM' ||
+			session()->get('Ses_Tupoksi') == 'RADIOLOGI' ||
+			session()->get('Ses_Tupoksi') == 'KAMAR OPERASI'
+		) :
+		?>
 			<li class="nav-item">
 				<a class="nav-link collapsed" href="<?= base_url('admin/dashboard-admin'); ?>">
 					<i class="bi bi-grid"></i>
