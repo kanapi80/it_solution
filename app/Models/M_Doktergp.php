@@ -33,7 +33,7 @@ class M_Doktergp extends Model
         return $builder->get()->getResult();
     }
 
-    public function getDokterruangan($asuransi, $bulan, $tahun)
+    public function getDokterruangan($asuransi, $bulan, $tahun, $fpk)
     {
         // Using the model's database connection
         $db = $this->db;
@@ -45,6 +45,7 @@ class M_Doktergp extends Model
                 ->where('NamaAsuransi', $asuransi)
                 ->where('MonthOut', $bulan)
                 ->where('YearOut', $tahun)
+                ->where('fpk', $fpk)
                 ->where('JasaMedisTindakanDokterUmumRvu > 0')
                 ->groupBy('Poliklinik');
 

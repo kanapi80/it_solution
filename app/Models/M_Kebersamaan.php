@@ -9,9 +9,9 @@ class M_Kebersamaan extends Model
     protected $DBGroup = 'sipayu';
     protected $table = 'jasamedisigd';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['jasaAsisten_kebersamaan', 'PundiRemunRvu', 'NamaAsuransi', 'MonthOut', 'YearOut', 'JasaMedisRvu', 'JasaMedisTindakanRvu'];
+    protected $allowedFields = ['jasaAsisten_kebersamaan', 'PundiRemunRvu', 'NamaAsuransi', 'MonthOut', 'YearOut', 'JasaMedisRvu', 'JasaMedisTindakanRvu', 'fpk'];
 
-    public function getKebersamaan($asuransi, $bulan, $tahun)
+    public function getKebersamaan($asuransi, $bulan, $tahun, $fpk)
     {
         // Using the model's database connection
         $db = $this->db;
@@ -23,12 +23,14 @@ class M_Kebersamaan extends Model
                 ->where('NamaAsuransi', $asuransi)
                 ->where('MonthOut', $bulan)
                 ->where('YearOut', $tahun)
+                ->where('fpk', $fpk)
                 ->union(
                     $db->table('jasamedisranap')
                         ->select("'RI' AS Type, SUM(jasaAsisten_kebersamaan) AS Kebersamaan, SUM(PundiRemunRvu) AS JasaRS")
                         ->where('NamaAsuransi', $asuransi)
                         ->where('MonthOut', $bulan)
                         ->where('YearOut', $tahun)
+                        ->where('fpk', $fpk)
                 )
                 ->union(
                     $db->table('jasamedisrajal')
@@ -36,6 +38,7 @@ class M_Kebersamaan extends Model
                         ->where('NamaAsuransi', $asuransi)
                         ->where('MonthOut', $bulan)
                         ->where('YearOut', $tahun)
+                        ->where('fpk', $fpk)
                 )
                 ->union(
                     $db->table('jasamedisoperasi')
@@ -43,6 +46,7 @@ class M_Kebersamaan extends Model
                         ->where('NamaAsuransi', $asuransi)
                         ->where('MonthOut', $bulan)
                         ->where('YearOut', $tahun)
+                        ->where('fpk', $fpk)
                 )
                 ->union(
                     $db->table('jasamedislab')
@@ -50,6 +54,7 @@ class M_Kebersamaan extends Model
                         ->where('NamaAsuransi', $asuransi)
                         ->where('MonthOut', $bulan)
                         ->where('YearOut', $tahun)
+                        ->where('fpk', $fpk)
                 )
                 ->union(
                     $db->table('jasamedisrad')
@@ -57,6 +62,7 @@ class M_Kebersamaan extends Model
                         ->where('NamaAsuransi', $asuransi)
                         ->where('MonthOut', $bulan)
                         ->where('YearOut', $tahun)
+                        ->where('fpk', $fpk)
                 )
                 ->union(
                     $db->table('jasamedisfarmasi')
@@ -64,6 +70,7 @@ class M_Kebersamaan extends Model
                         ->where('NamaAsuransi', $asuransi)
                         ->where('MonthOut', $bulan)
                         ->where('YearOut', $tahun)
+                        ->where('fpk', $fpk)
                 );
 
             // Executing the query

@@ -18,6 +18,7 @@ class Kebersamaan extends Controller
     protected $DBGroup = 'sipayu';
     protected $modelAsuransi;
     protected $modelKebersamaan;
+    protected $modelBulan;
 
     public function __construct()
     {
@@ -37,13 +38,14 @@ class Kebersamaan extends Controller
         $data['years'] = range(date('Y'), date('Y') - 2); // Membuat range tahun dari tahun saat ini hingga 2 tahun ke belakang
         $tahun = $this->request->getPost('tahun');
         $tahun = $this->request->getPost('tahun') ?? date('Y'); // Default ke tahun saat ini
+        $fpk = $this->request->getPost('fpk');
 
         //TAHUN
         $years = $this->getYears();
         $selectedYear = $this->request->getVar('tahun') ?? '';
 
         // Get kebersamaan data
-        $data['jasaKebersamaan'] = $this->modelKebersamaan->getKebersamaan($asuransi, $bulan, $tahun);
+        $data['jasaKebersamaan'] = $this->modelKebersamaan->getKebersamaan($asuransi, $bulan, $tahun, $fpk);
         // var_dump($data);
         // Return the view with data
         return view('sipayu/kebersamaan', [
@@ -54,6 +56,7 @@ class Kebersamaan extends Controller
             'asuransi' => $asuransi,
             'data' => $data['jasaKebersamaan'],
             'years' => $years,
+            'fpk' => $fpk,
             'selectedYear' => $selectedYear
         ]);
     }
@@ -72,9 +75,10 @@ class Kebersamaan extends Controller
         $tahun = $this->request->getGet('tahun');
         $bulan = $this->request->getGet('bulan');
         $asuransi = $this->request->getGet('asuransi');
+        $fpk = $this->request->getGet('fpk');
 
         $model = new M_Kebersamaan();
-        $data = $model->getKebersamaan($asuransi, $bulan, $tahun);
+        $data = $model->getKebersamaan($asuransi, $bulan, $tahun, $fpk);
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -130,11 +134,12 @@ class Kebersamaan extends Controller
         $data['years'] = range(date('Y'), date('Y') - 2); // Create a range of years from current year to 2 years back
         $tahun = $this->request->getPost('tahun') ?? date('Y'); // Default to the current year if not provided
         $tahun = $this->request->getPost('tahun');
+        $fpk = $this->request->getPost('fpk');
         //TAHUN
         $years = $this->getYears();
         $selectedYear = $this->request->getVar('tahun') ?? '';
         // Use custom method to get filtered data
-        $data['jasaKebersamaan'] = $modelDoktergp->getDokterruangan($asuransi, $bulan, $tahun);
+        $data['jasaKebersamaan'] = $modelDoktergp->getDokterruangan($asuransi, $bulan, $tahun, $fpk);
 
         // Return the view with data
         return view('sipayu/doktergp', [
@@ -145,6 +150,7 @@ class Kebersamaan extends Controller
             'asuransi' => $asuransi,
             'data' => $data['jasaKebersamaan'],
             'years' => $data['years'],
+            'fpk' => $fpk,
             'selectedYear' => $tahun
         ]);
     }
@@ -153,9 +159,10 @@ class Kebersamaan extends Controller
         $tahun = $this->request->getGet('tahun');
         $bulan = $this->request->getGet('bulan');
         $asuransi = $this->request->getGet('asuransi');
+        $fpk = $this->request->getGet('fpk');
 
         $model = new M_Doktergp();
-        $data = $model->getDokterruangan($asuransi, $bulan, $tahun);
+        $data = $model->getDokterruangan($asuransi, $bulan, $tahun, $fpk);
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();

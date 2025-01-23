@@ -18,4 +18,11 @@ class M_Ruangan extends Model
             // ->groupby('KelompokTindakan')
             ->findAll();
     }
+
+    public function getRawatJalan()
+    {
+        return $this->where('KETERANGAN', 'RAWAT JALAN')
+            // ->groupby('KelompokTindakan')
+            ->findAll();
+    }
 }

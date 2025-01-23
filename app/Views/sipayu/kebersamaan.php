@@ -33,13 +33,23 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class="form-group mt-3 fs-7">
                       <select name="bulan" id="bulan" class="form-control form-control-sm fs-7">
                         <option value="">Pilih Bulan</option>
                         <?php foreach ($modelBulan as $row) : ?>
                           <option value="<?= $row['month'] ?>" <?= ($row['month'] == esc($bulan)) ? 'selected="selected"' : '' ?>><?= $row['month'] ?></option>
                         <?php endforeach; ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <div class="form-group mt-3 fs-7">
+                      <select name="fpk" id="fpk" class="form-control form-control-sm fs-7">
+                        <option value="" <?= (isset($fpk) && $fpk === '') ? 'selected="selected"' : '' ?>>Pilih FPK</option>
+                        <option value="1" <?= (isset($fpk) && $fpk === '1') ? 'selected="selected"' : '' ?>>1</option>
+                        <option value="2" <?= (isset($fpk) && $fpk === '2') ? 'selected="selected"' : '' ?>>2</option>
+                        <option value="3" <?= (isset($fpk) && $fpk === '3') ? 'selected="selected"' : '' ?>>3</option>
                       </select>
                     </div>
                   </div>
@@ -66,7 +76,7 @@
             </div>
             <?php if (!empty($data) && is_array($data)) : ?>
               <div class="container mt-3">
-                <button class="btn btn-success btn btn-sm me-1 mb-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Export Excel" onclick="window.location.href='<?= base_url('sipayu/exportKebersamaan?tahun=' . $tahun . '&bulan=' . $bulan . '&asuransi=' . $asuransi); ?>'"><i class="bi bi-file-earmark-excel"></i></button>
+                <button class="btn btn-success btn btn-sm me-1 mb-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Export Excel" onclick="window.location.href='<?= base_url('sipayu/exportKebersamaan?tahun=' . $tahun . '&bulan=' . $bulan . '&asuransi=' . $asuransi . '&fpk=' . $fpk); ?>'"><i class="bi bi-file-earmark-excel"></i></button>
                 <table class="table table-hover" style="font-size: 12px;">
                   <thead class="table-light table-bordered">
                     <th class="text-center">NO</th>
@@ -109,6 +119,24 @@
       </div>
     <?php endif; ?>
   </section>
+  <!-- <script>
+    // Ambil elemen dropdown
+    const dropdown = document.getElementById('fpk');
+
+    // Tambahkan event listener untuk mendeteksi perubahan
+    dropdown.addEventListener('change', function() {
+      const selectedValue = this.value;
+
+      if (selectedValue) {
+        console.log('Anda memilih FPK:', selectedValue);
+        // Lakukan sesuatu ketika opsi dipilih
+        // Contoh: tampilkan alert
+        alert(`Anda memilih FPK: ${selectedValue}`);
+      } else {
+        console.log('Anda belum memilih opsi');
+      }
+    });
+  </script> -->
 
 </main><!-- End #main -->
 

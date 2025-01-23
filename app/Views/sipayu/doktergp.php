@@ -43,6 +43,16 @@
                       </select>
                     </div>
                   </div>
+                  <div class="col-md-1">
+                    <div class="form-group mt-3 fs-7">
+                      <select name="fpk" id="fpk" class="form-control form-control-sm fs-7">
+                        <option value="" <?= (isset($fpk) && $fpk === '') ? 'selected="selected"' : '' ?>>Pilih FPK</option>
+                        <option value="1" <?= (isset($fpk) && $fpk === '1') ? 'selected="selected"' : '' ?>>1</option>
+                        <option value="2" <?= (isset($fpk) && $fpk === '2') ? 'selected="selected"' : '' ?>>2</option>
+                        <option value="3" <?= (isset($fpk) && $fpk === '3') ? 'selected="selected"' : '' ?>>3</option>
+                      </select>
+                    </div>
+                  </div>
                   <div class="col-md-3">
                     <div class="form-group mt-3 fs-7">
                       <select name="asuransi" id="asuransi" class="form-control form-control-sm fs-7">
@@ -67,7 +77,7 @@
 
             <?php if (!empty($data)) : ?>
               <div class="container mt-3">
-                <button class="btn btn-success btn btn-sm me-1 mb-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Export Excel" onclick="window.location.href='<?= base_url('sipayu/exportgp?tahun=' . $tahun . '&bulan=' . $bulan . '&asuransi=' . $asuransi); ?>'"><i class="bi bi-file-earmark-excel"></i></button>
+                <button class="btn btn-success btn btn-sm me-1 mb-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Export Excel" onclick="window.location.href='<?= base_url('sipayu/exportgp?tahun=' . $tahun . '&bulan=' . $bulan . '&asuransi=' . $asuransi . '&fpk=' . $fpk); ?>'"><i class="bi bi-file-earmark-excel"></i></button>
                 <table class="table table-hover" style="font-size: 12px;">
                   <thead class="table-light table-bordered">
                     <th class="text-center">NO</th>

@@ -10,6 +10,7 @@ use App\Models\JasaIGDModel;
 use \Hermawan\DataTables\DataTable;
 use App\Models\M_Asuransi;
 use App\Models\PeriodeModel;
+use App\Models\M_Ruangan;
 
 class JaspelController extends BaseController
 {
@@ -19,6 +20,7 @@ class JaspelController extends BaseController
     protected $jaspeligdmodel;
     protected $modelAsuransi;
     protected $modelPeriode;
+    protected $modelRuangan;
 
     public function __construct()
     {
@@ -27,6 +29,7 @@ class JaspelController extends BaseController
         $this->jaspeligdmodel = new JasaIGDModel();
         $this->modelAsuransi = new M_Asuransi();
         $this->modelPeriode = new PeriodeModel();
+        $this->modelRuangan = new M_Ruangan();
     }
     public function index()
     {
@@ -139,6 +142,7 @@ class JaspelController extends BaseController
         $datas['modelAsuransi'] = $this->modelAsuransi->getjaspel();
         $datas['asuransi'] = $asuransi;  // Mengirimkan asuransi yang dipilih ke view
         $datas['periode'] = $periode;   // Mengirimkan periode yang sesuai dengan asuransi ke view
+        $datas['ruangan'] = $this->modelRuangan->getRawatJalan();   // Mengirimkan periode yang sesuai dengan asuransi ke view
 
         return view('jaspel/jasarajal', $datas);
     }

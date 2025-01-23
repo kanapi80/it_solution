@@ -7,7 +7,6 @@ use App\Controllers\API;
  * @var RouteCollection $routes
  */
 
-
 //API
 $routes->resource('products');
 
@@ -44,8 +43,6 @@ $routes->get('page/getdokter', 'DokterController::getDokter');
 $routes->get('page/depolayanan', 'FarmasiController::index');
 $routes->get('page/getdepolayanan', 'FarmasiController::getDepoLayanan');
 $routes->post('page/updatestatus', 'FarmasiController::updateStatus');
-
-
 $routes->get('sipayu/registerrajal', 'Registerrajal::registerrajal');
 $routes->get('sipayu/registerigd', 'Registerigd::registerigd');
 $routes->get('sipayu/registerranap', 'Registerranap::registerranap');
@@ -68,14 +65,12 @@ $routes->get('sipayu/exportalldokter', 'Kebersamaan::exportAllDokter');
 $routes->post('sipayu/tindakan', 'Tindakan::getTindakan');
 $routes->get('sipayu/tindakan', 'Tindakan::getTindakan');
 
-
 $routes->get('users/users', 'Admin::add');
 $routes->get('users/addusers', 'Admin::addusers');
 $routes->post('users/simpanusers', 'Admin::simpanusers');
 $routes->get('users/dokumentasi', 'Admin::dokumentasi');
 // $routes->get('users/delusers', 'Admin::delusers');
 $routes->get('users/delusers/(:num)', 'Admin::delusers/$1');
-
 
 //Export Excel
 // $routes->get('export-excel', 'ExportExcel::exportExcel');
@@ -88,7 +83,6 @@ $routes->get('users/cetak_user', 'Admin::cetakUser');
 // SERVERSIDE
 $routes->get('users/viewUsers', 'Admin::viewUsers');
 $routes->post('users/getUsers', 'Admin::getUsers');
-
 
 //PROBLEM
 //APS FARMASI
@@ -131,7 +125,6 @@ $routes->post('jkn/image-upload/upload', 'ImageUpload::upload');
 $routes->get('jkn/image-upload/testSave', 'ImageUpload::testSave');
 $routes->post('jkn/image-hapus/(:any)', 'ImageUpload::delGambar/$1');
 
-
 //Merger PDF
 $routes->get('jkn/merge-pdf', 'PdfMergerController::index');
 $routes->post('jkn/merge-pdf', 'PdfMergerController::merge');
@@ -146,7 +139,6 @@ $routes->get('vclaim/datakunjungan/(:any)/(:num)', 'MonitoringController::getDat
 $routes->get('vclaim/historykunjungan/(:any)/(:any)/(:any)', 'MonitoringController::getHistoryKunjungan/$1/$2/$3');
 $routes->get('vclaim/klaimjasaraharja/(:any)/(:any)/(:any)', 'MonitoringController::getKlaimJasaRaharja/$1/$2/$3');
 
-
 //JKN RANAP
 $routes->get('jkn/listpasienranap', 'SepRanap::listPasienRanap');
 $routes->get('jkn/pdfbpjsranap', 'SepRanap::printPDFRanap');
@@ -154,7 +146,6 @@ $routes->get('jkn/pdfbpjsranap', 'SepRanap::printPDFRanap');
 //SIPAYU
 $routes->get('sipayu/getregisterrajal', 'Registerrajal::getRegisterrajal');
 // $routes->get('page/getpegawai', 'Pegawai::getPegawai');
-
 
 //JASPEL
 $routes->get('jaspel/jasaranap', 'JaspelController::index');
@@ -174,5 +165,4 @@ $routes->get('jaspel/getjasaoperasi', 'JaspelController::getJasaOperasi');
 
 //SEP
 $routes->get('jkn/sep/(:any)', 'SepRanap::tampilkanSep/$1');
-
 $routes->get('jkn/getsepnew/(:any)', 'SepRanap::getSepPelayanan/$1');

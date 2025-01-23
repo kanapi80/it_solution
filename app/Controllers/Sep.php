@@ -14,6 +14,8 @@ use App\Models\M_Tagihan;
 use App\Models\M_Listpasien;
 use App\Models\PenunjangModel;
 use TCPDF;
+use Endroid\QrCode\Builder\Builder;
+
 
 
 class Sep extends BaseController
@@ -184,6 +186,8 @@ class Sep extends BaseController
             $width = 15;
             $height = 15;
             $pdf->write2DBarcode($pasien, 'QRCODE,L', $x, $y, $width, $height, $style);
+
+
             $pdf->writeHTML($html2, true, false, false, false, '');
             $pdf->SetAutoPageBreak(FALSE, 0);
         }
@@ -193,6 +197,8 @@ class Sep extends BaseController
         // $resume = $data['resume'][0];
         // $dokter = strtoupper($resume['DOKTERDPJP']);
         // $pdf->writeHTML($html, true, false, false, false, '');
+        //--------------------------------------------------------------
+
         // Halaman Kedua (CPPT)
         // $pdf->AddPage('P',);
         // $cppt = $data['cppt'][0];

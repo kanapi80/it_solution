@@ -32,7 +32,22 @@
             <div class="col-lg-12">
               <div class="row">
                 <!-- <div class="col-md-2"> -->
-                <input type="text" name="ruangan" class="form-control form-control-sm" id="ruangan" value="<?php echo (session('Ses_UserName')); ?>" hidden>
+                <?php if (session('Ses_Level') == '1') : ?>
+                  <div class="col-md-2">
+                    <!-- <input type="text" name="ruangan" class="form-control form-control-sm" id="ruangan"> -->
+                    <select name="ruangan" id="ruangan" class="form-control form-control-sm fs-7">
+                      <option value="">RUANGAN</option>
+                      <?php foreach ($ruangan as $row) : ?>
+                        <option value="<?= $row['DESKRIPSI'] ?>" <?= ($row['DESKRIPSI'] == esc($ruangan)) ? 'selected="selected"' : '' ?>>
+                          <?= $row['DESKRIPSI'] ?>
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
+
+                  </div>
+                <?php else: ?>
+                  <input type="text" name="ruangan" class="form-control form-control-sm" id="ruangan" value="<?php echo (session('Ses_UserName')); ?>" hidden>
+                <?php endif; ?>
                 <!-- </div> -->
                 <div class="col-md-2">
                   <select name="asuransi" class="form-control form-control-sm" id="asuransi">
@@ -50,11 +65,11 @@
                     <option value="">- Pilih Tahun -</option>
                   </select> -->
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                   <select name="tahun" class="form-select form-select-sm" id="tahun">
                   </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <input type="text" name="nama" class="form-control form-control-sm" id="nama" placeholder="Cari Nama ...">
                 </div>
                 <div class="col-md-2">

@@ -74,6 +74,17 @@
                       </select>
                     </div>
                   </div>
+                  <!-- FPK  -->
+                  <div class="col-md-1">
+                    <div class="form-group mt-3 fs-7">
+                      <select name="fpk" id="fpk" class="form-control form-control-sm fs-7">
+                        <option value="" <?= (isset($fpk) && $fpk === '') ? 'selected="selected"' : '' ?>>Pilih FPK</option>
+                        <option value="1" <?= (isset($fpk) && $fpk === '1') ? 'selected="selected"' : '' ?>>1</option>
+                        <option value="2" <?= (isset($fpk) && $fpk === '2') ? 'selected="selected"' : '' ?>>2</option>
+                        <option value="3" <?= (isset($fpk) && $fpk === '3') ? 'selected="selected"' : '' ?>>3</option>
+                      </select>
+                    </div>
+                  </div>
                   <!-- RUANGAN -->
                   <div class="col-md-2 px-1">
                     <div class="form-group fs-7 mt-3">
@@ -96,13 +107,9 @@
             </div>
           </div>
           <div class="row">
-            <?php if (!isset($data) || empty($data)) : ?>
-              <?php if (session()->has('success')) : ?>
-                <div class="alert alert-danger alert-dismissible fade show p-2" role="alert">
-                  <?php echo session()->getFlashdata('success'); ?>
-                </div>
-              <?php endif; ?>
-            <?php else : ?>
+
+            <?php if ((isset($bulan) && !empty($bulan)) && (isset($tahun) && !empty($tahun))) : ?>
+
               <table class="table table-striped w-100" style="font-size: 10px;">
                 <tr>
                   <th class="text-center">NO</th>

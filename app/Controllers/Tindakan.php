@@ -34,6 +34,7 @@ class Tindakan extends BaseController
         $bulan = $this->request->getPost('bulan');
         $tahun = $this->request->getPost('tahun');
         $ruangan = $this->request->getPost('ruangan');
+        $fpk = $this->request->getPost('fpk');
 
         $years = $this->getYears();
         $selectedYear = $this->request->getVar('tahun') ?? '';
@@ -55,6 +56,9 @@ class Tindakan extends BaseController
         if ($ruangan) {
             $query->Where('Poliklinik', "$ruangan");
         }
+        if ($fpk) {
+            $query->Where('fpk', "$fpk");
+        }
         // Ambil hasil query
         $result = $query->findAll();
         session()->setFlashdata('success', 'Data Tidak Ada !');
@@ -72,6 +76,7 @@ class Tindakan extends BaseController
             'tahun' => $tahun,
             'years' => $years,
             'ruangan' => $ruangan,
+            'fpk' => $fpk,
             'selectedYear' => $selectedYear
         ]);
         return view('sipayu/tindakan', ['data' => $result, 'modelAsuransi' => $data['modelAsuransi'], 'modelBulan' => $data['modelBulan'], 'modelReferensi' => $data['modelReferensi']]);

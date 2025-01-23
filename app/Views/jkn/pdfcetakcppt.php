@@ -131,7 +131,16 @@
                 <td align="center" style="collapse;border-top: 0px solid black;border-left: 0px solid black"><?php echo ($item['JNSPPA']); ?></td>
                 <td style="collapse;border-top: 0px solid black;border-left: 0px solid black"><?php echo strip_tags($item['CATATAN']); ?></td>
                 <td style="collapse;border-top: 0px solid black;border-left: 0px solid black"><?php echo strip_tags($item['INSTRUKSI']); ?></td>
-                <td align="center" style="collapse;border-top: 0px solid black;border-left: 0px solid black"><?php echo (htmlspecialchars($item['PERAWAT'])); ?><?php echo (htmlspecialchars($item['DOKTER'])); ?></td>
+                <td align="center" valign="center" style="collapse;border-top: 0px solid black;border-left: 0px solid black">
+
+                    <?php
+                    $pelaksana = htmlspecialchars($item['DOKTER'] . '' . $item['PERAWAT'] . ' | ' . $item['TGLVERIFIKASI']);
+                    $namapelaksana = htmlspecialchars($item['DOKTER'] . '' . $item['PERAWAT']);
+                    ?>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?php echo urlencode($pelaksana); ?>"
+                        alt="QR Code Perawat" width="30" height="30"><br>
+                    <?php echo $namapelaksana; ?>
+                </td>
             </tr> <?php endforeach; ?>
     </table>
 
