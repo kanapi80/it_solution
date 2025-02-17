@@ -78,7 +78,7 @@
             <?php if (!empty($data)) : ?>
               <div class="container mt-3">
                 <button class="btn btn-success btn btn-sm me-1 mb-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Export Excel" onclick="window.location.href='<?= base_url('sipayu/exportgp?tahun=' . $tahun . '&bulan=' . $bulan . '&asuransi=' . $asuransi . '&fpk=' . $fpk); ?>'"><i class="bi bi-file-earmark-excel"></i></button>
-                <table class="table table-hover" style="font-size: 12px;">
+                <table class="table table-hover " style="font-size: 12px;">
                   <thead class="table-light table-bordered">
                     <th class="text-center">NO</th>
                     <th>RUANGAN</th>

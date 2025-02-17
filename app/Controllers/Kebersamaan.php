@@ -133,11 +133,11 @@ class Kebersamaan extends Controller
         $data['bulan'] = $bulan;
         $data['years'] = range(date('Y'), date('Y') - 2); // Create a range of years from current year to 2 years back
         $tahun = $this->request->getPost('tahun') ?? date('Y'); // Default to the current year if not provided
-        $tahun = $this->request->getPost('tahun');
+        // $tahun = $this->request->getPost('tahun');
         $fpk = $this->request->getPost('fpk');
         //TAHUN
-        $years = $this->getYears();
-        $selectedYear = $this->request->getVar('tahun') ?? '';
+        // $years = $this->getYears();
+        // $selectedYear = $this->request->getVar('tahun') ?? '';
         // Use custom method to get filtered data
         $data['jasaKebersamaan'] = $modelDoktergp->getDokterruangan($asuransi, $bulan, $tahun, $fpk);
 

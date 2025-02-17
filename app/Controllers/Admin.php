@@ -90,7 +90,8 @@ class Admin extends BaseController
             'Ses_UserName' => $datauser['lastname'],
             'Ses_Level' => $datauser['level'],
             'Ses_Tupoksi' => $datauser['locationname'],
-            'Ses_Foto' => $datauser['foto']
+            'Ses_Foto' => $datauser['foto'],
+            'Ses_Ruangan' => $datauser['id_imut']
         ];
         session()->set($dataSession);
         return redirect()->to(base_url('admin/dashboard-admin'));
@@ -109,6 +110,7 @@ class Admin extends BaseController
         session()->remove('Ses_NamaAdmin');
         session()->remove('Ses_Level');
         session()->remove('Ses_Tupoksi');
+        session()->remove('Ses_Ruangan');
         session()->setFlashdata('logout_success', 'Kamu telah logout.'); // Set flash data message
         return redirect()->to(base_url('admin/login-admin'));
     }

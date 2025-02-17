@@ -33,4 +33,15 @@ class M_Cppt extends Model
             return [];
         }
     }
+    public function getCetakCPPTdetail($nopen, $nokun)
+    {
+        try {
+            $db = \Config\Database::connect($this->DBGroup);
+            $query = $db->query("CALL medicalrecord.CetakCPPT(?, ?)", [$nopen, $nokun]);
+            return $query->getResultArray();
+        } catch (\Throwable $e) {
+            log_message('error', 'Error executing CetakCPPT: ' . $e->getMessage());
+            return [];
+        }
+    }
 }

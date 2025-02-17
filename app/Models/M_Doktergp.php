@@ -45,12 +45,15 @@ class M_Doktergp extends Model
                 ->where('NamaAsuransi', $asuransi)
                 ->where('MonthOut', $bulan)
                 ->where('YearOut', $tahun)
-                ->where('fpk', $fpk)
-                ->where('JasaMedisTindakanDokterUmumRvu > 0')
-                ->groupBy('Poliklinik');
+                ->where('JasaMedisTindakanDokterUmumRvu > 0');
 
+            // Hanya tambahkan filter 'fpk' jika tidak kosong/null
+            if (!empty($fpk)) {
+                $builder->where('fpk', $fpk);
+            }
 
-
+            // Grouping by Poliklinik
+            $builder->groupBy('Poliklinik');
 
             // Executing the query
             $query = $builder->get();
@@ -59,7 +62,7 @@ class M_Doktergp extends Model
             return $query->getResultArray();
         } catch (\Exception $e) {
             // Logging the exception and returning an empty array in case of an error
-            log_message('error', 'Error executing getKebersamaan query: ' . $e->getMessage());
+            log_message('error', 'Error executing getDokterruangan query: ' . $e->getMessage());
             return [];
         }
     }

@@ -42,6 +42,7 @@ class Pegawai extends Controller
                 pegawai.TEMPAT_LAHIR,pegawai.TANGGAL_LAHIR,pegawai.JENIS_KELAMIN,pegawai.ALAMAT,pegawai.STATUS,pegawai.PROFESI,referensi.DESKRIPSI')
                 ->join('referensi', 'pegawai.PROFESI = referensi.ID AND referensi.JENIS = 36', 'left')
                 ->join('pegawai.kontak_pegawai', 'pegawai.NIP = pegawai.kontak_pegawai.NIP AND pegawai.kontak_pegawai.JENIS = 3', 'left')
+                ->groupBy('pegawai.ID')
                 ->orderBy('pegawai.NAMA', 'Asc');
 
             return DataTable::of($builder)->addNumbering()->toJson(true);

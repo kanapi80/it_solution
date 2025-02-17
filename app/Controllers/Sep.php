@@ -158,6 +158,7 @@ class Sep extends BaseController
         $html5 = view('jkn/pdfcetakradiologi', $data);
         $html6 = view('jkn/pdfcetakcppt', $data);
         $html9 = view('jkn/pdfcetaktriase', $data);
+        $rehab = view('jkn/pdfcetakrehabmedik', $data);
         // $html7 = view('jkn/pdfcetakgambar', $data);
 
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -175,22 +176,22 @@ class Sep extends BaseController
             'module_height' => 1
         );
 
-        if (count($data['sep']) > 0) {
-            $pdf->SetMargins(5, 5, 5);
-            $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
-            $pdf->AddPage('L', array(98, 250));
-            $sep = $data['sep'][0];
-            $pasien = strtoupper($sep['NAMALENGKAP']);
-            $x = 183;
-            $y = 72;
-            $width = 15;
-            $height = 15;
-            $pdf->write2DBarcode($pasien, 'QRCODE,L', $x, $y, $width, $height, $style);
+        // if (count($data['sep']) > 0) {
+        //     $pdf->SetMargins(5, 5, 5);
+        //     $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
+        //     $pdf->AddPage('L', array(98, 250));
+        //     $sep = $data['sep'][0];
+        //     $pasien = strtoupper($sep['NAMALENGKAP']);
+        //     $x = 183;
+        //     $y = 72;
+        //     $width = 15;
+        //     $height = 15;
+        //     $pdf->write2DBarcode($pasien, 'QRCODE,L', $x, $y, $width, $height, $style);
 
 
-            $pdf->writeHTML($html2, true, false, false, false, '');
-            $pdf->SetAutoPageBreak(FALSE, 0);
-        }
+        //     $pdf->writeHTML($html2, true, false, false, false, '');
+        //     $pdf->SetAutoPageBreak(FALSE, 0);
+        // }
 
         // // Halaman Pertama (RESUME)
         // $pdf->AddPage('P', array(210, 297));
@@ -201,15 +202,15 @@ class Sep extends BaseController
 
         // Halaman Kedua (CPPT)
         // $pdf->AddPage('P',);
-        // $cppt = $data['cppt'][0];
-        $pdf->SetMargins(10, 10, 10);
-        $pdf->AddPage('P', array(210, 297));
-        $pdf->writeHTML($html6, true, false, false, false, '');
+        // // $cppt = $data['cppt'][0];
+        // $pdf->SetMargins(10, 10, 10);
+        // $pdf->AddPage('P', array(210, 297));
+        // $pdf->writeHTML($html6, true, false, false, false, '');
         //  // Halaman Kedua (BILLING)
-        if (count($data['billing']) > 0) {
-            $pdf->AddPage('P');
-            $pdf->writeHTML($html3, true, false, false, false, '');
-        }
+        // if (count($data['billing']) > 0) {
+        //     $pdf->AddPage('P');
+        //     $pdf->writeHTML($html3, true, false, false, false, '');
+        // }
         // Halaman Ketiga (LABORATORIUM)
         if (count($data['lab']) > 0) {
             $pdf->AddPage('P');
@@ -226,6 +227,11 @@ class Sep extends BaseController
         if (count($data['triase']) > 0) {
             $pdf->AddPage('P');
             $pdf->writeHTML($html9, true, false, false, false, '');
+        }
+        // Halaman RehabMedik
+        if (count($data['billing']) > 0) {
+            $pdf->AddPage('P');
+            $pdf->writeHTML($rehab, true, false, false, false, '');
         }
         if (count($data['penunjang']) > 0) {
             // Nonaktifkan auto page break
@@ -269,5 +275,21 @@ class Sep extends BaseController
             'searchPerformed' => $searchPerformed,
             'penunjang' => $penunjang
         ]);
+    }
+    //ID dari db->laporan->tb->request_report
+    public static function toUUIDEncode($id)
+    {
+        $ids = explode('-', $id);
+        if (count($ids) != 5 || strlen($id) != 36) return "";
+        $ids[0] = strrev($ids[0]);
+        $ids[4] = strrev($ids[4]);
+        $ids[2] = strrev($ids[2]);
+
+        $id1 = substr($ids[0], 0, 4);
+        $id2 = substr($ids[4], 0, 6);
+        $ids[4] = str_replace($id2, $id2 . $id1, $ids[4]);
+        $ids[0] = str_replace($id1, "", $ids[0]);
+
+        return json_encode($ids[0] . $ids[4] . $ids[3] . $ids[1] . $ids[2]);
     }
 }

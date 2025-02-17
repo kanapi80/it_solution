@@ -79,11 +79,15 @@
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Password</label>
                       <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-lock-fill"></i></span>
+                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                         <input type="password" name="password" class="form-control" id="yourPassword" required placeholder="Password">
+                        <button type="button" id="togglePassword" class="btn btn-outline-secondary">
+                          <i class="bi bi-eye-fill fw-bold"></i>
+                        </button>
                         <div class="invalid-feedback">Silahkan masukan password!</div>
                       </div>
                     </div>
+
                     <div class="col-12">
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
@@ -158,4 +162,18 @@
       showConfirmButton: false
     });
   <?php endif; ?>
+  document.getElementById("togglePassword").addEventListener("click", function() {
+    var passwordField = document.getElementById("yourPassword");
+    var icon = this.querySelector("i");
+
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+      icon.classList.remove("bi-eye");
+      icon.classList.add("bi-eye-slash");
+    } else {
+      passwordField.type = "password";
+      icon.classList.remove("bi-eye-slash");
+      icon.classList.add("bi-eye");
+    }
+  });
 </script>

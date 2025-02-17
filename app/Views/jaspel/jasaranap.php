@@ -6,20 +6,25 @@
   th.sorting_desc {
     background-image: none !important;
   }
+
+  .form-control-sm,
+  .btn-sm {
+    font-size: 11px;
+    height: 29px;
+    padding: 3px 6px;
+  }
 </style>
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-chained/1.0.1/jquery.chained.min.js"></script> -->
 
 
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h6 class="fw-bold">REKON RUANGAN</h6>
+    <!-- <h6 class="fw-bold">REKON RUANGAN</h6> -->
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">JASPEL</a></li>
-        <li class="breadcrumb-item">R a n a p</li>
-        <li class="breadcrumb-item active">Data Jasa Rawat Inap</li>
+        <li class="breadcrumb-item fw-bold text-black">JASPEL</li>
+        <li class="breadcrumb-item">Rawat Inap</li>
+        <!-- <li class="breadcrumb-item active">Data Jasa Rawat Inap</li> -->
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -30,13 +35,13 @@
         <div class="card">
           <div class="card-body mt-4">
             <div class="col-lg-12">
-              <div class="row">
+              <div class="row g-2 align-items-center mb-2">
                 <!-- <div class="col-md-2"> -->
                 <input type="text" name="ruangan" class="form-control form-control-sm" id="ruangan" value="<?php echo (session('Ses_UserName')); ?>" hidden>
                 <!-- </div> -->
                 <div class="col-md-2">
                   <select name="asuransi" class="form-control form-control-sm" id="asuransi">
-                    <option value="">- Pilih Asuransi -</option>
+                    <option value="">ASURANSI</option>
                     <?php foreach ($modelAsuransi as $asuransi): ?>
                       <option value="<?= $asuransi['paymentname']; ?>"><?= $asuransi['paymentname']; ?></option>
                     <?php endforeach; ?>
@@ -44,25 +49,23 @@
                 </div>
                 <div class="col-md-1">
                   <select name="periode" id="periode" class="form-control form-control-sm">
+                    <option value="">PERIODE</option>
                   </select>
 
-                  <!-- <select name="tahu" id="tahu" class="form-control form-control-sm">
-                    <option value="">- Pilih Tahun -</option>
-                  </select> -->
                 </div>
                 <div class="col-md-2">
-                  <select name="tahun" class="form-select form-select-sm" id="tahun">
+                  <select name="tahun" class="form-select form-control-sm" id="tahun">
                   </select>
                 </div>
                 <div class="col-md-3">
                   <input type="text" name="nama" class="form-control form-control-sm" id="nama" placeholder="Cari Nama ...">
                 </div>
                 <div class="col-md-2">
-                  <button type="button" class="btn btn-outline-success btn-sm" id="btn-filter"><i class="bi bi-search"></i> Filter</button>
+                  <button type="button" class="btn btn-outline-success form-control-sm" id="btn-filter"><i class="bi bi-search"></i> Filter</button>
 
                 </div>
-                <div class="col-md-2 mb-2 text-end">
-                  <button class="btn btn-secondary btn-sm" id="copyButton"><i class="bi bi-copy"></i>&nbsp; Copy Tabel</button>
+                <div class="col-md-2 text-end">
+                  <button class="btn btn-secondary btn-sm" id="copyButton" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy Table"><i class="bi bi-copy"></i></button>
                 </div>
               </div>
 
@@ -70,15 +73,15 @@
                 <thead>
                   <tr>
                     <th class="bg-success text-white text-center" width="1%">NO</th>
-                    <th class="bg-success text-white text-start" width="10%">NOMR</th>
+                    <th class="bg-success text-white text-start" width="20%">NOMR / PASIEN</th>
                     <th class="bg-success text-white text-start" width="21%">NAMA TINDAKAN</th>
-                    <th class="bg-success text-white text-start" width="15%">DOKTER</th>
-                    <th class="bg-success text-white text-start" width="13%">RUANGAN</th>
+                    <th class="bg-success text-white text-start" width="23%">RUANGAN / DOKTER</th>
+                    <!-- <th class="bg-success text-white text-start" width="11%">RUANGAN</th> -->
                     <th class="bg-success text-white text-center" width="8%">TARIF</th>
-                    <th class="bg-success text-white text-start" width="8%">MEDIS</th>
-                    <th class="bg-success text-white text-start" width="8%">PARAMEDIS</th>
-                    <th class="bg-success text-white text-start" width="8%">KEBERSAMAAN</th>
-                    <th class="bg-success text-white text-start" width="8%">PERIODE</th>
+                    <th class="bg-success text-white text-start" width="7%">MEDIS</th>
+                    <th class="bg-success text-white text-start" width="7%">PARAMEDIS</th>
+                    <th class="bg-success text-white text-start" width="7%">KEBERSAMAAN</th>
+                    <th class="bg-success text-white text-start" width="7%">PERIODE</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -88,7 +91,7 @@
                   <tr class="bg-success">
                     <th class="bg-success text-white"></th>
                     <th class="bg-success text-white"></th>
-                    <th class="bg-success text-white"></th>
+                    <!-- <th class="bg-success text-white"></th> -->
                     <th class="bg-success text-white"></th>
                     <th colspan="2" class="text-end bg-success text-white">JUMLAH</th>
                     <th class="bg-success text-white"></th>
@@ -251,11 +254,17 @@
           }
         },
         {
-          "data": "NamaPelaksanaMedis"
+          "data": null,
+          "className": "text-start",
+          "render": function(data, type, row) {
+            function nl2br(str) {
+              return str.replace(/\n/g, '<br>');
+            }
+            // Gabungkan field Periode dan Tahun dengan pemisah "-"
+            return '<b>' + row.NamaRuangan + '</b>' + '<br>' + row.NamaPelaksanaMedis;
+          }
         },
-        {
-          "data": "NamaRuangan"
-        },
+
         {
           "data": "TotalTarif",
           "searchable": false,
@@ -274,16 +283,16 @@
         },
         {
           "data": "JasaKebersamaan",
-          "className": "text-end",
+          "className": "text-center",
           "searchable": false
         },
         {
           // Gabungkan Periode dan Tahun
           "data": null,
-          "className": "text-end",
+          "className": "text-center",
           "render": function(data, type, row) {
             // Gabungkan field Periode dan Tahun dengan pemisah "-"
-            return '<b>' + row.NamaAsuransi + '</b>' + '</br>' + row.Periode + ' - ' + row.Tahun;
+            return '<b>' + row.NamaAsuransi + '</b>' + '</br>' + `<span class="badge bg-primary">${row.Periode}-${row.Tahun}</span>`;
           }
         }
 
@@ -296,12 +305,12 @@
       },
       language: {
         "emptyTable": "Tidak ada data yang tersedia",
-        "zeroRecords": "<div class='btn btn-danger btn-sm'>Tidak ada data yang tersedia, Pastikan Anda telah memilih Asuransi, Periode dan Tahun</div>"
+        "zeroRecords": "<div class='btn btn-secondary btn-sm' style='font-size: 10px;'>DATA TIDAK TERSEDIA</div>"
       },
 
       "initComplete": function(settings, json) {
         // Jika ingin menambahkan kelas tertentu pada pesan zeroRecords
-        $('.dataTables_empty').addClass('bg-danger text-white');
+        $('.dataTables_empty').addClass('bg-white text-white');
       },
 
       "footerCallback": function(row, data, start, end, display) {
@@ -311,13 +320,13 @@
         };
 
         // Total calculation for the columns
-        let totalmedis = api.column(6).data().reduce(function(a, b) {
+        let totalmedis = api.column(5).data().reduce(function(a, b) {
           return intVal(a) + intVal(b);
         }, 0);
-        let totaldokterumum = api.column(7).data().reduce(function(a, b) {
+        let totaldokterumum = api.column(6).data().reduce(function(a, b) {
           return intVal(a) + intVal(b);
         }, 0);
-        let totalparamedis = api.column(8).data().reduce(function(a, b) {
+        let totalparamedis = api.column(7).data().reduce(function(a, b) {
           return intVal(a) + intVal(b);
         }, 0);
         // let totalkebersamaan = api.column(9).data().reduce(function(a, b) {
@@ -325,9 +334,9 @@
         // }, 0);
 
         // Display totals in footer
-        $(api.column(6).footer()).html(totalmedis.toLocaleString());
-        $(api.column(7).footer()).html(totaldokterumum.toLocaleString());
-        $(api.column(8).footer()).html(totalparamedis.toLocaleString());
+        $(api.column(5).footer()).html(totalmedis.toLocaleString());
+        $(api.column(6).footer()).html(totaldokterumum.toLocaleString());
+        $(api.column(7).footer()).html(totalparamedis.toLocaleString());
         // $(api.column(9).footer()).html(totalkebersamaan.toLocaleString());
       },
 
@@ -379,6 +388,10 @@
     window.getSelection().removeAllRanges();
     $("#periode").chained("#asuransi");
 
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.body.classList.add("toggle-sidebar");
   });
 </script>
 

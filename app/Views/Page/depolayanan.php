@@ -1,118 +1,6 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
-<style>
-    table,
-    th,
-    td {
-        border-collapse: collapse;
-        font: 12px verdana;
-        border: 1px #c0c0c0 solid;
-        color: #808080;
-    }
 
-    table tr:hover td {
-        background: #BBDEFB;
-    }
-
-    table th {
-        background-color: #BBDEFB;
-        color: #1a73eb;
-        padding: 8px;
-    }
-
-    table tr:nth-child(odd) {
-        background-color: #E3F2FD;
-    }
-
-    @media only screen and (max-width:500px) {
-        table {
-            display: table;
-            /* Tetap dalam bentuk tabel */
-            width: 100%;
-            overflow-x: auto;
-            /* Tambahkan scrolling horizontal */
-        }
-
-        thead,
-        tbody,
-        tr,
-        th,
-        td {
-            display: table-cell;
-            /* Pertahankan bentuk tabel */
-        }
-
-        table {
-            white-space: nowrap;
-            /* Hindari baris tabel terputus */
-        }
-    }
-
-    @media only screen and (max-width:500px) {
-
-        table,
-        thead,
-        tbody,
-        th,
-        td,
-        tr {
-            display: block;
-        }
-
-        thead tr {
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-        }
-
-        tr {
-            margin: 0 0 1rem 0;
-        }
-
-        td {
-            position: relative;
-            padding-left: 160px;
-        }
-
-        td:before {
-            position: absolute;
-            top: 0;
-            left: 6px;
-            width: 25%;
-            padding-right: 10px;
-            white-space: nowrap;
-            color: #1a73eb;
-        }
-
-        td:nth-of-type(1):before {
-            content: "No.";
-        }
-
-        td:nth-of-type(2):before {
-            content: "Nama";
-        }
-
-        td:nth-of-type(3):before {
-            content: "Versi";
-        }
-
-        td:nth-of-type(4):before {
-            content: "Tanggal Rilis";
-        }
-
-        td:nth-of-type(5):before {
-            content: "Versi Kernel Linux";
-        }
-
-        td:nth-of-type(6):before {
-            content: "Level API";
-        }
-
-        td:nth-of-type(7):before {
-            content: "Fitur";
-        }
-    }
-</style>
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -142,114 +30,25 @@
                                 <div id="alert-container">
                                 </div>
                             </div>
-
-
-                            <table id="depo">
+                            <table class="table table-striped w-100 table-sm table-borderless" id="depo" style="font-size: 10px;">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>Nama</th>
-                                        <th>Versi Android</th>
-                                        <th>Tanggal Rilis</th>
-                                        <th>Versi Kernel Linux</th>
-                                        <th>Level API</th>
-                                        <th>Fitur</th>
+                                        <th class="bg-success text-white text-center">NO</th>
+                                        <!-- <th class="bg-success text-white text-center">ID</th> -->
+                                        <th class="bg-success text-white text-start">DEPO</th>
+                                        <th class="bg-success text-white text-start">RUANGAN</th>
+                                        <th class="bg-success text-white text-start">MULAI</th>
+                                        <th class="bg-success text-white text-center">SELESAI</th>
+                                        <th class="bg-success text-white text-start">STATUS</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Froyo</td>
-                                        <td>2.2</td>
-                                        <td>10 Mei 2010</td>
-                                        <td>?</td>
-                                        <td>8</td>
-                                        <td>USB tethering and Wi-Fi hotspot functionality</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Gingerbread</td>
-                                        <td>2.3</td>
-                                        <td>6 Desember 2010</td>
-                                        <td>2.6.35</td>
-                                        <td>9-10</td>
-                                        <td>Support for Near Field Communication (NFC)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Honeycomb</td>
-                                        <td>3.0</td>
-                                        <td>22 Februari 2011</td>
-                                        <td>2.6.36</td>
-                                        <td>11-13</td>
-                                        <td>Increased ability of applications to access files on the SD card</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Ice Cream Sandwich</td>
-                                        <td>4.0</td>
-                                        <td>19 Oktober 2011</td>
-                                        <td>3.0.1</td>
-                                        <td>14-15</td>
-                                        <td>Improvements to graphics, databases, spell-checking and Bluetooth functionality</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>Jelly Bean</td>
-                                        <td>4.1</td>
-                                        <td>9 Juli 2012</td>
-                                        <td>3.0.31-39</td>
-                                        <td>16-18</td>
-                                        <td>Bluetooth Audio/Video Remote Control Profile (AVRCP) 1.3 support</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>Kitkat</td>
-                                        <td>4.4</td>
-                                        <td>31 Oktober 2013</td>
-                                        <td>3.10</td>
-                                        <td>19-20</td>
-                                        <td>UI updates for Google Maps navigation and alarmsv</td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>Lollipop</td>
-                                        <td>5.0</td>
-                                        <td>12 November 2014</td>
-                                        <td>3.16</td>
-                                        <td>21-22</td>
-                                        <td>Ability to join Wi-Fi networks and control paired Bluetooth devices from quick settings</td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>Marshmallow</td>
-                                        <td>6.0</td>
-                                        <td>28 Mei 2015</td>
-                                        <td>3.18</td>
-                                        <td>23</td>
-                                        <td>Doze mode, which reduces CPU speed while the screen is off in order to save battery life</td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>Nougat</td>
-                                        <td>7.0</td>
-                                        <td>22 Agustus 2016</td>
-                                        <td>4.4</td>
-                                        <td>24-25</td>
-                                        <td>Touch/display performance improvements</td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>Oreo</td>
-                                        <td>8.0</td>
-                                        <td>21 Agustus 2017</td>
-                                        <td>4.10</td>
-                                        <td>26-27</td>
-                                        <td>Bluetooth battery level for connected devices, accessible in Quick Settings</td>
-                                    </tr>
+                                </tbody>
                             </table>
+
                         </div>
                     </div>
+
                 </div>
             </div>
     </section>
@@ -258,7 +57,6 @@
 <script>
     $(document).ready(function() {
         $('#depo').DataTable({
-            "responsive": true,
             "processing": true,
             "serverSide": true,
             "ajax": {
@@ -275,56 +73,44 @@
             },
             "columns": [{
                     "data": null,
-                    // "className": "text-center",
+                    "className": "text-center",
                     "sortable": false,
-                    "render": function(data, type, row, meta) {
-                        return `<td data-label="NO">${meta.row + meta.settings._iDisplayStart + 1}</td>`;
+                    render: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
-                {
-                    "data": "ID",
-                    // "className": "text-center",
-                    "render": function(data) {
-                        return `<td data-label="ID">${data}</td>`;
-                    }
-                },
+
+                // {
+                //     "data": "ID",
+                //     "className": "text-center",
+                //     "searchable": false
+                // },
                 {
                     "data": "NAMA_DEPO",
-                    // "className": "text-start",
-                    "render": function(data) {
-                        return `<td data-label="DEPO">${data}</td>`;
-                    }
+                    "className": "text-start"
                 },
                 {
                     "data": "NAMA_RUANGAN",
-                    "render": function(data) {
-                        return `<td data-label="RUANGAN">${data}</td>`;
-                    }
+                    // "searchable": false
                 },
                 {
                     "data": "MULAI",
-                    "render": function(data) {
-                        return `<td data-label="MULAI">${data}</td>`;
-                    }
+                    "searchable": false
                 },
                 {
                     "data": "SELESAI",
-                    // "className": "text-center",
-                    "render": function(data) {
-                        return `<td data-label="SELESAI">${data}</td>`;
-                    }
+                    "searchable": false,
+                    "className": "text-center"
                 },
                 {
                     "data": "STATUS",
-                    // "className": "text-center",
-                    "render": function(data, type, row) {
-                        return `<td data-label="STATUS">
-                        <input type="checkbox" class="dataTables_checkbox box" 
-                               ${(data == 1 ? 'checked' : '')} 
-                               data-id="${row.ID}" />
-                    </td>`;
+                    "className": "text-center",
+                    render: function(data, type, row) {
+                        return '<input type="checkbox" class="dataTables_checkbox box" data-bs-toggle="tooltip" data-bs-placement="left" title="Update Status"  ' +
+                            (data == 1 ? 'checked' : '') +
+                            ' data-id="' + row.ID + '" />';
                     }
-                }
+                },
             ],
             "pageLength": 15,
             "lengthMenu": [15, 25, 50, 75, 100],

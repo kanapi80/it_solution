@@ -91,17 +91,17 @@ document.location = "<?= base_url('admin/login-admin'); ?>";
       <a class="logo d-flex align-items-center">
         <!-- <a class="d-flex align-items-center"> -->
         <!-- <img src="/assets/img/x4.jpg" alt=""> -->
-        <img src="/assets/img/x3.png" alt="">
+        <img src="/assets/img/x3.png" alt="" style="height: 60px;">
         <!-- <img src="/assets/img/55.png" alt="" width="130px" height="60px"> -->
         <span class="d-none d-lg-block">iTRSUD</span>
         <i class="bi bi-three-dots-vertical toggle-sidebar-btn" style="color:black; font-size: 24px;"></i>
 
-        <div class="search-bar">
+        <!-- <div class="search-bar">
           <form class="search-form d-flex align-items-center" method="POST" action="<?= base_url('jkn/listpasien'); ?>">
             <input type="text" id="id" name="id" placeholder="Cari" title="Enter search keyword">
             <button type="submit" title="Search"><i class="bi bi-search"></i></button>
           </form>
-        </div>
+        </div> -->
       </a>
 
     </div>

@@ -56,7 +56,7 @@ $routes->get('sipayu/kebersamaan', 'Kebersamaan::getKebersamaan');
 $routes->get('sipayu/exportKebersamaan', 'Kebersamaan::exportKebersamaan');
 $routes->post('sipayu/doktergp', 'Kebersamaan::getdokterGP');
 $routes->get('sipayu/exportgp', 'Kebersamaan::exportDokterGP');
-$routes->get('sipayu/doktergp', 'Kebersamaan::getdokterGP');
+// $routes->get('sipayu/doktergp', 'Kebersamaan::getdokterGP');
 $routes->post('sipayu/alldokter', 'Kebersamaan::getAllDokter');
 $routes->get('sipayu/alldokter', 'Kebersamaan::getAllDokter');
 $routes->get('sipayu/exportalldokter', 'Kebersamaan::exportAllDokter');
@@ -166,3 +166,35 @@ $routes->get('jaspel/getjasaoperasi', 'JaspelController::getJasaOperasi');
 //SEP
 $routes->get('jkn/sep/(:any)', 'SepRanap::tampilkanSep/$1');
 $routes->get('jkn/getsepnew/(:any)', 'SepRanap::getSepPelayanan/$1');
+
+//KUNJUNGAN
+$routes->get('page/kunjungan', 'KunjunganController::index');
+$routes->post('page/getkunjungan', 'KunjunganController::getKunjungan');
+$routes->get('page/getruanganall', 'KunjunganController::getRuanganAll');
+
+//DETIL PASIEN
+$routes->get('pasien/detilpasien', 'DetilPasienController::index');
+// $routes->get('pasien/detilpasien/(:num)/(:num)/(:num)/(:any)/(:num)/(:any)/(:any)/(:any)/(:any)', 'DetilPasienController::index/$1/$2/$3/$4/$5/$6/$7/$8/$9');
+
+//SMARTREMUN
+$routes->get('sipayu/rekon_rajal', 'RekonRajalController::index');
+$routes->get('sipayu/getjasarajal', 'RekonRajalController::getjasarajal');
+$routes->get('sipayu/rekon_ranap', 'RekonRanapController::index');
+$routes->get('sipayu/getjasaranap', 'RekonRanapController::getjasaranap');
+$routes->get('sipayu/rekon_igd', 'RekonIGDController::index');
+$routes->get('sipayu/getjasaigd', 'RekonIGDController::getjasaigd');
+$routes->get('sipayu/rekon_operasi', 'RekonOperasiController::index');
+$routes->get('sipayu/getjasaoperasi', 'RekonOperasiController::getjasaoperasi');
+$routes->get('sipayu/rekon_radiologi', 'RekonRadiologiController::index');
+$routes->get('sipayu/getjasaradiologi', 'RekonRadiologiController::getjasaradiologi');
+$routes->get('sipayu/rekon_laboratorium', 'RekonLaboratoriumController::index');
+$routes->get('sipayu/getjasalaboratorium', 'RekonLaboratoriumController::getjasalaboratorium');
+$routes->get('sipayu/rekon_farmasi', 'RekonfarmasiController::index');
+$routes->get('sipayu/getjasafarmasi', 'RekonFarmasiController::getjasafarmasi');
+
+//SIMUTAYU
+$routes->get('simutayu/form_munas', 'SimutayuController::index');
+$routes->post('simutayu/input_munas', 'SimutayuController::inputMunas');
+$routes->get('simutayu/getIndikatorById/(:num)', 'SimutayuController::getIndikatorById/$1');
+$routes->get('simutayu/gettransindikator', 'SimutayuController::getTransIndikator');
+$routes->get('simutayu/getgrafikindikator', 'SimutayuController::getGrafikData');

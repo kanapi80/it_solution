@@ -23,4 +23,8 @@ class M_Asuransi extends Model
     {
         return $this->where('status', 2)->findAll();
     }
+    public function getpayment()
+    {
+        return $this->where('status', 1)->findAll();
+    }
 }

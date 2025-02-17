@@ -137,8 +137,8 @@
                     $pelaksana = htmlspecialchars($item['DOKTER'] . '' . $item['PERAWAT'] . ' | ' . $item['TGLVERIFIKASI']);
                     $namapelaksana = htmlspecialchars($item['DOKTER'] . '' . $item['PERAWAT']);
                     ?>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?php echo urlencode($pelaksana); ?>"
-                        alt="QR Code Perawat" width="30" height="30"><br>
+                    <!-- <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?php echo urlencode($pelaksana); ?>"
+                        alt="QR Code Perawat" width="30" height="30"><br> -->
                     <?php echo $namapelaksana; ?>
                 </td>
             </tr> <?php endforeach; ?>

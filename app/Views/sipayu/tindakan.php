@@ -119,6 +119,7 @@
                   <th>ASURANSI</th>
                   <th>RUANGAN</th>
                   <th>DOKTER</th>
+                  <th>MEDIS</th>
                   <th>PARAMEDIS</th>
                   <!-- <th>BULAN</th>
                   <th>TAHUN</th> -->
@@ -126,8 +127,12 @@
                 </tr>
                 <?php
                 $totalJasa = 0;
+                $totalJasaDokter = 0;
                 $no = 1;
-                foreach ($data as $row) :  $totalJasa += $row['JasaAsistenRvu']; ?>
+                foreach ($data as $row) :
+                  $totalJasa += $row['JasaAsisten'];
+                  $totalJasaDokter += $row['JasaMedisTindakan'];
+                ?>
                   <tr class="align-middle">
                     <td class="text-center"><?= $no++ ?></td>
                     <td><?= $row['NomorRekamMedis'] ?></td>
@@ -136,7 +141,8 @@
                     <td><?= $row['NamaAsuransi'] ?></td>
                     <td><?= $row['Poliklinik'] ?></td>
                     <td><?= $row['Dokter'] ?></td>
-                    <td class="text-end pe-4"><?= number_format($row['JasaAsistenRvu'], 2, ',', '.') ?></td>
+                    <td class="text-end pe-4"><?= number_format($row['JasaMedisTindakan'], 2, ',', '.') ?></td>
+                    <td class="text-end pe-4"><?= number_format($row['JasaAsisten'], 2, ',', '.') ?></td>
                     <!-- <td><?= $row['Monthout'] ?></td>
                     <td><?= $row['YearOut'] ?></td> -->
                     <!-- <td class="text-center"><button class="btn btn-success btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Update" onclick="window.location.href='<?= base_url('sipayu/update?id=' . $row['id']); ?>'">
@@ -154,6 +160,7 @@
                   <td class="text-end"></td>
                   <td class="text-end"></td>
                   <td class="text-end"></td>
+                  <td class="text-end pe-4"><?= number_format($totalJasaDokter, 2, ',', '.') ?></td>
                   <td class="text-end pe-4"><?= number_format($totalJasa, 2, ',', '.') ?></td>
                   <!-- <td class="text-end"></td>
                   <td class="text-end"></td> -->
