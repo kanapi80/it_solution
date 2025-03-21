@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\JenisMutuModel;
 use App\Models\IndikatorMutuModel;
+use App\Models\TipeModel;
 use App\Models\TransMutuModel;
 
 class SimutayuController extends BaseController
@@ -13,22 +14,23 @@ class SimutayuController extends BaseController
     protected $modeljenismutu;
     protected $modelindikatormutu;
     protected $modeltransindikatormutu;
+    protected $modeltipe;
 
     public function __construct()
     {
         $this->modeljenismutu = new JenisMutuModel();
         $this->modelindikatormutu = new IndikatorMutuModel();
         $this->modeltransindikatormutu = new TransMutuModel();
+        $this->modeltipe = new TipeModel();
     }
     public function index()
     {
-        // $id = $this->request->getPost('id');
-        // $nama_jenis = $this->request->getPost('nama_jenis');
-        // $data['detindikator'] = $this->modelindikatormutu->getIndikatorId($id);
+
         $data['mutus'] = $this->modeljenismutu->getJenisMutu();
         $data['mutu'] = $this->modelindikatormutu->getIndikatorMutuById();
         $data['indikator'] = $this->modelindikatormutu->getIndikatorMutu();
-        // $data['jenisNama'] = $nama_jenis;
+        $data['tipe'] = $this->modeltipe->getTipe();
+        // dd($data); // Debug data sebelum dikirim ke view
         return view('simutayu/form_munas', $data);
     }
     public  function inputMunas()
@@ -37,41 +39,16 @@ class SimutayuController extends BaseController
         $unit_id = $this->request->getPost('unit_id');
         $jenis_id = $this->request->getPost('jenis_id');
         $nama_jenis = $this->request->getPost('nama_jenis');
+        $jenis = $this->request->getPost('jenis');
         $data['mutus'] = $this->modeljenismutu->getJenisMutu();
         $data['mutu'] = $this->modelindikatormutu->getIndikatorMutuById();
         $data['indikator'] = $this->modelindikatormutu->getIndikatorMutu();
         $data['detindikator'] = $this->modelindikatormutu->getIndikatorId($id);
-        // $data['getindikator'] = $this->modelindikatormutu->getIndikatorGet($id = null, $unit_id = null, $jenis_id = null);
-
         $data['getindikator'] = $this->modelindikatormutu->getIndikatorGet($id, $unit_id, $jenis_id);
-
-        // Debug sebelum mengirim ke view
-        // echo "<pre>";
-        // print_r($data['getindikator']);
-        // echo "</pre>";
-        // exit;
-
         $data['unit_id'] = $unit_id;
         $data['jenis_id'] = $jenis_id;
         $data['nama_jenis'] = $nama_jenis;
-        // $tanggal = [
-        //     "2024-01-01",
-        //     "2024-02-01",
-        //     "2024-03-01",
-        //     "2024-04-01",
-        //     "2024-05-01",
-        //     "2024-06-01",
-        //     "2024-07-01",
-        //     "2024-08-01",
-        //     "2024-09-01",
-        //     "2024-10-01",
-        //     "2024-11-01",
-        //     "2024-12-01"
-        // ];
 
-        // $data['tanggal'] = $tanggal;
-        // print_r($data['getindikator']);
-        // exit;
         return view('simutayu/input_munas', $data);
     }
     public function getIndikatorById($id)
@@ -100,7 +77,6 @@ class SimutayuController extends BaseController
                 'message' => 'Tanggal Penilaian tidak dipilih. Data tidak ditampilkan.'
             ]);
         }
-        // Load Model
         $builder = $this->modeltransindikatormutu
             ->select('trn_indikator.indikator_id, trn_indikator.tgl_tran, trn_indikator.keterangan, trn_indikator.num, trn_indikator.denum, trn_indikator.user_id, 
            ROUND((trn_indikator.num / trn_indikator.denum) * 100, 2) AS hasil')
@@ -127,79 +103,19 @@ class SimutayuController extends BaseController
             'data' => $data
         ]);
     }
-    // public function getTransIndikator()
-    // {
-    //     $request = service('request');
-    //     $tgl_tran = $request->getVar('tgl_tran');
-    //     $unit_id = $request->getVar('unit_id');
-    //     $indikator_id = $request->getVar('indikator_id');
-
-    //     $start = (int) $request->getVar('start', FILTER_SANITIZE_NUMBER_INT); // Mulai dari data ke berapa
-    //     $length = (int) $request->getVar('length', FILTER_SANITIZE_NUMBER_INT); // Jumlah data per halaman
-    //     $draw = (int) $request->getVar('draw', FILTER_SANITIZE_NUMBER_INT); // Untuk tracking request DataTables
-
-    //     if (empty($tgl_tran)) {
-    //         return $this->response->setJSON([
-    //             'draw' => $draw,
-    //             'recordsTotal' => 0,
-    //             'recordsFiltered' => 0,
-    //             'data' => []
-    //         ]);
-    //     }
-
-    //     // Query utama tanpa limit (untuk menghitung total data)
-    //     $builder = $this->modeltransindikatormutu
-    //         ->select('trn_indikator.indikator_id, trn_indikator.tgl_tran, trn_indikator.keterangan, trn_indikator.num, trn_indikator.denum, trn_indikator.user_id');
-    //     // ->orderBy('trn_indikator.tgl_tran', 'DESC'); // Hanya ambil ID untuk count
-    //     if (!empty($unit_id)) {
-    //         $builder->where('trn_indikator.user_id', $unit_id);
-    //     }
-    //     if (!empty($tgl_tran)) {
-    //         $builder->where('DATE_FORMAT(trn_indikator.tgl_tran, "%Y-%m")', $tgl_tran);
-    //     }
-    //     $totalData = $builder->countAllResults(); // Hitung total data setelah filter
-
-    //     // Query utama dengan filter & pagination
-    //     $builder = $this->modeltransindikatormutu
-    //         ->select('trn_indikator.indikator_id, trn_indikator.tgl_tran, trn_indikator.keterangan, trn_indikator.num, trn_indikator.denum, trn_indikator.user_id');
-
-    //     if (!empty($unit_id)) {
-    //         $builder->where('trn_indikator.user_id', $unit_id);
-    //     }
-    //     if (!empty($tgl_tran)) {
-    //         $builder->where('DATE_FORMAT(trn_indikator.tgl_tran, "%Y-%m")', $tgl_tran);
-    //     }
-
-    //     // Pagination: Batasi jumlah data yang dikembalikan sesuai permintaan DataTables
-    //     if ($length != -1) { // -1 berarti tampilkan semua
-    //         $builder->limit($length, $start);
-    //     }
-
-    //     $data = $builder->orderBy('trn_indikator.tgl_tran', 'DESC')->get()->getResultArray();
-    //     // orderBy('trn_indikator.tgl_tran', 'DESC');
-
-    //     return $this->response->setJSON([
-    //         'draw' => $draw,
-    //         'recordsTotal' => $totalData, // Total semua data tanpa filter
-    //         'recordsFiltered' => $totalData, // Bisa diubah jika ada pencarian
-    //         'data' => $data
-    //     ]);
-    // }
 
     //GRAFIK
     public function getGrafikData()
     {
         $request = service('request');
+
+        if (empty($tgl_tran)) {
+            $tgl_tran = date('Y-m');
+        }
+
         $tgl_tran = $request->getVar('tgl_tran');
         $unit_id = $request->getVar('unit_id');
         $indikator_id = $request->getVar('indikator_id');
-
-        if (empty($tgl_tran)) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Tanggal Penilaian tidak dipilih.'
-            ]);
-        }
 
         $builder = $this->modeltransindikatormutu
             ->select('DAY(trn_indikator.tgl_tran) AS tanggal, ROUND((trn_indikator.num / trn_indikator.denum) * 100, 2) AS hasil')
@@ -219,5 +135,181 @@ class SimutayuController extends BaseController
             'status' => 'success',
             'data' => $data
         ]);
+    }
+    //SIMPAN DATA 
+    public function simpanData()
+    {
+        $indikator_id = $this->request->getPost('id_mutu');
+        $tgl_tran = $this->request->getPost('tgl_penilaian');
+        $user_id = $this->request->getPost('idu');
+        $nama_jenis = $this->request->getPost('jenis');
+        $unit_id = $this->request->getPost('id');
+        $jenis_id = $this->request->getPost('jenis_id');
+
+        // Validasi input
+        if (empty($indikator_id) || empty($tgl_tran)) {
+            return redirect()->back()->with('error', 'Data tidak lengkap.');
+        }
+        // Cek apakah data sudah ada berdasarkan indikator_id dan user_id
+        $existingData = $this->modeltransindikatormutu
+            ->where('indikator_id', $indikator_id)
+            ->where('tgl_tran', $tgl_tran)
+            ->where('user_id', $user_id)
+            ->first();
+
+        $data = [
+            'indikator_id' => $indikator_id,
+            'tgl_tran' => $tgl_tran,
+            'keterangan' => $this->request->getPost('keterangan'),
+            'num' => $this->request->getPost('nemurator'),
+            'denum' => $this->request->getPost('denumerator'),
+            'user_id' => $user_id
+            // 'tgl_edit' => date('Y-m-d H:i:s')
+        ];
+
+        if ($existingData) {
+            // Jika data sudah ada, lakukan update berdasarkan indikator_id dan user_id
+            $data['tgl_edit'] = date('Y-m-d H:i:s');
+            $this->modeltransindikatormutu
+                ->where('indikator_id', $indikator_id)
+                ->where('tgl_tran', $tgl_tran)
+                ->where('user_id', $user_id)
+                ->set($data)
+                ->update();
+            $message = 'Data berhasil diperbarui';
+        } else {
+            // Jika tidak ada, lakukan insert
+            $data['tgl_add'] = date('Y-m-d H:i:s');
+            $this->modeltransindikatormutu->insert($data);
+            $message = 'Data berhasil disimpan';
+        }
+
+        $id =  $indikator_id;
+        $unit_id = $unit_id;
+        $jenis_id = $jenis_id;
+        $nama_jenis = $nama_jenis;
+        $data['indikator'] = $this->modelindikatormutu->getIndikatorMutu();
+        $data['getindikator'] = $this->modelindikatormutu->getIndikatorGet($id, $unit_id, $jenis_id);
+        $data['unit_id'] = $unit_id;
+        $data['jenis_id'] = $jenis_id;
+        $data['nama_jenis'] = $nama_jenis;
+        session()->setFlashdata('success', $message);
+
+        return view('simutayu/input_munas', $data);
+    }
+    public function hapusData()
+    {
+        if ($this->request->isAJAX()) {
+            $user_id = $this->request->getPost('user_id');
+            $indikator_id = $this->request->getPost('indikator_id');
+            $tgl_tran = $this->request->getPost('tgl_tran');
+            $delete = $this->modeltransindikatormutu->where([
+                'user_id' => $user_id,
+                'indikator_id' => $indikator_id,
+                'tgl_tran' => $tgl_tran
+            ])->delete();
+
+            if ($delete) {
+                return $this->response->setJSON(['status' => 'success']);
+            } else {
+                return $this->response->setJSON(['status' => 'error']);
+            }
+        }
+    }
+    public function getDataById()
+    {
+        $user_id      = $this->request->getGet('user_id');
+        $indikator_id = $this->request->getGet('indikator_id');
+        $tgl_tran     = $this->request->getGet('tgl_tran');
+        // Validasi parameter
+        if (!$user_id || !$indikator_id || !$tgl_tran) {
+            return $this->response->setJSON([
+                "status"  => "error",
+                "message" => "Parameter tidak lengkap"
+            ]);
+        }
+        $data = $this->modeltransindikatormutu->where([
+            'user_id'      => $user_id,
+            'indikator_id' => $indikator_id,
+            'tgl_tran'     => $tgl_tran
+        ])->first();
+        if ($data) {
+            return $this->response->setJSON($data);
+        } else {
+            return $this->response->setJSON([
+                "status"  => "error",
+                "message" => "Data tidak ditemukan"
+            ]);
+        }
+    }
+
+    public function UpdateIndikator()
+    {
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'id'               => 'required|numeric',
+            // 'judul'            => 'required',
+            'tujuan'           => 'required',
+            'definisi'         => 'required',
+            'inklusi'          => 'required',
+            'eksklusi'         => 'required',
+            'numerator'        => 'required',
+            'denumerator'      => 'required',
+            'frekuensi'        => 'required',
+            'periode'          => 'required',
+            'tipe'             => 'required',
+            'sumber_data'      => 'required',
+            'penanggung_jawab' => 'required',
+            'standar'          => 'required',
+            'status'           => 'required'
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->back()->withInput()->with('error', $validation->getErrors());
+        }
+        $data = [
+            // 'judul'            => $this->request->getPost('judul'),
+            'tujuan'           => $this->request->getPost('tujuan'),
+            'definisi'         => $this->request->getPost('definisi'),
+            'inklusi'          => $this->request->getPost('inklusi'),
+            'eksklusi'         => $this->request->getPost('eksklusi'),
+            'tipe_id'        => $this->request->getPost('tipe'),
+            'frekuensi'        => $this->request->getPost('frekuensi'),
+            'periode_analisa'  => $this->request->getPost('periode'),
+            'num'        => $this->request->getPost('numerator'),
+            'denum'      => $this->request->getPost('denumerator'),
+            'sumber_data'      => $this->request->getPost('sumber_data'),
+            'nama_pj' => $this->request->getPost('penanggung_jawab'),
+            'standar'          => $this->request->getPost('standar'),
+            'stat'           => $this->request->getPost('status')
+        ];
+
+        $id = $this->request->getPost('id');
+        // dd($data);
+
+        $update = $this->modelindikatormutu->update($id, $data);
+
+        if ($update) {
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Data berhasil diperbarui.']);
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal memperbarui data.']);
+        }
+    }
+    public function DeleteIndikator($id)
+    {
+        if (!$id) {
+            return redirect()->back()->with('error', 'ID tidak valid.');
+        }
+        $indikator = $this->modelindikatormutu->find($id);
+        if (!$indikator) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+        $newStatus = ($indikator['st_indikator'] == "1") ? "0" : "1";
+        $update = $this->modelindikatormutu->update($id, ['st_indikator' => $newStatus]);
+        if ($update) {
+            return redirect()->back()->with('success', 'Status indikator berhasil diperbarui.');
+        } else {
+            return redirect()->back()->with('error', 'Gagal memperbarui status.');
+        }
     }
 }

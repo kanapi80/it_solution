@@ -9,6 +9,8 @@ use App\Models\M_Asuransi;
 use App\Models\PeriodeModel;
 use App\Models\M_Ruangan;
 use App\Models\M_Bulan;
+use App\Models\M_Registerigd;
+use App\Models\RekonRajalModel;
 
 class RekonIGDController extends BaseController
 {
@@ -16,6 +18,8 @@ class RekonIGDController extends BaseController
     protected $modelAsuransi;
     protected $modelBulan;
     protected $modelRuangan;
+    protected $modelRegister;
+    protected $modelrajal;
 
     public function __construct()
     {
@@ -23,6 +27,8 @@ class RekonIGDController extends BaseController
         $this->modelAsuransi = new M_Asuransi();
         $this->modelBulan = new M_Bulan();
         $this->modelRuangan = new M_Ruangan();
+        $this->modelRegister = new M_Registerigd();
+        $this->modelrajal = new RekonRajalModel();
     }
     public function index()
     {
@@ -75,7 +81,7 @@ class RekonIGDController extends BaseController
 
         // Mulai builder query
         $builder = $this->modeligd
-            ->select('jasamedisigd.NomorRekamMedis, SUBSTRING(jasamedisigd.NamaPasien, 1, 8) AS NamaPasiens, jasamedisigd.NamaPasien, jasamedisigd.NamaTindakan, jasamedisigd.KelompokTindakan, jasamedisigd.Dokter, jasamedisigd.NamaAsuransi,
+            ->select('jasamedisigd.IdRegisterKunjungan, jasamedisigd.NomorRekamMedis, SUBSTRING(jasamedisigd.NamaPasien, 1, 8) AS NamaPasiens, jasamedisigd.NamaPasien, jasamedisigd.NamaTindakan, jasamedisigd.KelompokTindakan, jasamedisigd.Dokter, jasamedisigd.NamaAsuransi,
                      jasamedisigd.TanggalPelayanan, jasamedisigd.poliklinik, jasamedisigd.JasaMedisRvu, jasamedisigd.Tarif,jasamedisigd.JasaMedisTindakanRvu, jasamedisigd.JasaAsistenRvu, jasamedisigd.jasaAsisten_kebersamaan, jasamedisigd.MonthOut, jasamedisigd.fpk, jasamedisigd.YearOut')
             ->where('jasamedisigd.KelompokTindakan!=', 'Akomodasi');
 
@@ -116,5 +122,21 @@ class RekonIGDController extends BaseController
 
         // Mengembalikan data dalam format JSON
         return $this->response->setJSON(['data' => $data]);
+    }
+    public function getDetailIGD()
+    {
+
+        $data = [
+            $idx = $this->request->getGet('idx'),
+            'summary' => $this->modelRegister->summaryRegisterRajal($idx),
+            'summaryTransaction' => $this->modelrajal->sumTransaksi('IGD', $idx),
+            'jasamedis' => $this->modelrajal->cariJasaMedisIGD($idx),
+            'jasalab' => $this->modelrajal->cariJasaMedisLab($idx),
+            'jasarad' => $this->modelrajal->cariJasaMedisRad($idx),
+            'jasafarmasi' => $this->modelrajal->cariJasaMedisFarmasi($idx),
+            'jasaoperasi' => $this->modelrajal->cariJasaMedisOperasi($idx),
+        ];
+
+        return view('sipayu/detail_igd', $data);
     }
 }

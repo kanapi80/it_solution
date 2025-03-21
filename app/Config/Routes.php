@@ -20,6 +20,7 @@ $routes->get('/layout/template', 'Admin::dashboard');
 $routes->get('admin/forms', 'Admin::forms');
 $routes->get('admin/widget', 'Admin::widget');
 $routes->get('/admin/logout-admin', 'Admin::logout');
+$routes->get('admin/listusers', 'Admin::getAllUser');
 // $routes->get('page/pengguna', 'Pengguna::pengguna');
 $routes->get('page/pengguna', 'Pengguna::penggunaruangan');
 $routes->post('page/getpengguna', 'Pengguna::getPengguna');
@@ -86,8 +87,12 @@ $routes->post('users/getUsers', 'Admin::getUsers');
 
 //PROBLEM
 //APS FARMASI
-$routes->get('problem/getstatusAps', 'Aps::getstatusAps');
+$routes->get('problem/getstatusaps', 'Aps::getstatusAps');
 $routes->get('problem/unLunas', 'Aps::unLunas');
+$routes->get('problem/monitoring_tte', 'TTEController::index');
+$routes->get('problem/update_monitoring', 'TTEController::UpdateBridging');
+$routes->get('problem/monitoring_jkn', 'TTEController::monitoringJKN');
+$routes->get('probelm/getlistgrouping', 'TTEController::ListGrouping');
 
 //REPORT RADIOLOGI
 $routes->get('problem/getReport', 'Report::getReport');
@@ -189,8 +194,12 @@ $routes->get('sipayu/rekon_radiologi', 'RekonRadiologiController::index');
 $routes->get('sipayu/getjasaradiologi', 'RekonRadiologiController::getjasaradiologi');
 $routes->get('sipayu/rekon_laboratorium', 'RekonLaboratoriumController::index');
 $routes->get('sipayu/getjasalaboratorium', 'RekonLaboratoriumController::getjasalaboratorium');
-$routes->get('sipayu/rekon_farmasi', 'RekonfarmasiController::index');
+$routes->get('sipayu/rekon_farmasi', 'RekonFarmasiController::index');
 $routes->get('sipayu/getjasafarmasi', 'RekonFarmasiController::getjasafarmasi');
+//DETIL
+$routes->get('sipayu/detail_rj', 'RekonRajalController::getDetailRJ');
+$routes->get('sipayu/detail_ri', 'RekonRanapController::getDetailRI');
+$routes->get('sipayu/detail_igd', 'RekonIGDController::getDetailIGD');
 
 //SIMUTAYU
 $routes->get('simutayu/form_munas', 'SimutayuController::index');
@@ -198,3 +207,34 @@ $routes->post('simutayu/input_munas', 'SimutayuController::inputMunas');
 $routes->get('simutayu/getIndikatorById/(:num)', 'SimutayuController::getIndikatorById/$1');
 $routes->get('simutayu/gettransindikator', 'SimutayuController::getTransIndikator');
 $routes->get('simutayu/getgrafikindikator', 'SimutayuController::getGrafikData');
+$routes->post('simutayu/simpan_indikator', 'SimutayuController::simpanData');
+$routes->post('simutayu/delete_indikator', 'SimutayuController::hapusData');
+$routes->get('simutayu/get_indikator', 'SimutayuController::getDataById');
+$routes->post('simutayu/update_indikator', 'SimutayuController::UpdateIndikator');
+$routes->get('simutayu/hapus_indikator/(:num)', 'SimutayuController::DeleteIndikator/$1');
+
+//SIPEJUANG
+$routes->get('sipejuang/listpengajuan', 'SipejuangController::index');
+$routes->get('sipejuang/getlistpengajuan', 'SipejuangController::getListPengajuan');
+$routes->get('sipejuang/riwayatpengajuan', 'SipejuangController::RiwayatPengajuan');
+$routes->get('sipejuang/getriwayatpengajuan', 'SipejuangController::getRiwayatPengajuan');
+$routes->get('sipejuang/getdetilpengajuan', 'SipejuangController::getDetilPengajuan');
+$routes->get('sipejuang/detilhibahselect/(:num)', 'SipejuangController::getHibahSelect/$1');
+$routes->get('sipejuang/formpengajuan', 'SipejuangController::FormPengajuan');
+$routes->post('sipejuang/baranglist', 'SipejuangController::getBarang');
+$routes->post('sipejuang/simpanpengajuan', 'SipejuangController::SavePengajuan');
+$routes->post('sipejuang/hapuspengajuan', 'SipejuangController::HapusPengajuan');
+$routes->get('sipejuang/hapuspengajuan/(:num)', 'SipejuangController::HapusPengajuan/$1');
+$routes->get('sipejuang/dashboardpengajuan', 'SipejuangController::DashboardPengajuan');
+$routes->get('sipejuang/countpengajuan', 'SipejuangController::countPengajuanByStatus');
+$routes->get('sipejuang/getgrafikpengajuan/(:num)', 'SipejuangController::getGrafikPengajuan/$1');
+
+
+
+
+
+//PDF
+$routes->get('users/pdf_view/(:any)', 'PdfController::viewPdf/$1');
+
+//API
+$routes->get('/kunjungan', 'ServiceKunjungan::getDataKunjungan');

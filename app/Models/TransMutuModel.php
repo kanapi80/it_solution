@@ -8,7 +8,7 @@ class TransMutuModel extends Model
 {
     protected $DBGroup          = 'simutayu';
     protected $table            = 'trn_indikator';
-    protected $primaryKey       = 'id';
+    // protected $primaryKey       = 'indikator_id';
     protected $allowedFields = [
         'indikator_id',
         'tgl_tran',

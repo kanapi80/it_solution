@@ -5,9 +5,11 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\RekonRanapModel;
+use App\Models\RekonRajalModel;
 use App\Models\M_Asuransi;
 use App\Models\M_Ruangan;
 use App\Models\M_Bulan;
+use App\models\M_Registerranap;
 
 class RekonRanapController extends BaseController
 {
@@ -15,6 +17,8 @@ class RekonRanapController extends BaseController
     protected $modelAsuransi;
     protected $modelBulan;
     protected $modelRuangan;
+    protected $modelRegister;
+    protected $modelrajal;
 
     public function __construct()
     {
@@ -22,6 +26,8 @@ class RekonRanapController extends BaseController
         $this->modelAsuransi = new M_Asuransi();
         $this->modelBulan = new M_Bulan();
         $this->modelRuangan = new M_Ruangan();
+        $this->modelRegister = new M_Registerranap();
+        $this->modelrajal = new RekonRajalModel();
     }
     public function index()
     {
@@ -70,7 +76,7 @@ class RekonRanapController extends BaseController
         }
         // Mulai builder query
         $builder = $this->modelranap
-            ->select('jasamedisranap.NomorRekamMedis, SUBSTRING(jasamedisranap.NamaPasien, 1, 8) AS NamaPasiens, jasamedisranap.NamaPasien, jasamedisranap.NamaTindakan, jasamedisranap.KelompokTindakan, jasamedisranap.Dokter, jasamedisranap.NamaAsuransi,
+            ->select('jasamedisranap.IdRegisterKunjungan, jasamedisranap.NomorRekamMedis, SUBSTRING(jasamedisranap.NamaPasien, 1, 8) AS NamaPasiens, jasamedisranap.NamaPasien, jasamedisranap.NamaTindakan, jasamedisranap.KelompokTindakan, jasamedisranap.Dokter, jasamedisranap.NamaAsuransi,
                      jasamedisranap.TanggalPelayanan, jasamedisranap.poliklinik, jasamedisranap.JasaMedisRvu, jasamedisranap.Tarif,jasamedisranap.JasaMedisTindakanRvu, jasamedisranap.JasaAsistenRvu, jasamedisranap.jasaAsisten_kebersamaan, jasamedisranap.MonthOut, jasamedisranap.fpk, jasamedisranap.YearOut')
             ->where('jasamedisranap.KelompokTindakan!=', 'Akomodasi');
         // Filter berdasarkan ruangan jika ada
@@ -101,5 +107,21 @@ class RekonRanapController extends BaseController
             ->findAll();
         // Mengembalikan data dalam format JSON
         return $this->response->setJSON(['data' => $data]);
+    }
+    public function getDetailRI()
+    {
+
+        $data = [
+            $idx = $this->request->getGet('idx'),
+            'summary' => $this->modelRegister->summaryRegisterRanap($idx),
+            'summaryTransaction' => $this->modelrajal->sumTransaksi('RI', $idx),
+            'jasamedis' => $this->modelrajal->cariJasaMedisRanap($idx),
+            'jasalab' => $this->modelrajal->cariJasaMedisLab($idx),
+            'jasarad' => $this->modelrajal->cariJasaMedisRad($idx),
+            'jasafarmasi' => $this->modelrajal->cariJasaMedisFarmasi($idx),
+            'jasaoperasi' => $this->modelrajal->cariJasaMedisOperasi($idx),
+        ];
+
+        return view('sipayu/detail_ri', $data);
     }
 }

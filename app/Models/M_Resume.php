@@ -36,4 +36,11 @@ class M_Resume extends Model
         $query = $this->db->query("CALL medicalrecord.CetakTriage(?, ?)", [$nokunValue, $st]);
         return $query->getResultArray();
     }
+
+    public function getCetakTriaseranap($no_spri, $st)
+    {
+        // $st = 1;
+        $query = $this->db->query("CALL medicalrecord.CetakTriage(?, ?)", [$no_spri, $st]);
+        return $query->getResultArray();
+    }
 }

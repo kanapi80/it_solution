@@ -122,6 +122,21 @@
             </tr>
         </table>
     <?php endif; ?>
+    <br><br>
+    <table width="100%" style="padding: 0px;border:none;margin-bottom:2px;font-size:9px">
+        <tr>
+            <td class="text-center" width="70%">&nbsp;</td>
+            <td class="text-center" width="30%">Indramayu, <?php echo date('d-m-Y', strtotime($firstRow['TANGGALBAYAR'])); ?><br>
+
+                Petugas<br>
+
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($firstRow['PENGGUNA']); ?>" alt="QR Code" width="30" height="30"><br>
+                <?php echo $firstRow['PENGGUNA']; ?>
+
+
+            </td>
+        </tr>
+    </table>
 </body>
 
 </html>

@@ -19,6 +19,8 @@ use App\Controllers\RequestController;
 use App\Models\IcdModel;
 use Config\Services;
 use PHPUnit\Util\Json;
+use App\Models\InacbgModel;
+
 
 class SepRanap extends BaseController
 {
@@ -149,7 +151,7 @@ class SepRanap extends BaseController
         session()->setFlashdata('success', 'Data Tidak Ada !');
         return view('jkn/cetakresume', [
             'results' => $data['results'],
-            'id' => $id,
+            // 'id' => $id,
             'nokun' => $no_spri
 
         ]);
@@ -172,6 +174,7 @@ class SepRanap extends BaseController
             $cpptm = new M_Cppt();
             $kunjunganModel = new M_Kunjungan();
             $penunjangModel = new PenunjangModel();
+            $lip = new InacbgModel();
             $id = $this->request->getGet('id');
             $notag = $this->request->getGet('notag');
             $lab1 = $this->request->getGet('lab1');
@@ -183,6 +186,7 @@ class SepRanap extends BaseController
             $cppt1 = $this->request->getGet('cppt1');
             $cppt2 = $this->request->getGet('cppt2');
             $nokunValue = $this->request->getGet('nokun');
+            $kd_kelas = $this->request->getGet('kd_kelas');
             $lab3 = $this->request->getGet('lab3');
             $lab4 = $this->request->getGet('lab4');
             $data['resume'] = $model->getCetakResume($id);
@@ -197,8 +201,12 @@ class SepRanap extends BaseController
             $data['penunjang'] = $penunjangModel->getGambarPenunjang($no_SEP);
             $data['spri'] = $sep->getCetakSPRI($no_spri);
             $data['labrirj'] = $lab->getCetakLaboratorium($lab4, $lab3);
+            $data['labigd'] = $lab->getCetakLaboratoriumIGD($lab4, $lab3);
             // $data['labrajal'] = $labs->getHasilLaboratoriumRajal($no_spri);
             $data['seplive'] = $issepexist['data'];
+            // $data['triase'] = $model->getCetakTriase($nokunValue, $st);
+            $data['triase'] = $model->getCetakTriaseranap($no_spri, $st);
+            $data['lip'] = $lip->getCetakLIP($id, $kd_kelas);
             // Check if data is available
 
             if (empty($data['resume'])) {
@@ -217,6 +225,8 @@ class SepRanap extends BaseController
             // $html7 = view('jkn/pdfcetakgambar', $data);
             $html9 = view('jkn/pdfcetaklaboratoriumranaprajal', $data);
             $seplive = view('jkn/pdfcetakseplive', $data);
+            $lip = view('jkn/pdfcetaklip', $data);
+            $triase = view('jkn/pdfcetaktriase', $data);
 
             $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
             $pdf->setPrintHeader(false);
@@ -246,6 +256,12 @@ class SepRanap extends BaseController
                 $pdf->write2DBarcode($pasien, 'QRCODE,L', $x, $y, $width, $height, $style);
                 $pdf->writeHTML($html2, true, false, false, false, '');
                 $pdf->SetAutoPageBreak(FALSE, 0);
+            }
+            //LIP
+            if (count($data['lip']) > 0) {
+                $pdf->AddPage('P', array(210, 297)); //A4
+                $pdf->SetFont('helvetica', '', 9);
+                $pdf->writeHTML($lip, true, false, false, false, '');
             }
             if (count($data['spri']) > 0) {
                 $pdf->SetMargins(5, 5, 5);
@@ -284,15 +300,29 @@ class SepRanap extends BaseController
                 $pdf->writeHTML($html4, true, false, false, false, '');
             }
             // Halaman Ketiga (LABORATORIUMRAJALRANAP)
-            // if (count($data['labrajal']) > 0) {
-            //     $pdf->SetMargins(5, 5, 5);
-            //     $pdf->AddPage('P');
-            //     $pdf->writeHTML($html9, true, false, false, false, '');
-            // }
+            if (count($data['labigd']) > 0) {
+                $pdf->SetMargins(5, 5, 5);
+                $pdf->AddPage('P');
+                $pdf->writeHTML($html9, true, false, false, false, '');
+            }
             // Halaman Keempat (RADIOLOGI)
             if (count($data['rad']) > 0) {
                 $pdf->AddPage('P');
                 $pdf->writeHTML($html5, true, false, false, false, '');
+            }
+            // Halaman Triase
+            if (count($data['triase']) > 0) {
+                // $pdf->AddPage('P');
+                $pdf->AddPage('P', array(210, 310)); //A4
+                // $pdf->writeHTML($triase, true, false, false, false, '');
+                $dt = $data['triase'][0];
+                $perawat = strtoupper($dt['NAMA_LENGKAP']);
+                $x = 153;
+                $y = 265;
+                $width = 15;
+                $height = 15;
+                $pdf->write2DBarcode($perawat, 'QRCODE,L', $x, $y, $width, $height);
+                $pdf->writeHTML($triase, true, false, false, false, '');
             }
             if (count($data['penunjang']) > 0) {
                 // Nonaktifkan auto page break

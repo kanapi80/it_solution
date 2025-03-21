@@ -9,6 +9,7 @@
             width: 100%;
             border-collapse: collapse;
             border: 1px solid black;
+            padding: 0px;
         }
 
         .table-no-border {
@@ -52,7 +53,7 @@
 <body>
 
     <?php foreach ($cpptm as $row) : ?>
-        <table style="border: 0px solid black;font-size:9px">
+        <table width="98%" style="border: 0px solid black;font-size:9px">
             <tr>
                 <td width="15%" rowspan="5" style="border-collapse:collapse;border-left: 0px solid black">
                     <div style="vertical-align: middle;text-align:center;line-height:70%;"><img src="/assets/img/rs.jpg" width="50px" height="50px"></div>
@@ -107,7 +108,7 @@
             </tr>
         </table>
     <?php endforeach; ?>
-    <table width="100%" style="border: 0px solid black;font-size: 9px">
+    <!-- <table width="100%" style="border: 0px solid black;font-size: 9px">
         <tr style="font-weight: bold;font-size: 9px;text-align: center;">
             <td width="11%" align="center" style="border-collapse: collapse;border-right: 0px solid black">
                 <div style="vertical-align: middle;">TGL / JAM</div>
@@ -137,12 +138,12 @@
                     $pelaksana = htmlspecialchars($item['DOKTER'] . '' . $item['PERAWAT'] . ' | ' . $item['TGLVERIFIKASI']);
                     $namapelaksana = htmlspecialchars($item['DOKTER'] . '' . $item['PERAWAT']);
                     ?>
-                    <!-- <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?php echo urlencode($pelaksana); ?>"
-                        alt="QR Code Perawat" width="30" height="30"><br> -->
-                    <?php echo $namapelaksana; ?>
-                </td>
-            </tr> <?php endforeach; ?>
-    </table>
+                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?php echo urlencode($pelaksana); ?>"
+                        alt="QR Code Perawat" width="30" height="30"><br> 
+    <?php echo $namapelaksana; ?>
+    </td>
+    </tr> <?php endforeach; ?>
+</table> -->
 
 
 </body>

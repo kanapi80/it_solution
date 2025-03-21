@@ -1,5 +1,27 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
+<style>
+  /* Menghilangkan semua garis pada tabel */
+  #example,
+  #example thead,
+  #example tbody,
+  #example th,
+  #example td,
+  #example tr {
+    border: none !important;
+  }
+
+  /* Opsional: Menghilangkan garis bawah di header */
+  #example thead th {
+    border-bottom: none !important;
+  }
+
+  /* Opsional: Menghilangkan garis pemisah antar baris */
+  #example tbody tr {
+    border-bottom: none !important;
+  }
+</style>
+
 <main id="main" class="main">
 
   <div class="pagetitle">
@@ -78,5 +100,35 @@
     });
   });
 </script>
+<style>
+  /* Menghilangkan border pada pagination */
+  .dataTables_paginate .pagination {
+    border: none;
+  }
+
+  /* Menghilangkan border di setiap tombol */
+  .dataTables_paginate .pagination .page-item .page-link {
+    border: none;
+    box-shadow: none;
+    /* Menghilangkan efek bayangan */
+    background: transparent;
+    /* Opsional: Buat transparan */
+    color: #007bff;
+    /* Warna teks */
+  }
+
+  /* Hover efek agar tetap terlihat */
+  .dataTables_paginate .pagination .page-item .page-link:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+  }
+
+  /* Menghilangkan background pada tombol aktif */
+  .dataTables_paginate .pagination .page-item.active .page-link {
+    background-color: transparent;
+    color: #0056b3;
+    font-weight: bold;
+  }
+</style>
+
 
 <?= $this->endsection() ?>

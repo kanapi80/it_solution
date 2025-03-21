@@ -56,10 +56,7 @@ class Report extends BaseController
     {
         // Load database
         $db = \Config\Database::connect('inacbg');
-
-        // Ambil parameter dari query string
         $nopen = $this->request->getGet('nopen');
-
         // Validasi input
         if (!$nopen) {
             return $this->response->setJSON([
@@ -67,20 +64,31 @@ class Report extends BaseController
                 'message' => 'NOPEN is required.'
             ]);
         }
-
         try {
-            // Query to execute
+            // Cek apakah NOPEN ada dan apakah DATA dalam format JSON
+            $queryCheck = $db->query("SELECT DATA FROM inacbg.grouping WHERE NOPEN = ?", [$nopen]);
+            $result = $queryCheck->getRow();
+            if (!$result) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'NOPEN not found.'
+                ]);
+            }
+            // Periksa apakah DATA adalah JSON valid
+            json_decode($result->DATA);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'DATA is not valid JSON.'
+                ]);
+            }
             $query = "UPDATE inacbg.grouping
-                       SET DATA = JSON_SET(
-                           JSON_SET(JSON_SET(DATA, '$.status', 0), '$.verifikasiRM', 0), 
-                           '$.aktifitas_berkas', JSON_ARRAY()
-                       )
-                       WHERE NOPEN = ?";
-
-            // Execute query with binding
+                   SET DATA = JSON_SET(
+                       JSON_SET(JSON_SET(CAST(DATA AS JSON), '$.status', 0), '$.verifikasiRM', 0, '$.klaimBaru', false), 
+                       '$.aktifitas_berkas', JSON_ARRAY()
+                   )
+                   WHERE NOPEN = ?";
             $db->query($query, [$nopen]);
-
-            // Check affected rows
             if ($db->affectedRows() > 0) {
                 return $this->response->setJSON([
                     'status' => 'success',

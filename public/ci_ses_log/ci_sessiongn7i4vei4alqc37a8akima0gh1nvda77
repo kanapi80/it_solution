@@ -1,0 +1,1 @@
+__ci_last_regenerate|i:1741231782;_ci_previous_url|s:39:"http://localhost:8081/admin/login-admin";Ses_UserName|s:13:"Administrator";Ses_Foto|N;isLoggedIn|b:1;error|s:24:"Username Tidak Ditemukan";__ci_vars|a:2:{s:5:"error";s:3:"old";s:13:"_ci_old_input";s:3:"old";}_ci_old_input|a:2:{s:3:"get";a:0:{}s:4:"post";a:2:{s:8:"username";s:6:"dfasdf";s:8:"password";s:7:"asdfasd";}}

@@ -120,6 +120,7 @@
                                     <th class="bg-success text-white text-start" width="8%">MEDIS</th>
                                     <th class="bg-success text-white text-start" width="8%">PARAMEDIS</th>
                                     <th class="bg-success text-white text-start" width="6%">KEBERSAMAAN</th>
+                                    <th class="bg-success text-white text-start" width="6%">DETAIL</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -134,6 +135,7 @@
                                     <th class="bg-success text-white"></th>
                                     <th class="bg-success text-white"></th>
                                     <th colspan="2" class="text-end bg-success text-white">JUMLAH</th>
+                                    <th class="bg-success text-white text-end"></th>
                                     <th class="bg-success text-white text-end"></th>
                                     <th class="bg-success text-white text-end"></th>
                                     <th class="bg-success text-white text-end"></th>
@@ -315,6 +317,13 @@
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2
                         }).format(data);
+                    }
+                },
+                {
+                    data: null,
+                    className: 'text-center text-middle',
+                    render: function(data, type, row) {
+                        return '<button class="btn btn-outline-success btn-xsx" data-bs-toggle="tooltip" data-bs-placement="left" title="Lihat Detail" type="button" onclick="window.open(\'<?= base_url('sipayu/detail_igd') ?>?idx=' + row.IdRegisterKunjungan + '\', \'_blank\')" style="font-size: 10px;padding: 0px 4px"> <i class="bi bi-eye-fill"></i> </button>';
                     }
                 }
             ],

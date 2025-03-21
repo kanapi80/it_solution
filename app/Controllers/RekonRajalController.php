@@ -7,6 +7,7 @@ use App\Models\RekonRajalModel;
 use App\Models\M_Asuransi;
 use App\Models\M_Ruangan;
 use App\Models\M_Bulan;
+use App\models\M_Registerrajal;
 
 class RekonRajalController extends BaseController
 {
@@ -14,6 +15,7 @@ class RekonRajalController extends BaseController
     protected $modelAsuransi;
     protected $modelBulan;
     protected $modelRuangan;
+    protected $modelRegister;
 
     public function __construct()
     {
@@ -21,6 +23,7 @@ class RekonRajalController extends BaseController
         $this->modelAsuransi = new M_Asuransi();
         $this->modelBulan = new M_Bulan();
         $this->modelRuangan = new M_Ruangan();
+        $this->modelRegister = new M_Registerrajal();
     }
     public function index()
     {
@@ -73,7 +76,7 @@ class RekonRajalController extends BaseController
 
         // Mulai builder query
         $builder = $this->modelrajal
-            ->select('jasamedisrajal.NomorRekamMedis, SUBSTRING(jasamedisrajal.NamaPasien, 1, 8) AS NamaPasiens, jasamedisrajal.NamaPasien, jasamedisrajal.NamaTindakan, jasamedisrajal.KelompokTindakan, jasamedisrajal.Dokter, jasamedisrajal.NamaAsuransi,
+            ->select('jasamedisrajal.IdRegisterKunjungan, jasamedisrajal.NomorRekamMedis, SUBSTRING(jasamedisrajal.NamaPasien, 1, 8) AS NamaPasiens, jasamedisrajal.NamaPasien, jasamedisrajal.NamaTindakan, jasamedisrajal.KelompokTindakan, jasamedisrajal.Dokter, jasamedisrajal.NamaAsuransi,
                      jasamedisrajal.TanggalPelayanan, jasamedisrajal.poliklinik, jasamedisrajal.JasaMedisRvu, jasamedisrajal.Tarif,jasamedisrajal.JasaMedisTindakanRvu, jasamedisrajal.JasaAsistenRvu, jasamedisrajal.jasaAsisten_kebersamaan, jasamedisrajal.MonthOut, jasamedisrajal.fpk, jasamedisrajal.YearOut')
             ->where('jasamedisrajal.KelompokTindakan!=', 'Akomodasi');
 
@@ -114,5 +117,21 @@ class RekonRajalController extends BaseController
 
         // Mengembalikan data dalam format JSON
         return $this->response->setJSON(['data' => $data]);
+    }
+    public function getDetailRJ()
+    {
+
+        $data = [
+            $idx = $this->request->getGet('idx'),
+            'summary' => $this->modelRegister->summaryRegisterRajal($idx),
+            'summaryTransaction' => $this->modelrajal->sumTransaksi('RJ', $idx),
+            'jasamedis' => $this->modelrajal->cariJasaMedisRajal($idx),
+            'jasalab' => $this->modelrajal->cariJasaMedisLab($idx),
+            'jasarad' => $this->modelrajal->cariJasaMedisRad($idx),
+            'jasafarmasi' => $this->modelrajal->cariJasaMedisFarmasi($idx),
+            'jasaoperasi' => $this->modelrajal->cariJasaMedisOperasi($idx),
+        ];
+
+        return view('sipayu/detail_rj', $data);
     }
 }

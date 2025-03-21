@@ -1,6 +1,15 @@
 <?= $this->extend('layout/template_pasien'); ?>
 <?= $this->section('content'); ?>
-
+<style>
+  .nav-pills .nav-link {
+    border-radius: 0 0 0 0 !important;
+    /* Hanya sudut kanan bawah */
+    padding: 4px 15px !important;
+    border: 1px solid rgb(242, 243, 243) !important;
+    /* box-shadow: 0 2px 6px rgba(235, 232, 232, 0.1); */
+    /* Shadow di bawah */
+  }
+</style>
 <main id="main" class="main">
 
   <!-- <div class="pagetitle">
@@ -19,7 +28,7 @@
     <div class="row">
       <div class="col-xl-3">
 
-
+        <!-- 
         <section class="section">
           <div class="row">
 
@@ -31,7 +40,7 @@
               </div>
             </div>
           </div>
-        </section>
+        </section> -->
 
         <section class="section">
           <div class="row">
@@ -39,8 +48,8 @@
             <?php foreach ($cpptm as $row) : ?>
               <div class="col-12 col-md-12 col-lg-12">
                 <div class="card text-body bg-light mb-3">
-                  <div class="card-header fw-bold fs-6 text-primary p-2 m-0 ps-2">
-                    <span class="badge bg-primary  rounded-0"><?php echo ($row['JK']); ?></span> <?= esc($norm) ?> - <?php echo strtoupper(esc($nama)); ?>
+                  <div class="card-header fw-bold fs-7 text-primary p-2 m-0 ps-2">
+                    <span class="badge bg-primary  rounded-1"><?php echo ($row['JK']); ?></span> <?= esc($norm) ?> - <?php echo strtoupper(esc($nama)); ?>
                   </div>
                   <div class="card-body p-2 ps-3 text-secondary">
                     <?php echo $row['TEMPAT_LAHIR'], ' , ',
@@ -163,9 +172,9 @@
         <div class="card">
           <div class="card-body pt-3">
             <!-- Bordered Tabs -->
-            <ul class="nav nav-tabs nav-tabs-bordered">
+            <ul class="nav nav-pills rounded-0">
 
-              <li class="nav-item">
+              <li class="nav-item ">
                 <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#cppt"><i class="bi bi-file-earmark-medical"></i> CPPT</button>
               </li>
 
@@ -182,20 +191,20 @@
               </li>
 
               <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#download"><i class="bi bi-file-easel"></i> Download</button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#download"><i class="bi bi-cloud-download"></i> Download</button>
               </li>
 
             </ul>
             <div class="tab-content pt-2">
 
               <div class="tab-pane fade show active profile-overview" id="cppt">
-                <div class="container mt-3">
+                <div class="container-fluid mt-3 p-0 m-0 w-100">
                   <?php if (!empty($cppt)): ?>
                     <?php foreach ($cppt as $item) : ?>
-                      <section class="section mb-0 pb-0 pt-0">
-                        <div class="row g-0">
-                          <div class="col-12">
-                            <div class="card text-black bg-light mb-0 ">
+                      <section class="section mb-0 pb-0 pt-0 w-100">
+                        <div class="row g-0 w-100">
+                          <div class="col-12 p-0 m-0">
+                            <div class="card text-black bg-light mb-0 w-100 ">
                               <div class="card-header p-1 m-0 ps-2 ">
                                 <?php
                                 $badgeColor = ($item['JNSPPA'] == 'Perawat') ? 'bg-info' : 'bg-success';
@@ -211,23 +220,47 @@
                                 ?>
                                 <b><?php echo $namapelaksana; ?></b>
                               </div>
-                              <div class="card-body p-2 ps-3 text-black  fw-lighter shadow-none">
-                                <?php echo strip_tags($item['CATATAN']); ?>
+
+                              <div class="card-body p-2 ps-3 text-black fw-lighter shadow-none" style="font-size: 11px;">
+                                <div class="fw-bold card-header p-0 m-0 text-dark">CATATAN</div>
+                                <?php
+                                $catatan = htmlspecialchars_decode($item['CATATAN']); // Decode karakter HTML
+                                $catatan = str_replace(["\r\n", "\r"], "\n", $catatan);
+                                $catatan = str_replace("&nbsp;", " ", $catatan);
+                                $catatan = preg_replace('/<div>\s*<\/div>/', '', $catatan);
+                                $catatan = preg_replace('/<div>/', "\n", $catatan);
+                                $catatan = preg_replace('/<\/div>/', "", $catatan);
+                                $catatan = preg_replace('/(<br\s*\/?>\s*){2,}/', "\n", $catatan);
+                                $catatan = preg_replace("/\n\s*\n+/", "\n", $catatan);
+                                $catatan = trim($catatan);
+                                echo nl2br($catatan);
+                                ?>
                               </div>
-                              <div class="card-header p-1 ps-2 text-secondary">
-                                <?php echo strip_tags($item['INSTRUKSI']); ?>
+
+                              <div class="card-header p-1 ps-3 text-dark fw-lighter" style="font-size: 11px;">
+                                <div class="fw-bold card-header p-0 m-0 text-dark">INSTRUKSI</div>
+                                <?php
+                                $instruksi = htmlspecialchars_decode($item['INSTRUKSI']); // Decode karakter HTML
+                                $instruksi = str_replace(["\r\n", "\r"], "\n", $instruksi);
+                                $instruksi = str_replace("&nbsp;", " ", $instruksi);
+                                $instruksi = preg_replace('/<div>\s*<\/div>/', '', $instruksi);
+                                $instruksi = preg_replace('/<div>/', "\n", $instruksi);
+                                $instruksi = preg_replace('/<\/div>/', "", $instruksi);
+                                $instruksi = preg_replace('/(<br\s*\/?>\s*){2,}/', "\n", $instruksi);
+                                $instruksi = preg_replace("/\n\s*\n+/", "\n", $instruksi);
+                                $instruksi = trim($instruksi);
+                                echo nl2br($instruksi);
+                                ?>
                               </div>
+
                             </div>
+
                           </div>
                         </div>
                       </section>
                     <?php endforeach; ?>
-
-
-
                   <?php endif; ?>
                 </div>
-
               </div>
 
               <div class="tab-pane fade profile-edit pt-3" id="billing">
@@ -246,59 +279,49 @@
                             $firstRow = $billing[0];
                             ?>
                             <tr>
-                              <td width="22%">No. Rekam Medis </td>
-                              <td width="31%"> <?php echo $firstRow['NORM']; ?></td>
-                              <td width="20%">No. Tagihan</td>
-                              <td width="27%"> <?php echo $firstRow['TAGIHAN']; ?></td>
+                              <td width="12%">No. Rekam Medis </td>
+                              <td width="33%">: <?php echo $firstRow['NORM']; ?></td>
+                              <td width="12%">No. Tagihan</td>
+                              <td width="33%">: <?php echo $firstRow['TAGIHAN']; ?></td>
                             </tr>
                             <tr>
                               <td>Nama Lengkap</td>
-                              <td> <?php echo $firstRow['NAMALENGKAP']; ?></td>
+                              <td>: <?php echo $firstRow['NAMALENGKAP']; ?></td>
                               <td>Tgl. Tagihan</td>
-                              <td> <?php echo $firstRow['TANGGALTAGIHAN']; ?></td>
+                              <td>: <?php echo $firstRow['TANGGALTAGIHAN']; ?></td>
                             </tr>
                             <tr>
                               <td>Jenis Kelamin / Umur</td>
-                              <td> <?php echo $firstRow['UMUR']; ?></td>
+                              <td>: <?php echo $firstRow['UMUR']; ?></td>
                               <td>Cara Bayar</td>
-                              <td> <?php echo $firstRow['CARABAYAR']; ?></td>
+                              <td>: <?php echo $firstRow['CARABAYAR']; ?></td>
                             </tr>
                             <tr>
                               <td>Tanggal Registerasi</td>
-                              <td> <?php echo $firstRow['TANGGALREG']; ?></td>
+                              <td>: <?php echo $firstRow['TANGGALREG']; ?></td>
                               <td>No. Jaminan</td>
-                              <td> <?php echo $firstRow['NOMORKARTU']; ?></td>
+                              <td>: <?php echo $firstRow['NOMORKARTU']; ?></td>
                             </tr>
                             </tbody>
                           </table>
                         </div>
-                        <div class="card-body p-2 ps-3 text-secondary">
-                          <table class="w-100" style="font-size: 10px;">
-                            <tr class="fw-bold fs-6 ">
-                              <td width="50%" class="text-start ">
-                                <div class="badge bg-success text-start rounded-1" style="width: 100%;">
-                                  UNIT / TINDAKAN PEMERIKSAAN
-                                </div>
+                        <div class="card-body p-0">
+                          <table class="table table-sm w-100 bg-none" style="font-size: 10px;">
+                            <tr class="fw-bold">
+                              <td width="50%" class="bg-success text-white text-start">
+                                UNIT / TINDAKAN PEMERIKSAAN
                               </td>
-                              <td width="16%" class="text-center">
-                                <div class="badge bg-success text-wrap rounded-1" style="width: 100%;">
-                                  TANGGAL
-                                </div>
+                              <td width="16%" class="bg-success text-white text-center">
+                                TANGGAL
                               </td>
-                              <td width="8%" class="text-center">
-                                <div class="badge bg-success text-wrap rounded-1" style="width: 100%;">
-                                  JUMLAH
-                                </div>
+                              <td width="8%" class="bg-success text-white text-center">
+                                JUMLAH
                               </td>
-                              <td width="14%" class="text-end">
-                                <div class="badge bg-success text-wrap rounded-1" style="width: 100%;">
-                                  HARGA
-                                </div>
+                              <td width="14%" class="bg-success text-white text-end">
+                                HARGA
                               </td>
-                              <td width="15%" class="text-end">
-                                <div class="badge bg-success  text-wrap rounded-1" style="width: 100%;">
-                                  TOTAL
-                                </div>
+                              <td width="15%" class="bg-success text-white text-end">
+                                TOTAL
                               </td>
                             </tr>
                             <?php
@@ -408,19 +431,19 @@
                   }
                   ?>
 
-                  <table class="w-100">
-                    <tr class="fw-bold fs-6">
-                      <td width="50%" style="border-bottom: 0px solid black; border-top: 0px solid black;">
-                        <div class="badge bg-success text-wrap rounded-1" style="width: 100%;">PEMERIKSAAN</div>
+                  <table class="table table-sm w-100" style="font-size: 10px;">
+                    <tr class="fw-bold bg-success text-white">
+                      <td width="50%" class="fw-bold bg-success text-white" style="border-bottom: 0px solid black; border-top: 0px solid black;">
+                        PEMERIKSAAN
                       </td>
-                      <td width="15%" style="border-bottom: 0px solid black; border-top: 0px solid black;">
-                        <div class="badge bg-success text-wrap rounded-1" style="width: 100%;">HASIL</div>
+                      <td width="15%" class="fw-bold bg-success text-white text-center" style="border-bottom: 0px solid black; border-top: 0px solid black;">
+                        HASIL
                       </td>
-                      <td width="25%" style="border-bottom: 0px solid black; border-top: 0px solid black;">
-                        <div class="badge bg-success text-wrap rounded-1" style="width: 100%;">NILAI RUJUKAN</div>
+                      <td width="25%" class="fw-bold bg-success text-white text-center" style="border-bottom: 0px solid black; border-top: 0px solid black;">
+                        NILAI RUJUKAN
                       </td>
-                      <td width="10%" style="border-bottom: 0px solid black; border-top: 0px solid black;">
-                        <div class="badge bg-success text-wrap rounded-1" style="width: 100%;">SATUAN</div>
+                      <td width="10%" class="fw-bold bg-success text-white text-center" style="border-bottom: 0px solid black; border-top: 0px solid black;">
+                        SATUAN
                       </td>
                     </tr>
 
@@ -432,8 +455,7 @@
                       <!-- Tampilkan Nama Tindakan dan Tanggal berdasarkan baris pertama dalam grup -->
                       <tr>
                         <td colspan="4" class="dashed-line">
-                          <span class="badge bg-secondary text-wrap rounded-1 text-start text-white" style="width: 20%;"> <?php echo htmlspecialchars($firstRows['TANGGAL']); ?></span><br>
-                          <b><?php echo htmlspecialchars($firstRows['NAMA']); ?></b>
+                          <b><?php echo htmlspecialchars($firstRows['NAMA']); ?> | <?php echo htmlspecialchars($firstRows['TANGGAL']); ?></b>
                         </td>
                       </tr>
 
@@ -458,7 +480,7 @@
                       <td width="30%" class="text-center">
                         Indramayu, <?php echo htmlspecialchars($firstRow['TGLSKRG']); ?><br>
                         Dokter Yang Memeriksa<br>
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($firstRow['DOKTER']); ?>" alt="QR Code" width="50" height="50"><br>
+                        <!-- <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($firstRow['DOKTER']); ?>" alt="QR Code" width="50" height="50"><br> -->
                         <u><?php echo htmlspecialchars($firstRow['DOKTER']); ?></u><br>
                         NIP. <?php echo htmlspecialchars($firstRow['NIPDPJP']); ?>
                       </td>
@@ -473,8 +495,10 @@
                           <div class="card-header p-1 m-0 ps-2">
                             <i class="bi bi-back"></i> HASIL PEMERIKSAAN
                           </div>
-                          <div class="card-body p-2 ps-3 text-dark">
-                            Pasien Tidak Melakukan Pemeriksaan Laboratorium
+                          <div class="card-body p-2 ps-3 text-dark text-center">
+
+                            <img src="/assets/img/nodata.png" alt="" style="height: 350px;">
+                            <!-- Pasien Tidak Melakukan Pemeriksaan Laboratorium -->
                           </div>
                         </div>
                       </div>
@@ -492,42 +516,42 @@
                   <?php foreach ($rad as $row) : ?>
                     <table width="100%" class="table-no-border" style="font-size: 10px;">
                       <tr>
-                        <td width="15%">No. RM</td>
+                        <td width="15%" class="ps-3">No. RM</td>
                         <td width="35%">: <?php echo htmlspecialchars($row['NORM'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td width="15%">No. Registrasi</td>
                         <td width="35%">: <?php echo htmlspecialchars($row['NOPEN'], ENT_QUOTES, 'UTF-8'); ?></td>
                       </tr>
                       <tr>
-                        <td>Nama Lengkap</td>
+                        <td class="ps-3">Nama Lengkap</td>
                         <td>: <?php echo htmlspecialchars($row['NAMALENGKAP'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td>Tgl. Registrasi</td>
                         <td>: <?php echo htmlspecialchars($row['TGLREG'], ENT_QUOTES, 'UTF-8'); ?></td>
                       </tr>
                       <tr>
-                        <td>JK / Umur</td>
+                        <td class="ps-3">JK / Umur</td>
                         <td>: <?php echo htmlspecialchars($row['JKTGLALHIR'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td>Tgl. Hasil</td>
                         <td>: <?php echo htmlspecialchars($row['TANGGAL'], ENT_QUOTES, 'UTF-8'); ?></td>
                       </tr>
                       <tr>
-                        <td>Alamat</td>
+                        <td class="ps-3">Alamat</td>
                         <td>: <?php echo htmlspecialchars($row['ALAMAT'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td>Nama Tindakan</td>
                         <td>: <?php echo htmlspecialchars($row['NAMATINDAKAN'], ENT_QUOTES, 'UTF-8'); ?></td>
                       </tr>
                       <tr>
-                        <td>Unit Pengantar</td>
+                        <td class="ps-3">Unit Pengantar</td>
                         <td>: <?php echo htmlspecialchars($row['UNITPENGANTAR'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td rowspan="2">Diagnosa</td>
                         <td rowspan="2">: <?php echo htmlspecialchars($row['DIAGNOSA'], ENT_QUOTES, 'UTF-8'); ?></td>
                       </tr>
                       <tr>
-                        <td>Dokter Perujuk</td>
+                        <td class="ps-3">Dokter Perujuk</td>
                         <td>: <?php echo htmlspecialchars($row['DOKTERASAL'], ENT_QUOTES, 'UTF-8'); ?></td>
                       </tr>
                     </table>
 
-                    <section class="section">
+                    <section class="section mt-3">
                       <div class="row">
                         <div class="col-12 col-md-12 col-lg-12">
                           <div class="card text-dark bg-light">
@@ -568,7 +592,7 @@
                             </div>
                             <div class="card-body p-2 ps-3 text-dark">
                               Konsulen <br>
-                              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo $row['DOKTER']; ?>" alt="QR Code" width="70" height="70"><br>
+                              <!-- <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo $row['DOKTER']; ?>" alt="QR Code" width="70" height="70"><br> -->
                               <u><?php echo $row['DOKTER']; ?></u><br>
                               NIP. <?php echo $row['NIPDOKTER']; ?>
                             </div>
@@ -588,8 +612,10 @@
                           <div class="card-header p-1 m-0 ps-2">
                             <i class="bi bi-back"></i> HASIL PEMERIKSAAN
                           </div>
-                          <div class="card-body p-2 ps-3 text-black">
-                            Pasien Tidak Melakukan Pemeriksaan Radiologi
+                          <div class="card-body p-2 ps-3 text-black text-center">
+
+                            <img src="/assets/img/nodata.png" alt="" style="height: 350px;">
+                            <!-- Pasien Tidak Melakukan Pemeriksaan Radiologi -->
                           </div>
                         </div>
                       </div>

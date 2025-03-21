@@ -74,7 +74,7 @@
         </tbody>
     </table>
 
-    <table width="98%" style="font-size: 9px;border-collapse: collapse;border: 0px solid black;margin-top: 20px;padding: 1px">
+    <table width="98%" style="font-size: 8px;border-collapse: collapse;border: 0px solid black;margin-top: 20px;padding: 1px">
         <tr style="background-color: #ddd; font-weight: bold;">
             <td width="66%" style="border-left: border:0px solid black ;border-bottom:0px solid black;border-top:border:0px solid black ;">UNIT LAYANAN </td>
             <!-- <td width="44%" style="border-bottom: 0px solid black;border-top: border:0px solid black ;">TINDAKAN PEMERIKSAAN </td> -->
@@ -120,7 +120,7 @@
     </table>
     <br>
     <br>
-    <table width="100%" style="padding: 0px;border:none;margin-bottom:2px;font-size:9px">
+    <table width="100%" style="padding: 0px;border:none;margin-bottom:2px;font-size:8px">
         <tr>
             <td class="text-center" width="70%">&nbsp;</td>
             <td class="text-center" width="30%">Indramayu, <?php echo date('d-m-Y', strtotime($firstRow['TANGGALBAYAR'])); ?><br>

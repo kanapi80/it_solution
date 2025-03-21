@@ -120,6 +120,7 @@
                                     <th class="bg-success text-white text-start" width="8%">MEDIS</th>
                                     <th class="bg-success text-white text-start" width="8%">PARAMEDIS</th>
                                     <th class="bg-success text-white text-start" width="6%">KEBERSAMAAN</th>
+                                    <th class="bg-success text-white text-start" width="6%">DETAIL</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -134,6 +135,7 @@
                                     <th class="bg-success text-white"></th>
                                     <th class="bg-success text-white"></th>
                                     <th colspan="2" class="text-end bg-success text-white">JUMLAH</th>
+                                    <th class="bg-success text-white text-end"></th>
                                     <th class="bg-success text-white text-end"></th>
                                     <th class="bg-success text-white text-end"></th>
                                     <th class="bg-success text-white text-end"></th>
@@ -326,6 +328,14 @@
                             maximumFractionDigits: 2
                         }).format(data);
                     }
+                },
+                {
+                    data: null,
+                    className: 'text-center text-middle',
+                    render: function(data, type, row) {
+                        // return '<button class="btn btn-outline-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="left" title="Lihat Detail" type="button" onclick="window.location.href=\'<?= base_url('pasien/detilpasien') ?>?nopen=' + row.NOPEN + '&nokun=' + row.NOKUN + '&norm=' + row.NOPASIEN + '&nama=' + row.PASIEN + '&tagihan=' + row.TAGIHAN + '&keylab1=' + row.KEYLAB1 + '&keylab2=' + row.KEYLAB2 + '&tujuan_order=' + row.TUJUAN_ORDER + '&keyrad=' + row.KEYRAD + '\', \'_blank\'"> <i class="bi bi-eye-fill"></i> </button>';
+                        return '<button class="btn btn-outline-success btn-xsx" data-bs-toggle="tooltip" data-bs-placement="left" title="Lihat Detail" type="button" onclick="window.open(\'<?= base_url('sipayu/detail_rj') ?>?idx=' + row.IdRegisterKunjungan + '\', \'_blank\')" style="font-size: 10px;padding: 0px 4px"> <i class="bi bi-eye-fill" ></i> </button>';
+                    }
                 }
             ],
             "createdRow": function(row, data, dataIndex) {
@@ -337,6 +347,7 @@
             language: {
                 "emptyTable": "Tidak ada data yang tersedia",
                 "zeroRecords": "<div class='btn btn-secondary btn-sm' style='font-size: 10px;'>DATA TIDAK TERSEDIA</div>"
+                // "zeroRecords": "<div class='btn btn-secondary btn-sm' style='font-size: 10px;'> <img src=' /assets/img/nodata.png' style='height:150px;'></div>"
             },
 
             "initComplete": function(settings, json) {

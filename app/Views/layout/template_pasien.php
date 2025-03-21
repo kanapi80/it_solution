@@ -60,23 +60,24 @@
 
 
 
-  <header id="header" class="header fixed-top d-flex align-items-center bg-success">
+  <header id="header" class="header fixed-top d-flex align-items-center back-header">
     <div class="container-fluid d-flex justify-content-between">
       <!-- Logo atau Menu -->
 
       <a class="logo d-flex align-items-center">
-        <img src="/assets/img/x6.png" alt="">
+        <img src="/assets/img/kunci2.png" alt="" style="height: 55px;">
+        <!-- <span class="d-none d-lg-block text-white"> <img src="/assets/img/rs.png" alt="" style="height: 30px;"></span> -->
         <div class="search-bar text-white">
           <span class="d-none d-lg-block text-white fs-6"><?= esc($norm) ?> </span>
           <span class="d-none d-lg-block text-white" style="font-size: smaller; letter-spacing: 0.1em;"><?php echo strtoupper(esc($nama)); ?></span>
-          <span class="d-none d-lg-block text-white" style="font-size: x-small;">No.Pendaftaran : <?php echo strtoupper(esc($nopen)); ?></span>
+          <span class="d-none d-lg-block text-white" style="font-size:10px;font-weight:normal;letter-spacing: 0.1em;">No.Pendaftaran : <?php echo strtoupper(esc($nopen)); ?></span>
         </div>
       </a>
 
       <!-- Nama di tengah saat mode HP -->
-      <div class="d-block d-lg-none text-center flex-grow-1">
+      <div class="d-block d-lg-none text-center flex-grow-1 p-0 g-0">
         <span class="text-white fw-bold fs-5"><?= esc($norm) ?> </span><br>
-        <span class="text-white fw-bold fs-sm"><?= strtoupper(esc($nama)) ?></span>
+        <span class="text-white fw-bold fs-sm "><?= strtoupper(esc($nama)) ?></span>
       </div>
 
       <!-- Info tambahan atau menu di kanan -->
@@ -89,23 +90,7 @@
 
   </header>
 
-  <script>
-    function confirmLogout() {
-      Swal.fire({
-        title: <?= json_encode(session('Ses_NamaAdmin')) ?>,
-        text: "Kamu Yakin Ingin Keluar !",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Keluar!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = '<?= base_url('admin/logout-admin'); ?>';
-        }
-      });
-    }
-  </script>
+
 
   <!-- SIDEBAR -->
   <?php /*$this->include('layout/pasien.php');*/ ?>

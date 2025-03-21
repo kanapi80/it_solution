@@ -120,7 +120,7 @@
                         <br> <br><?php echo $row['CETAKAN']; ?>
                     </td>
                     <td align="center" colspan="2">Pasien/ Keluarga Pasien
-                        <br><br><br><br>_______________
+
                     </td>
                 </tr>
             <?php endforeach; ?>

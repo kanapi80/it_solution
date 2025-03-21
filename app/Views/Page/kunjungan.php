@@ -31,10 +31,7 @@
                                 <input type="text" name="nama" class="form-control form-control-sm" id="nama" placeholder="Nama Pasien ...">
                             </div>
                             <div class="col-md-2">
-                                <input type="date" name="tanggal" id="tanggal" value="<?= (session()->get('Ses_Tupoksi') == 'RAWAT INAP' ||
-                                                                                            session()->get('Ses_Tupoksi') == 'LABORATORIUM' ||
-                                                                                            session()->get('Ses_Tupoksi') == 'RADIOLOGI' ||
-                                                                                            session()->get('Ses_Tupoksi') == 'KAMAR OPERASI') ? '' : date('Y-m-d'); ?>" class="form-control form-control-sm">
+                                <input type="date" name="tanggal" id="tanggal" value="<?= (session()->get('Ses_Tupoksi') == 'RAWAT INAP' || session()->get('Ses_Tupoksi') == 'LABORATORIUM' || session()->get('Ses_Tupoksi') == 'RADIOLOGI' || session()->get('Ses_Tupoksi') == 'KAMAR OPERASI') ? '' : date('Y-m-d'); ?>" class="form-control form-control-sm">
                             </div>
                             <div class="col-md-2">
                                 <select id="status" class="form-select form-select-sm">
@@ -171,7 +168,7 @@
                     className: 'text-center text-middle',
                     render: function(data, type, row) {
                         // return '<button class="btn btn-outline-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="left" title="Lihat Detail" type="button" onclick="window.location.href=\'<?= base_url('pasien/detilpasien') ?>?nopen=' + row.NOPEN + '&nokun=' + row.NOKUN + '&norm=' + row.NOPASIEN + '&nama=' + row.PASIEN + '&tagihan=' + row.TAGIHAN + '&keylab1=' + row.KEYLAB1 + '&keylab2=' + row.KEYLAB2 + '&tujuan_order=' + row.TUJUAN_ORDER + '&keyrad=' + row.KEYRAD + '\', \'_blank\'"> <i class="bi bi-eye-fill"></i> </button>';
-                        return '<button class="btn btn-outline-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="left" title="Lihat Detail" type="button" onclick="window.open(\'<?= base_url('pasien/detilpasien') ?>?nopen=' + row.NOPEN + '&nokun=' + row.NOKUN + '&norm=' + row.NOPASIEN + '&nama=' + encodeURIComponent(row.PASIEN) + '&tagihan=' + row.TAGIHAN + '&keylab1=' + encodeURIComponent(row.KEYLAB1) + '&keylab2=' + encodeURIComponent(row.KEYLAB2) + '&tujuan_order=' + encodeURIComponent(row.TUJUAN_ORDER) + '&keyrad=' + encodeURIComponent(row.KEYRAD) + '&nosep=' + encodeURIComponent(row.NOSEP) + '\', \'_blank\')"> <i class="bi bi-eye-fill"></i> </button>';
+                        return '<button class="btn btn-outline-success btn-xsx" data-bs-toggle="tooltip" data-bs-placement="left" title="Lihat Detail" type="button" onclick="window.open(\'<?= base_url('pasien/detilpasien') ?>?nopen=' + row.NOPEN + '&nokun=' + row.NOKUN + '&norm=' + row.NOPASIEN + '&nama=' + encodeURIComponent(row.PASIEN) + '&tagihan=' + row.TAGIHAN + '&keylab1=' + encodeURIComponent(row.KEYLAB1) + '&keylab2=' + encodeURIComponent(row.KEYLAB2) + '&tujuan_order=' + encodeURIComponent(row.TUJUAN_ORDER) + '&keyrad=' + encodeURIComponent(row.KEYRAD) + '&nosep=' + encodeURIComponent(row.NOSEP) + '\', \'_blank\')"> <i class="bi bi-eye-fill"></i> </button>';
                     }
                 }
 

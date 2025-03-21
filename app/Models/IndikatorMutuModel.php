@@ -20,15 +20,16 @@ class IndikatorMutuModel extends Model
         'definisi',
         'inklusi',
         'eksklusi',
+        'frekuensi',
         'tipe_id',
         'periode_analisa',
-        'rum',
+        'num',
         'denum',
         'sumber_data',
         'standar',
         'nama_pj',
         'stat',
-        'status'
+        'st_indikator'
     ];
 
     public function getIndikatorMutu()
@@ -45,6 +46,20 @@ class IndikatorMutuModel extends Model
             ->orderBy('mj.order', 'ASC');
         return $query;
     }
+    // public function getIndikatorMutuById()
+    // {
+    //     $unit_id = session('Ses_Ruangan');
+
+    //     $query = $this->select("m_indikator.*, mj.nama as NamaJenis")
+    //         ->join('m_jenis mj', 'm_indikator.jenis_id = mj.id', 'left')
+    //         ->where('m_indikator.unit_id', $unit_id)
+    //         ->where('m_indikator.st_indikator', 1)
+    //         ->orderBy('mj.order', 'ASC')
+    //         ->get(); // 🛠 Eksekusi Query
+
+    //     return $query->getResultArray(); // 🔥 Ambil hasilnya sebagai array
+    // }
+
     public function getIndikatorId($id)
     {
         $query = $this->select("m_indikator.*, mjs.nama as NamaJenisx")

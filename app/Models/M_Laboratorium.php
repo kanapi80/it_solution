@@ -32,4 +32,16 @@ class M_Laboratorium extends Model
         $query = $this->db->query("CALL pendaftaran.jkn_lab(?)", [$no_spri]);
         return $query->getResultArray();
     }
+
+    public function getCetakLaboratoriumIGD($lab4, $lab3)
+    {
+        try {
+            $db = \Config\Database::connect($this->DBGroup);
+            $query = $db->query("CALL layanan.cetakHasilLab(?, ?)", [$lab4, $lab3]);
+            return $query->getResultArray();
+        } catch (\Throwable $e) {
+            log_message('error', 'Error executing CetakHasilLab: ' . $e->getMessage());
+            return [];
+        }
+    }
 }

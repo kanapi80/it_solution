@@ -14,12 +14,15 @@ use App\Models\M_Tagihan;
 use App\Models\M_Listpasien;
 use App\Models\PenunjangModel;
 use TCPDF;
+use App\Models\M_Medicalrecord;
 use Endroid\QrCode\Builder\Builder;
+use App\Models\InacbgModel;
 
 
 
 class Sep extends BaseController
 {
+
     public function cetakSep($no_SEP = '')
     {
         $model = new M_Sep();
@@ -123,6 +126,8 @@ class Sep extends BaseController
         $cpptm = new M_Cppt();
         $kunjunganModel = new M_Kunjungan();
         $penunjangModel = new PenunjangModel();
+        $rehabmedik = new M_Medicalrecord();
+        $lip = new InacbgModel();
         $id = $this->request->getGet('id');
         $notag = $this->request->getGet('notag');
         $lab1 = $this->request->getGet('lab1');
@@ -133,6 +138,7 @@ class Sep extends BaseController
         $cppt1 = $this->request->getGet('cppt1');
         $cppt2 = $this->request->getGet('cppt2');
         $nokunValue = $this->request->getGet('nokun');
+        $kd_kelas = $this->request->getGet('kd_kelas');
         $data['resume'] = $model->getCetakResume($id);
         $data['sep'] = $sep->getCetakSEP($no_SEP);
         $data['billing'] = $billing->getCetakBilling($notag, $st);
@@ -144,6 +150,8 @@ class Sep extends BaseController
         $data['nokun'] = $kunjunganModel->getCetakResumeAdd($nokunValue);
         $data['penunjang'] = $penunjangModel->getGambarPenunjang($no_SEP);
         $data['triase'] = $model->getCetakTriase($nokunValue, $st);
+        $data['rehab'] = $rehabmedik->getrehabmedik($nokunValue);
+        $data['lip'] = $lip->getCetakLIP($id, $kd_kelas);
         // Check if data is available
 
         if (empty($data['resume'])) {
@@ -157,8 +165,9 @@ class Sep extends BaseController
         $html4 = view('jkn/pdfcetaklaboratorium', $data);
         $html5 = view('jkn/pdfcetakradiologi', $data);
         $html6 = view('jkn/pdfcetakcppt', $data);
-        $html9 = view('jkn/pdfcetaktriase', $data);
+        $triase = view('jkn/pdfcetaktriase', $data);
         $rehab = view('jkn/pdfcetakrehabmedik', $data);
+        $lip = view('jkn/pdfcetaklip', $data);
         // $html7 = view('jkn/pdfcetakgambar', $data);
 
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -166,51 +175,146 @@ class Sep extends BaseController
         $pdf->setPrintFooter(false);
         $pdf->SetFont('times', '', 11);
         // QR Code Style
-        $style = array(
-            'border' => 0,
-            'vpadding' => 'auto',
-            'hpadding' => 'auto',
-            'fgcolor' => array(0, 0, 0),
-            'bgcolor' => false,
-            'module_width' => 1,
-            'module_height' => 1
-        );
+        // $style = array(
+        //     'border' => 0,
+        //     'vpadding' => 'auto',
+        //     'hpadding' => 'auto',
+        //     'fgcolor' => array(0, 0, 0),
+        //     'bgcolor' => false,
+        //     'module_width' => 1,
+        //     'module_height' => 1
+        // );
 
-        // if (count($data['sep']) > 0) {
-        //     $pdf->SetMargins(5, 5, 5);
-        //     $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
-        //     $pdf->AddPage('L', array(98, 250));
-        //     $sep = $data['sep'][0];
-        //     $pasien = strtoupper($sep['NAMALENGKAP']);
-        //     $x = 183;
-        //     $y = 72;
-        //     $width = 15;
-        //     $height = 15;
-        //     $pdf->write2DBarcode($pasien, 'QRCODE,L', $x, $y, $width, $height, $style);
+        if (count($data['sep']) > 0) {
+            $pdf->SetMargins(5, 5, 5);
+            $pdf->SetAutoPageBreak(TRUE, 1); // Atur auto page break
+            $pdf->AddPage('L', array(98, 250));
+            $sep = $data['sep'][0];
+            $pasien = strtoupper($sep['NAMALENGKAP']);
+            $x = 183;
+            $y = 72;
+            $width = 15;
+            $height = 15;
+            $qrSize = 10;
+            $pdf->write2DBarcode($pasien, 'QRCODE,L', $x, $y, $width, $qrSize);
+            $pdf->writeHTML($html2, true, false, false, false, '');
+            $pdf->SetAutoPageBreak(FALSE, 0);
+        }
 
-
-        //     $pdf->writeHTML($html2, true, false, false, false, '');
-        //     $pdf->SetAutoPageBreak(FALSE, 0);
-        // }
-
-        // // Halaman Pertama (RESUME)
+        // Halaman Pertama (RESUME)
         // $pdf->AddPage('P', array(210, 297));
         // $resume = $data['resume'][0];
         // $dokter = strtoupper($resume['DOKTERDPJP']);
-        // $pdf->writeHTML($html, true, false, false, false, '');
+        // $pdf->writeHTML($resume, true, false, false, false, '');
         //--------------------------------------------------------------
+        // Halaman Pertama (LIP)
+        // $pdf->AddPage('P', array(216, 356)); //Legal
+        if (count($data['lip']) > 0) {
+            $pdf->AddPage('P', array(210, 297)); //A4
+            $pdf->SetFont('helvetica', '', 9);
+            $pdf->writeHTML($lip, true, false, false, false, '');
+        }
+        // END LIP
+        if (count($data['cppt']) > 0) {
+            $pdf->AddPage('P', array(210, 290));
+            $pdf->SetLeftMargin(8);
+            $pdf->SetRightMargin(8);
+            $pdf->writeHTML('<div style="padding-left: 20px;">' . $html6 . '</div>', true, false, false, false, '');
+            $pdf->SetFont('times', 'B', 9);
+            $pdf->SetLeftMargin(10);
 
-        // Halaman Kedua (CPPT)
-        // $pdf->AddPage('P',);
+            // **Dapatkan total lebar halaman tanpa margin**
+            $pageWidth = $pdf->GetPageWidth() - PDF_MARGIN_LEFT - PDF_MARGIN_RIGHT;
+
+            // **Set lebar kolom agar totalnya = 100% halaman**
+            $colTanggal   = $pageWidth * 0.12;
+            $colPelaksana = $pageWidth * 0.12;
+            $colHasil     = $pageWidth * 0.42;
+            $colInstruksi = $pageWidth * 0.24;
+            $colQR        = $pageWidth * 0.15;
+
+            // **Header Tabel**
+            $pdf->Cell($colTanggal, 11, 'TANGGAL', 1, 0, 'C');
+            $pdf->Cell($colPelaksana, 11, 'PELAKSANA', 1, 0, 'C');
+
+            // **HASIL ASSESSMENT pakai MultiCell**
+            $x = $pdf->GetX();
+            $y = $pdf->GetY();
+            $pdf->MultiCell($colHasil, 11, "HASIL ASSESSMENT\nPENATALAKSANAAN PASIEN/SOAP", 1, 'C');
+            $pdf->SetXY($x + $colHasil, $y);
+
+            $pdf->Cell($colInstruksi, 11, 'INSTRUKSI', 1, 0, 'C');
+            $pdf->Cell($colQR, 11, 'PROFESI & DPJP', 1, 1, 'C');
+            $pdf->SetFont('times', '', 9);
+
+            // **Loop Data Tabel**
+            foreach ($data['cppt'] as $row) {
+                $tanggal   = $row['TANGGAL'];
+                $pelaksana = $row['JNSPPA'];
+                $hasil     = html_entity_decode(strip_tags($row['CATATAN']));
+                $instruksi = html_entity_decode(strip_tags($row['INSTRUKSI']));
+                $dokter    = $row['DOKTER']; // Nama dokter untuk QR
+                $perawat   = $row['PERAWAT']; // Nama Perawat/DPJP
+                $pelaksana == "P" ? "PERAWAT" : "DOKTER";
+                $profesi = $row['DOKTER'] . $row['PERAWAT'];
+
+                $lineHeight = 5;
+                $height1 = $lineHeight * $pdf->getNumLines($tanggal, $colTanggal);
+                $height2 = $lineHeight * $pdf->getNumLines($pelaksana, $colPelaksana);
+                $height3 = $lineHeight * $pdf->getNumLines($hasil, $colHasil);
+                $height4 = $lineHeight * $pdf->getNumLines($instruksi, $colInstruksi);
+                $heightQR = 22; // Lebih besar agar cukup untuk QR & DPJP
+
+                $rowHeight = max($height1, $height2, $height3, $height4, $heightQR, 15);
+
+                if ($pdf->GetY() + $rowHeight > $pdf->GetPageHeight() - 15) {
+                    $pdf->AddPage();
+                }
+
+                $startX = $pdf->GetX();
+                $startY = $pdf->GetY();
+
+                $pdf->MultiCell($colTanggal, $rowHeight, $tanggal, 1, 'C', 0, 0);
+                $pdf->SetXY($startX + $colTanggal, $startY);
+                $pdf->MultiCell($colPelaksana, $rowHeight, $pelaksana, 1, 'L', 0, 0);
+                $pdf->SetXY($startX + $colTanggal + $colPelaksana, $startY);
+                $pdf->MultiCell($colHasil, $rowHeight, $hasil, 1, 'L', 0, 0);
+                $pdf->SetXY($startX + $colTanggal + $colPelaksana + $colHasil, $startY);
+                $pdf->MultiCell($colInstruksi, $rowHeight, $instruksi, 1, 'L', 0, 0);
+
+                // **Kolom QR Code**
+                $pdf->SetXY($startX + $colTanggal + $colPelaksana + $colHasil + $colInstruksi, $startY);
+                $pdf->Cell($colQR, $rowHeight, '', 1, 0, 'C');
+
+                // **Posisi QR Code**
+                $qrSize = 8; // Ukuran QR lebih besar
+                $qrX = $startX + $colTanggal + $colPelaksana + $colHasil + $colInstruksi + ($colQR - $qrSize) / 2;
+                $qrY = $startY + 2; // QR diletakkan di atas
+
+                $pdf->write2DBarcode($dokter, 'QRCODE,L', $qrX, $qrY, $qrSize, $qrSize);
+
+                // **Tampilkan Nama DPJP di bawah QR**
+                $pdf->SetFont('times', '', 8);
+                $pdf->SetXY($startX + $colTanggal + $colPelaksana + $colHasil + $colInstruksi, $qrY + $qrSize + 2); // Pastikan posisi tepat di bawah QR
+                // $pdf->Cell($colQR, 5, $profesi, 0, 0, 'C'); // Gunakan Cell agar tidak terpotong
+                $pdf->MultiCell($colQR, 11, $profesi, 0, 'C');
+
+                // **Pindah ke baris berikutnya**
+                $pdf->SetY($startY + $rowHeight);
+            }
+        }
+
+
+
         // // $cppt = $data['cppt'][0];
         // $pdf->SetMargins(10, 10, 10);
         // $pdf->AddPage('P', array(210, 297));
         // $pdf->writeHTML($html6, true, false, false, false, '');
-        //  // Halaman Kedua (BILLING)
-        // if (count($data['billing']) > 0) {
-        //     $pdf->AddPage('P');
-        //     $pdf->writeHTML($html3, true, false, false, false, '');
-        // }
+        // Halaman Kedua (BILLING)
+        if (count($data['billing']) > 0) {
+            $pdf->AddPage('P');
+            $pdf->writeHTML($html3, true, false, false, false, '');
+        }
         // Halaman Ketiga (LABORATORIUM)
         if (count($data['lab']) > 0) {
             $pdf->AddPage('P');
@@ -225,13 +329,30 @@ class Sep extends BaseController
         }
         // Halaman Triase
         if (count($data['triase']) > 0) {
-            $pdf->AddPage('P');
-            $pdf->writeHTML($html9, true, false, false, false, '');
+            $pdf->AddPage('P', array(210, 310)); //A4
+            $dt = $data['triase'][0];
+            $perawat = strtoupper($dt['NAMA_LENGKAP']);
+            $x = 153;
+            $y = 270;
+            $width = 15;
+            $height = 15;
+            $pdf->write2DBarcode($perawat, 'QRCODE,L', $x, $y, $width, $height);
+            $pdf->writeHTML($triase, true, false, false, false, '');
         }
         // Halaman RehabMedik
-        if (count($data['billing']) > 0) {
+        if (count($data['rehab']) > 0) {
             $pdf->AddPage('P');
+            $dok = $data['rehab'][0];
+            $dokter = strtoupper($dok['DPJP']);
+            $x = 164.5;
+            $y = 220;
+            $width = 15;
+            $height = 15;
             $pdf->writeHTML($rehab, true, false, false, false, '');
+            $pdf->write2DBarcode($dokter, 'QRCODE,L', $x, $y, $width, $height);
+            $pdf->SetFont('times', '', 8);
+            $pdf->SetXY($x - 6, $y + $height + 0.5);
+            $pdf->Text($x - 6, $y + $height + 0.5, $dokter);
         }
         if (count($data['penunjang']) > 0) {
             // Nonaktifkan auto page break

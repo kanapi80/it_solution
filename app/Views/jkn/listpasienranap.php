@@ -66,7 +66,7 @@
                   <button class="btn btn-outline-success btn-sm w-100 mb-2" data-bs-toggle="modal" data-bs-target="#uploadModal<?php echo $row['NOSEP']; ?>" data-nosep="<?php echo $row['NOSEP']; ?>" title="Upload Gambar" data-bs-toggle="tooltip">
                     <i class="bi bi-upload"></i> Upload
                   </button>
-                  <button class="btn btn-success btn-sm w-100" onclick="window.open('<?= base_url('jkn/pdfbpjsranap?id=' . urlencode($row['NOPEN']) . '&notag=' . urlencode($row['TAGIHAN']) . '&lab1=' . urlencode($row['KEYLAB1']) . '&lab2=' . urlencode($row['KEYLAB2']) . '&idr=' . urlencode($row['KEYRAD']) . '&no_SEP=' . urlencode($row['NOSEP']) . '&cppt1=' . urlencode($row['NOPEN']) . '&cppt2=' . urlencode($row['NOMOR']) . '&no_spri=' . urlencode($row['NO_SPRI']) . '&nokun=' . urlencode($row['NOMOR']) . '&lab3=' . urlencode($row['KEYLAB3']) . '&lab4=' . urlencode($row['KEYLAB4'])); ?>', '_blank')">
+                  <button class="btn btn-success btn-sm w-100" onclick="window.open('<?= base_url('jkn/pdfbpjsranap?id=' . urlencode($row['NOPEN']) . '&notag=' . urlencode($row['TAGIHAN']) . '&lab1=' . urlencode($row['KEYLAB1']) . '&lab2=' . urlencode($row['KEYLAB2']) . '&idr=' . urlencode($row['KEYRAD']) . '&no_SEP=' . urlencode($row['NOSEP']) . '&cppt1=' . urlencode($row['NOPEN']) . '&cppt2=' . urlencode($row['NOMOR']) . '&no_spri=' . urlencode($row['NO_SPRI']) . '&nokun=' . urlencode($row['NOMOR']) . '&lab3=' . urlencode($row['KEYLAB3']) . '&lab4=' . urlencode($row['KEYLAB4']) . '&kd_kelas=' . urlencode($row['kdKelas'])); ?>', '_blank')">
                     <i class="bi bi-download"></i> Download
                   </button>
                 </div>

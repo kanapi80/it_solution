@@ -147,7 +147,7 @@
                     </td>
                     <td class="text-center" width="50%">Indramayu, <?php echo $row['TANGGAL']; ?><br>
                         Konsulen <br>
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo $row['DOKTER']; ?>" alt="QR Code" width="70" height="70"><br>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo $row['DOKTER']; ?>" alt="QR Code" width="40" height="40"><br>
                         <u><?php echo $row['DOKTER']; ?></u><br>
                         NIP. <?php echo $row['NIPDOKTER']; ?>
                     </td>

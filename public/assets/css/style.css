@@ -351,7 +351,7 @@ h6 {
 .nav-tabs-bordered .nav-link.active {
   background-color: #fff;
   color: #4154f1;
-  border-bottom: 2px solid #4154f1;
+  border-bottom: 22px solid #4154f1;
 }
 
 /*--------------------------------------------------------------
@@ -387,15 +387,15 @@ h6 {
 .header {
   transition: all 0.5s;
   z-index: 997;
-  height: 60px;
-  /* height: 55px; */
+  /* height: 60px; */
+  height: 55px;
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px; */
   /* box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px; */
   /* box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px; */
-  background-color: #fff;
+  /* background-color: #fff; */
   /* background-image: radial-gradient(circle, #404241 0%, #fff 70%); */
-  padding-left: 20px;
+  padding-left: 10px;
   /* Toggle Sidebar Button */
   /* Search Bar */
 }
@@ -1560,3 +1560,239 @@ letter-spacing: 2px;
     height: 350px;           /* Tentukan tinggi grafik sesuai kebutuhan */
 }
 
+#reportsChart {
+  width: 100% !important;
+  max-width: 100%;
+}
+
+input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  width: 100%;
+  /* Sesuaikan lebar */
+  padding: 8px 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  /* border-radius: 5px; */
+  background-color: #fff;
+}
+
+/* Tambahkan ikon kalender secara manual */
+input[type="date"]::before {
+  content: "\1F4C5";
+  /* Unicode ikon kalender 📅 */
+  font-size: 16px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+
+input[type="date"],
+input[type="month"] {
+  cursor: pointer;
+}
+
+/* Menghapus ikon default */
+input[type="date"],
+input[type="month"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  /* width: 200px; */
+  /* Sesuaikan ukuran */
+  padding: 8px 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  /* border-radius: 5px; */
+  background-color: #fff;
+}
+
+/* Tambahkan ikon kalender manual */
+input[type="date"]::after,
+input[type="month"]::after {
+  content: "\1F4C5";
+  /* Unicode untuk ikon kalender 📅 */
+  font-size: 16px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.btn-xsl {
+  padding: 4px 11px;
+  font-size: 12px;
+  line-height: 1,5;
+  border-radius: 2px;
+  box-shadow:rgba(106, 106, 108, 1);
+}
+.fs-custom {
+  font-size: 12px; /* Sesuaikan ukuran */
+}
+.btn-shadow {
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.btn-shadow:hover {
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+}
+.form-select-xsx {
+  font-size: 11px;
+  padding: 2px 6px;
+  height: 24px;
+  border-radius: 3px;
+}
+.subtitle {
+  font-size: 12px;
+  font-family: "Nunito", sans-serif;
+  color: #252526;
+  font-weight: 600;
+}
+.back-header{
+  background: linear-gradient(to bottom right, rgb(3, 130, 66), rgb(2, 88, 66));
+  /* background: linear-gradient(to bottom right, rgb(2, 88, 66), rgb(4, 159, 81)); */
+    box-shadow: 
+   10px 0 20px rgba(0, 0, 0, 0.1),  /* Shadow kanan lebih smooth */
+    -10px 0 20px rgba(0, 0, 0, 0.1); /* Sha
+  
+  /* /* box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.4); */
+} 
+.bsrl {
+  box-shadow: 
+    6px 0 8px rgba(0, 0, 0, 0.4),  /* Shadow di kanan */
+    -6px 0 8px rgba(0, 0, 0, 0.4); /* Shadow di kiri */
+}
+/* .back-header {
+  background: rgb(2, 88, 66);
+    background: linear-gradient(45deg, rgba(2, 88, 66) 42%, rgba(4, 159, 81) 60%, rgba(2, 88, 66) 6%,  rgba(4, 159, 81) 60%,);
+} */
+
+/* Efek Default */
+.toggle-sidebar-btn {
+  color: white;
+  font-size: 24px;
+  transition: color 0.5s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Efek Hover */
+.toggle-sidebar-btn:hover {
+  animation: rotateColor 1s linear infinite;
+  transform: scale(1.2); /* Ukuran font membesar */
+}
+
+/* Animasi perubahan warna */
+@keyframes rotateColor {
+  0% { color: rgb(255, 255, 255); } /* Putih */
+  25% { color: rgb(144, 238, 144); } /* Hijau muda */
+  50% { color: rgb(0, 255, 127); } /* Spring Green */
+  75% { color: rgb(50, 205, 50); } /* Lime Green */
+  100% { color: rgb(255, 255, 255); } /* Kembali ke putih */
+}
+
+/* Detail Jasa */
+#myTable {
+  border-collapse: collapse;
+  /* Collapse borders */
+}
+
+#myTable td {
+  border: 1px solid #000;
+}
+
+#myTable tr {
+  border: 1px solid #000;
+
+}
+
+#myTable1 {
+  border-collapse: collapse;
+}
+
+#myTable1 tr {
+  border: 1px solid #e3e2e2;
+}
+
+#myTable1 th {
+  border: 1px solid #e3e2e2;
+}
+
+#myTable1 td {
+  border: 1px solid #e3e2e2;
+}
+
+#myTable tr {
+  height: 23px;
+}
+
+.cont {
+  border-radius: 4px;
+  background: #abbaab;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #f8f8f9, #fff, #f8f8f9);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #f8f8f9, #fff, #f8f8f9);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border: 1px solid #ddd;
+  border-bottom: 5px solid #009933;
+  padding: 10px;
+  width: 94%;
+}
+
+hr {
+  display: block;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border: 0;
+  height: 1px;
+  background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 50%, rgba(255, 255, 255, 0) 100%);
+  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 50%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 50%, rgba(255, 255, 255, 0) 100%);
+  /*  Old CSS gradients */
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='#00ffffff', GradientType=1);
+}
+
+#balik {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #345534;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+#balik:hover {
+  background-color: #fc7d00;
+}
+@keyframes smoothBlink {
+  0% {
+      opacity: 1;
+  }
+
+  50% {
+      opacity: 0.4;
+  }
+
+  100% {
+      opacity: 1;
+  }
+}
+
+.blink {
+  animation: smoothBlink 1.5s infinite;
+}

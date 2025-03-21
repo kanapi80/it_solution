@@ -11,6 +11,14 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\M_Admin;
 use App\Models\LoginModel;
+use App\Models\TTEModel;
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
+use \Hermawan\DataTables\DataTable;
+use App\Models\ConfigModel;
+use App\Models\InacbgModel;
+
+
 
 
 
@@ -18,10 +26,16 @@ class Admin extends BaseController
 {
     protected $userModel;
     protected $loginModel;
+    protected $monitoring;
+    protected $modelconfig;
+    protected $modelinacbg;
     public function __construct()
     {
         $this->userModel = new M_Admin();
         $this->loginModel = new LoginModel();
+        $this->monitoring = new TTEModel();
+        $this->modelconfig = new ConfigModel();
+        $this->modelinacbg = new InacbgModel();
     }
     public function index()
     {
@@ -65,42 +79,65 @@ class Admin extends BaseController
     //CEK LOGIN
     public function getLogin()
     {
+        $session = \Config\Services::session();
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
+
+        // Ambil data user berdasarkan email/username
         $datauser = $this->loginModel->getAdmin(['email' => $username])->getRowArray();
 
         if (!$datauser) {
             log_message('error', 'Username tidak ditemukan.');
-            return redirect()->back()->with('error', 'Username Tidak Ditemukan');
+            return redirect()->back()->with('error', 'Username Tidak Ditemukan')->withInput();
         }
 
         if ($datauser['status'] != 1) {
             log_message('error', 'Akun tidak aktif.');
-            return redirect()->back()->with('error', 'Akun Anda tidak aktif.');
+            return redirect()->back()->with('error', 'Akun Anda tidak aktif.')->withInput();
         }
 
-        $verifyPassword = password_verify($password, $datauser['password']);
-        if (!$verifyPassword) {
+        // Verifikasi password
+        if (!password_verify($password, $datauser['password'])) {
             log_message('error', 'Kombinasi username dan password salah.');
-            return redirect()->back()->with('error', 'Kombinasi Username dan Password Salah!');
+            return redirect()->back()->with('error', 'Kombinasi Username dan Password Salah!')->withInput();
         }
+
+        // Data session
         $dataSession = [
-            'Ses_IdAdmin' => $datauser['id'],
+            'Ses_IdAdmin'   => $datauser['id'],
             'Ses_NamaAdmin' => $datauser['firstname'],
-            'Ses_UserName' => $datauser['lastname'],
-            'Ses_Level' => $datauser['level'],
-            'Ses_Tupoksi' => $datauser['locationname'],
-            'Ses_Foto' => $datauser['foto'],
-            'Ses_Ruangan' => $datauser['id_imut']
+            'Ses_UserName'  => $datauser['lastname'],
+            'Ses_Level'     => $datauser['level'],
+            'Ses_Tupoksi'   => $datauser['locationname'],
+            'Ses_Foto'      => $datauser['foto'],
+            'Ses_Ruangan'   => $datauser['id_imut'],
+            'Ses_Pejuang'   => $datauser['id_pejuang'],
+            'isLoggedIn'    => true // Tambahkan untuk cek login
         ];
-        session()->set($dataSession);
+
+        // Set session
+        $session->set($dataSession);
+
+        // Redirect ke dashboard
         return redirect()->to(base_url('admin/dashboard-admin'));
     }
+
     public function dashboard()
     {
-        $model = new M_Admin();
-        $selectadmin = $model->limit(100)->findAll();
-        $data['selectadmin'] = $selectadmin;
+        // $model = new M_Admin();
+        // $selectadmin = $this->loginModel->limit(100)->findAll();
+        // $data['selectadmin'] = $selectadmin;
+        $data['jkn'] = $this->modelinacbg->getHarian();
+        $data['selectadmin'] = $this->loginModel->paginate(10);
+        $data['tte'] = $this->monitoring->getMonitoringtte();
+        $data['pager'] = $this->loginModel->pager; // Ambil objek pager
+        $data['configtte'] = $this->modelconfig->getpropertitte(87);
+        if (!empty($data['configtte'])) {
+            $data['configtte'] = (array) $data['configtte'][0]; // Ambil hanya baris pertama
+        } else {
+            $data['configtte'] = []; // Jika kosong, set array kosong
+        }
+
         return view('Backend/Login/dashboard', $data);
     }
 
@@ -111,6 +148,7 @@ class Admin extends BaseController
         session()->remove('Ses_Level');
         session()->remove('Ses_Tupoksi');
         session()->remove('Ses_Ruangan');
+        session()->remove('Ses_Pejuang');
         session()->setFlashdata('logout_success', 'Kamu telah logout.'); // Set flash data message
         return redirect()->to(base_url('admin/login-admin'));
     }
@@ -137,6 +175,9 @@ class Admin extends BaseController
         $model = new M_Admin();
         $selectadmin = $model->limit(100)->findAll();
         $data['selectadmin'] = $selectadmin;
+
+
+
         return view('users/users', $data);
     }
 
@@ -266,25 +307,56 @@ class Admin extends BaseController
         $writer->save('php://output');
         exit();
     }
+
+
+
     public function cetakPdf()
     {
         set_time_limit(36000);
+
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isRemoteEnabled', true);
         $options->set('isPhpEnabled', false);
         $options->set('chroot', realpath(''));
 
-        $options->set('chroot', realpath('/path/to/allowed/directory'));
         $dompdf = new Dompdf($options);
-        $model = new M_Admin();
-        $selectadmin = $model->limit(100)->findAll();
+        $selectadmin = $this->userModel->limit(100)->findAll();
+
+        $qrFolder = WRITEPATH . 'qr/'; // Folder untuk menyimpan QR Code
+        if (!is_dir($qrFolder)) {
+            mkdir($qrFolder, 0777, true); // Buat folder jika belum ada
+        }
+
+        foreach ($selectadmin as &$admin) {
+            $qrOptions = new QROptions([
+                'outputType' => QRCode::OUTPUT_IMAGE_PNG,
+                'eccLevel'   => QRCode::ECC_L,
+                'scale'      => 5,
+            ]);
+
+            // Buat nama file unik berdasarkan ID Admin
+            $qrFileName = 'qr_' . $admin['IdAdmin'] . '.png';
+            $qrFilePath = $qrFolder . $qrFileName;
+
+            // Generate QR Code dan simpan sebagai file
+            (new QRCode($qrOptions))->render($admin['NamaAdmin'], $qrFilePath);
+
+            // Simpan path QR Code untuk digunakan di View
+            $admin['qrPath'] = base_url('writable/qr/' . $qrFileName);
+        }
+
         $html = view('users/cetakusers', ['selectadmin' => $selectadmin]);
+
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $dompdf->stream("admin_list.pdf", ["Attachment" => false]);
     }
+
+
+
+
     public function viewUsers()
     {
         return view('users/server_users');
@@ -332,5 +404,13 @@ class Admin extends BaseController
     public function dokumentasi()
     {
         return view('users/dokumentasi');
+    }
+    public function getAllUser()
+    {
+        if ($this->request->isAJAX()) {
+            $builder = $this->loginModel
+                ->select('users.firstname, users.lastname, users.locationcode,users.locationname, users.email, users.status, users.password');
+            return DataTable::of($builder)->addNumbering()->toJson(true);
+        }
     }
 }

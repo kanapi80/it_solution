@@ -9,7 +9,7 @@
             width: 100%;
             border-collapse: collapse;
             padding: 5px;
-            font-size: 10px;
+            font-size: 9px;
         }
 
         .table-no-border {
@@ -61,7 +61,7 @@
 </head>
 
 <body>
-    <?php if (!empty($labrajal)) : ?>
+    <?php if (!empty($labigd)) : ?>
         <table class="table-no-border">
             <tr>
                 <td width="15%" align="center"><img src="/assets/img/rs.jpg" width="50px" alt="Logo">
@@ -73,7 +73,7 @@
         <hr>
 
         <?php
-        $firstRow = $labrirj[0];
+        $firstRow = $labigd[0];
         ?>
         <br>
 
@@ -115,8 +115,8 @@
         <?php
         // Mengelompokkan data berdasarkan REFF
         $groupedLabs = [];
-        foreach ($labrajal as $row) {
-            $groupedLabs[$row['REF']][] = $row; // Mengelompokkan berdasarkan REF
+        foreach ($labigd as $row) {
+            $groupedLabs[$row['NAMATINDAKAN']][] = $row; // Mengelompokkan berdasarkan REF
         }
         ?>
 
@@ -130,12 +130,12 @@
 
             <?php
             // Loop melalui setiap grup REFF
-            foreach ($groupedLabs as $reff => $rows) :
+            foreach ($groupedLabs as $PARAMETER => $rows) :
                 $firstRows = $rows[0];
             ?>
                 <!-- Tampilkan Nama Tindakan dan Tanggal berdasarkan baris pertama dalam grup -->
                 <tr>
-                    <td colspan="4" class="fw-bold" style="border-bottom: 0px dashed black;"><?php echo htmlspecialchars($firstRows['NAMA']); ?> | <?php echo htmlspecialchars($firstRows['TANGGAL']); ?>
+                    <td colspan="4" class="fw-bold" style="border-bottom: 0px dashed black;"><?php echo htmlspecialchars($firstRows['NAMATINDAKAN']); ?> | <?php echo htmlspecialchars($firstRows['TANGGALHASIL']); ?>
                     </td>
                 </tr>
 
@@ -144,7 +144,7 @@
                 foreach ($rows as $row) :
                 ?>
                     <tr>
-                        <td style="border-bottom: 0px dashed black;"> &nbsp;<?php echo nl2br(htmlspecialchars($row['PEMERIKSAAN'])); ?></td>
+                        <td style="border-bottom: 0px dashed black;"> &nbsp;<?php echo nl2br(htmlspecialchars($row['PARAMETER'])); ?></td>
                         <td style="border-bottom: 0px dashed black;"><?php echo nl2br(htmlspecialchars($row['HASIL'])); ?></td>
                         <td style="border-bottom: 0px dashed black;"><?php echo nl2br(htmlspecialchars($row['NILAI_RUJUKAN'])); ?></td>
                         <td style="border-bottom: 0px dashed black;"><?php echo nl2br(htmlspecialchars($row['SATUAN'])); ?></td>
@@ -158,9 +158,9 @@
             <tr>
                 <td width="50%"></td>
                 <td width="50%" align="center">
-                    Indramayu, <?php echo htmlspecialchars($firstRow['TGLSKRG2']); ?><br>
+                    Indramayu, <?php echo htmlspecialchars($firstRow['TGLSKRG']); ?><br>
                     Dokter Yang Memeriksa<br>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($firstRow['DOKTER']); ?>" alt="QR Code" width="50" height="50"><br>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($firstRow['DOKTER']); ?>" alt="QR Code" width="40" height="40"><br>
                     <u><?php echo htmlspecialchars($firstRow['DOKTER']); ?></u><br>
                     NIP. <?php echo htmlspecialchars($firstRow['NIPDPJP']); ?>
                 </td>

@@ -24,44 +24,70 @@
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group mt-3">
-                      <input type="text" class="form-control form-control-sm fs-7" name="nopen" value="<?= esc($nopen ?? '') ?>">
+                      <input type="text" class="form-control form-control-sm fs-7" name="nopen" value="<?= esc($nopen ?? '') ?>" placeholder="Input Nomor Pendaftaran">
                     </div>
                   </div>
 
                   <div class="col-md-2 mt-3">
-                    <button type="submit" class="btn btn-success btn-sm fs-7">
-                      <i class="bx bxs-search"></i> Cari
-                    </button>
+                    <button type="button" class="btn btn-success btn-sm fs-7" onclick="updateGrouping()"><i class="bi bi-check-all"></i> Update</button>
                   </div>
                 </div>
               </form>
-            </div>
-
-            <!-- Flash message container -->
-            <div class="container mt-4">
-              <?php if (session()->getFlashdata('message')): ?>
-                <div class="alert alert-<?= session()->getFlashdata('message_type') == 'success' ? 'success' : 'danger'; ?>">
-                  <?= esc(session()->getFlashdata('message')); ?>
-                </div>
-              <?php endif; ?>
             </div>
           </div>
         </div>
       </div>
   </section>
+  <script>
+    function updateGrouping() {
+      let nopen = document.querySelector('input[name="nopen"]').value;
+
+      if (!nopen) {
+        customSwal.fire({
+          icon: "warning",
+          title: "Peringatan!",
+          text: "Silakan masukkan NOPEN terlebih dahulu.",
+          confirmButtonColor: "#f39c12",
+          confirmButtonText: "OK"
+        });
+        return;
+      }
+
+      fetch(`<?= base_url('problem/updatedataisnull') ?>?nopen=${nopen}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "success") {
+            customSwal.fire({
+              icon: "success",
+              title: "Berhasil!",
+              text: data.message,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "OK"
+            }).then(() => {
+              window.location.href = "<?= base_url('problem/getdataisnull') ?>";
+            });
+          } else {
+            customSwal.fire({
+              icon: "error",
+              title: "Gagal!",
+              text: data.message,
+              confirmButtonColor: "#d33",
+              confirmButtonText: "OK"
+            });
+          }
+        })
+        .catch(error => {
+          customSwal.fire({
+            icon: "error",
+            title: "Kesalahan!",
+            text: "Terjadi kesalahan saat mengupdate data.",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "OK"
+          });
+        });
+    }
+  </script>
 
 </main><!-- End #main -->
 
 <?= $this->endsection() ?>
-
-<script>
-  <?php if (session()->getFlashdata('message')) : ?>
-    Swal.fire({
-      icon: '<?= session()->getFlashdata('message_type') == 'success' ? 'success' : 'error'; ?>',
-      title: '<?= session()->getFlashdata('message_type') == 'success' ? 'Success' : 'Error'; ?>',
-      text: '<?= session()->getFlashdata('message'); ?>',
-      timer: 3000,
-      showConfirmButton: false
-    });
-  <?php endif; ?>
-</script>

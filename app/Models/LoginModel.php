@@ -9,7 +9,7 @@ class LoginModel extends Model
     protected $DBGroup = 'sipayu';
     protected $table = 'users';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['firstname', 'lastname', 'email', 'password', 'locationcode', 'locationname', 'level', 'foto'];
+    protected $allowedFields = ['firstname', 'lastname', 'email', 'password', 'locationcode', 'locationname', 'level', 'foto', 'id_imut', 'id_pejuang', 'status'];
 
     public function getAdmin($id = false)
     {
